@@ -1,2 +1,2 @@
-# ComputacionUbicuaaG06
+# ComputacionUbicuaG06
 Vía Pública
