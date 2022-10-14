@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Calle" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="742" y="92"/>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="ciudad" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="longitud" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[En metros]]></comment>
+	</column>
+	<column name="velocidad" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Velocidad máxima en km/h]]></comment>
+	</column>
+	<column name="retencion" not-null="true" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="timeout" not-null="true" default-value="(longitud*3600/(velocidad*1000))*2">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[En segundos]]></comment>
+	</column>
+	<column name="clima" not-null="true">
+		<type name="varchar" length="15"/>
+	</column>
+	<constraint name="calle_pk" type="pk-constr" table="public.&quot;Calle&quot;">
+		<columns names="nombre,ciudad" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Farola" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1329" y="122"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="Farola_pk" type="pk-constr" table="public.&quot;Farola&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="Calle_has_many_Farola" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aa53a0"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Farola&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="6.24107" y="-61.5756"/>
+	</label>
+</relationship>
+
+<table name="Facultad" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="172" y="124"/>
+	<column name="nombre" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="Facultad_pk" type="pk-constr" table="public.&quot;Facultad&quot;">
+		<columns names="nombre" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="Calle_has_many_Facultad" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55c27c"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Facultad&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-1.75893" y="-61.6618"/>
+	</label>
+</relationship>
+
+</dbmodel>
