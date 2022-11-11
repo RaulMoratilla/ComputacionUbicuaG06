@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="0.9" max-obj-count="7"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -11,87 +11,104 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
-<table name="Calle" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+<table name="Zona" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="742" y="92"/>
-	<column name="nombre" not-null="true">
-		<type name="varchar" length="50"/>
+	<position x="180" y="320"/>
+	<column name="ID" not-null="true">
+		<type name="smallint" length="0"/>
 	</column>
-	<column name="ciudad" not-null="true">
-		<type name="varchar" length="50"/>
+	<column name="Nombre" not-null="true">
+		<type name="varchar" length="0"/>
 	</column>
-	<column name="longitud" not-null="true">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[En metros]]></comment>
-	</column>
-	<column name="velocidad" not-null="true">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[Velocidad máxima en km/h]]></comment>
-	</column>
-	<column name="retencion" not-null="true" default-value="false">
-		<type name="boolean" length="0"/>
-	</column>
-	<column name="timeout" not-null="true" default-value="(longitud*3600/(velocidad*1000))*2">
-		<type name="integer" length="0"/>
-		<comment><![CDATA[En segundos]]></comment>
-	</column>
-	<column name="clima" not-null="true">
-		<type name="varchar" length="15"/>
-	</column>
-	<constraint name="calle_pk" type="pk-constr" table="public.&quot;Calle&quot;">
-		<columns names="nombre,ciudad" ref-type="src-columns"/>
+	<constraint name="Zona_pk" type="pk-constr" table="public.&quot;Zona&quot;">
+		<columns names="ID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="Farola" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Ciudad" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1329" y="122"/>
-	<column name="id" not-null="true">
-		<type name="integer" length="0"/>
+	<position x="200" y="80"/>
+	<column name="Nombre" not-null="true">
+		<type name="varchar" length="50"/>
 	</column>
-	<constraint name="Farola_pk" type="pk-constr" table="public.&quot;Farola&quot;">
-		<columns names="id" ref-type="src-columns"/>
+	<column name="Pais" not-null="true">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="Codigo" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<constraint name="Ciudad_pk" type="pk-constr" table="public.&quot;Ciudad&quot;">
+		<columns names="Codigo" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<relationship name="Calle_has_many_Farola" type="rel1n" layer="0"
+<relationship name="Ciudad_tiene_una_o_mas_Zonas" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#aa53a0"
-	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Farola&quot;"
+	 custom-color="#0000ff"
+	 src-table="public.&quot;Ciudad&quot;"
+	 dst-table="public.&quot;Zona&quot;"
 	 src-required="true" dst-required="false">
 	<label ref-type="name-label">
-		<position x="6.24107" y="-61.5756"/>
+		<position x="-7.27774" y="1.86774"/>
 	</label>
 </relationship>
 
-<table name="Facultad" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Calle" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="172" y="124"/>
-	<column name="nombre" not-null="true">
-		<type name="varchar" length="50"/>
+	<position x="620" y="80"/>
+	<column name="Nombre" not-null="true">
+		<type name="varchar" length="70"/>
 	</column>
-	<constraint name="Facultad_pk" type="pk-constr" table="public.&quot;Facultad&quot;">
-		<columns names="nombre" ref-type="src-columns"/>
+	<constraint name="Calle_pk" type="pk-constr" table="public.&quot;Calle&quot;">
+		<columns names="Nombre" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<relationship name="Calle_has_many_Facultad" type="rel1n" layer="0"
+<relationship name="Zona_tiene_una_o_mas_Calles" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#55c27c"
+	 custom-color="#0000ff"
+	 src-table="public.&quot;Zona&quot;"
+	 dst-table="public.&quot;Calle&quot;"
+	 src-required="true" dst-required="false"/>
+
+<table name="Alumbrado" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="620" y="340"/>
+</table>
+
+<table name="Sensor" layer="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="980" y="120"/>
+</table>
+
+<table name="Farola" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="460" y="540"/>
+</table>
+
+<relationship name="Calle_tiene_un_Alumbrado_o_mas" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#627b83"
 	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Facultad&quot;"
-	 src-required="true" dst-required="false">
-	<label ref-type="name-label">
-		<position x="-1.75893" y="-61.6618"/>
-	</label>
-</relationship>
+	 dst-table="public.&quot;Alumbrado&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="Farola_hereda_Alumbrado" type="relgen" layer="0"
+	 pk-pattern="{dt}_pk"
+	 custom-color="#ff0000"
+	 src-table="public.&quot;Farola&quot;"
+	 dst-table="public.&quot;Alumbrado&quot;"/>
 
 </dbmodel>
