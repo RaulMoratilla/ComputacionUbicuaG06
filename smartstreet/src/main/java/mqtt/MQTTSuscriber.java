@@ -14,15 +14,15 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import db.ConectionDDBB;
-import db.Topics;
-import logic.Log;
-import logic.Logic;
+import basedatos.ConexionBD;
+import basedatos.Topicos;
+import logica.Log;
+import logica.Logica;
 
 public class MQTTSuscriber implements MqttCallback
 {
 	public void searchTopicsToSuscribe(MQTTBroker broker){
-		ConectionDDBB conector = new ConectionDDBB();
+		ConexionBD conector = new ConexionBD();
 		Connection con = null;
 		ArrayList<String> topics = new ArrayList<>();
 		try{
@@ -30,7 +30,7 @@ public class MQTTSuscriber implements MqttCallback
 			Log.logmqtt.debug("Database Connected");
 			
 			//Get Cities to search the main topic
-			PreparedStatement psCity = ConectionDDBB.GetCities(con);
+			PreparedStatement psCity = ConexionBD.GetCities(con);
 			Log.logmqtt.debug("Query to search cities=> {}", psCity.toString());
 			ResultSet rsCity = psCity.executeQuery();
 			while (rsCity.next()){
@@ -80,7 +80,7 @@ public class MQTTSuscriber implements MqttCallback
 	{
        Log.logmqtt.info("{}: {}", topic, message.toString());
        String[] topics = topic.split("/");
-       Topics newTopic = new Topics();
+       Topicos newTopic = new Topicos();
        newTopic.setValue(message.toString());
        if(topic.contains("Sensor"))
        {
@@ -91,7 +91,7 @@ public class MQTTSuscriber implements MqttCallback
     			   newTopic.getIdCity(), newTopic.getIdStation(), newTopic.getIdSensor(), message.toString());
     	   
     	   //Store the information of the sensor
-    	   Logic.storeNewMeasurement(newTopic);
+    	   Logica.storeNewMeasurement(newTopic);
        }else
        {
     	   if(topic.contains("Station"))
