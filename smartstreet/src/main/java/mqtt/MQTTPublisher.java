@@ -1,4 +1,3 @@
-/*
 package mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -7,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import logic.Log;
+import logica.Log;
 
 public class MQTTPublisher 
 {
@@ -35,4 +34,3 @@ public class MQTTPublisher
 		}	
 	}
 }
-*/
