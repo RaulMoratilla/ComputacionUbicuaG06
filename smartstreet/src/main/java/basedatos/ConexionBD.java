@@ -23,7 +23,7 @@ public class ConexionBD {
         int intentos = 3;
         for (int i = 0; i < intentos; i++) 
         {
-        	Log.logdb.info("Intento {} de conexion a la Base de Datos.", i);
+        	Log.logbasedatos.info("Intento {} de conexion a la Base de Datos.", i);
         	try
 	          {
 	            Context ctx = new InitialContext();
@@ -34,16 +34,16 @@ public class ConexionBD {
 	            con = ds.getConnection();
 				Calendar calendar = Calendar.getInstance();
 				java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
-	            Log.logdb.debug("Creacion de conexion. Identidficador de conexion {} || {}", con.toString(), date.toString());
+	            Log.logbasedatos.debug("Creacion de conexion. Identidficador de conexion {} || {}", con.toString(), date.toString());
 	            con.setAutoCommit(autoCommit);
-	        	Log.logdb.info("Conexion establecida en el intento: " + i);
+	        	Log.logbasedatos.info("Conexion establecida en el intento: " + i);
 	            i = intentos;
 	          } catch (NamingException ex)
 	          {
-	            Log.logdb.error("ERROR intentando establecer conexion a la Base de Datos: {} => {}", i, ex); 
+	            Log.logbasedatos.error("ERROR intentando establecer conexion a la Base de Datos: {} => {}", i, ex); 
 	          } catch (SQLException ex)
 	          {
-	            Log.logdb.error("ERROR intentando conectar con SQL: {} => {}", i, ex);
+	            Log.logbasedatos.error("ERROR intentando conectar con SQL: {} => {}", i, ex);
 	            throw (new NullPointerException("Conexion a SQL = Null"));
 	          }
 		}        
@@ -54,10 +54,10 @@ public class ConexionBD {
         try
           {
             con.commit();
-            Log.logdb.debug("Transaccion cerrada correctamente.");
+            Log.logbasedatos.debug("Transaccion cerrada correctamente.");
           } catch (SQLException ex)
           {
-            Log.logdb.error("ERROR al cerrar la transaccion: {}", ex);
+            Log.logbasedatos.error("ERROR al cerrar la transaccion: {}", ex);
           }
     }
     
@@ -66,10 +66,10 @@ public class ConexionBD {
         try
           {
             con.rollback();
-            Log.logdb.debug("Transaccion cancelada correctamente.");
+            Log.logbasedatos.debug("Transaccion cancelada correctamente.");
           } catch (SQLException ex)
           {
-            Log.logdb.error("ERROR de SQL al cancelar la transaccion: {}", ex);
+            Log.logbasedatos.error("ERROR de SQL al cancelar la transaccion: {}", ex);
           }
     }
 
@@ -77,19 +77,19 @@ public class ConexionBD {
     {
         try
           {
-        	Log.logdb.info("Closing the connection");
+        	Log.logbasedatos.info("Closing the connection");
             if (null != con)
             {
               Calendar calendar = Calendar.getInstance();
               java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
-              Log.logdb.debug("Connection closed. Bd connection identifier: {} obtained in {}", con.toString(), date.toString());
+              Log.logbasedatos.debug("Connection closed. Bd connection identifier: {} obtained in {}", con.toString(), date.toString());
               con.close();
             }
 
-        	Log.logdb.info("The connection has been closed");
+        	Log.logbasedatos.info("The connection has been closed");
           } catch (SQLException e)
           {
-        	  Log.logdb.error("ERROR sql closing the connection: {}", e);
+        	  Log.logbasedatos.error("ERROR sql closing the connection: {}", e);
         	  e.printStackTrace();
           }
     }
