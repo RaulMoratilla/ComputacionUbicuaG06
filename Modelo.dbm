@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="130,0" last-zoom="0.7" max-obj-count="19"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="129,0" last-zoom="0.7" max-obj-count="19"
 	 default-schema="public" default-owner="postgres">
 <database name="smartStreet" is-template="false" allow-conns="true">
 </database>
@@ -348,16 +348,19 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="false"
 	 table-name="Calle_STemp"/>
 
-<table name="Medicion" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Medicion" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1620" y="20"/>
+	<position x="1620" y="0"/>
 	<column name="Valor">
 		<type name="integer" length="0"/>
 	</column>
+	<column name="MarcaTemporal" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
 </table>
 
-<relationship name="Sensor_realiza_Medicion" type="rel1n" layer="0"
+<relationship name="Sensor_realiza_Medicion(es)" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
@@ -366,8 +369,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.&quot;Medicion&quot;"
 	 src-required="true" dst-required="false">
 	<label ref-type="name-label">
-		<position x="68.1619" y="-15.6323"/>
+		<position x="109.626" y="-15.7323"/>
 	</label>
+	<constraint name="Medicion_pk" type="pk-constr" table="public.&quot;Medicion&quot;">
+		<columns names="MarcaTemporal" ref-type="src-columns"/>
+	</constraint>
 	<special-pk-cols indexes="0,1"/>
 </relationship>
 
