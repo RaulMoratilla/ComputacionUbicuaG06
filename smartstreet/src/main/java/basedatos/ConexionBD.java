@@ -3,7 +3,6 @@ package basedatos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Calendar;
 
 import java.lang.NullPointerException;
@@ -106,16 +105,14 @@ public class ConexionBD {
     }
 
     //**********LLAMADAS A BASE DE DATOS**********//
+
+    //Select * from tablas
     public static PreparedStatement GetCiudades(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Ciudad\"");
     }
 
-    public static PreparedStatement InsertarCiudad(Connection con) {
-        return getStatement(con, "INSERT INTO public.\"Ciudad\"(nombre, pais, codigo) VALUES (?, ?, ?)");
-    }
-
     public static PreparedStatement GetZonasDeCiudad(Connection con) {
-        return getStatement(con, "SELECT * FROM public.\"Zona\" WHERE \"CodigoCiudad\"=?");
+        return getStatement(con, "SELECT * FROM public.\"Zona\" WHERE \"Codigo_Ciudad\"=?");
     }
 
     public static PreparedStatement GetZonas(Connection con) {
@@ -134,7 +131,58 @@ public class ConexionBD {
         return getStatement(con, "SELECT \"Nombre\" FROM public.\"Calle\"");
     }
 
-    
+    public static PreparedStatement GetInfraDeCalle(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Infrarrojo\" WHERE \"Nombre_Calle_Paso_Peatones\"=?");
+    }
+
+    public static PreparedStatement GetSInfrarrojo(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Infrarrojo\"");
+    }
+
+    public static PreparedStatement GetSTemperaturaDeCalle(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Temperatura\" WHERE \"Nombre_Calle\"=?");
+    }
+
+    public static PreparedStatement GetSTemperatura(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Temperatura\"");
+    }
+
+    public static PreparedStatement GetSMovimientoDeCalle(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Movimiento\" WHERE \"Nombre_Calle\"=?");
+    }
+
+    public static PreparedStatement GetSMovimiento(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Movimiento\"");
+    }
+
+    public static PreparedStatement GetSLluviaDeCalle(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Lluvia\" WHERE \"Nombre_Calle\"=?");
+    }
+
+    public static PreparedStatement GetSLluvia(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Lluvia\"");
+    }
+
+    public static PreparedStatement GetSLuzDeCalle(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Luz\" WHERE \"Nombre_Calle_Farola\"=?");
+    }
+
+    public static PreparedStatement GetSLuz(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Sensor_Luz\"");
+    }
+
+    public static PreparedStatement InsertarCiudad(Connection con) {
+        return getStatement(con, "INSERT INTO public.\"Ciudad\"(\"Nombre\", \"Pais\", \"Codigo\") VALUES (?, ?, ?)");
+    }
+
+    public static PreparedStatement InsertarZona(Connection con) {
+        return getStatement(con, "INSERT INTO public.\"Zona\"(\"ID\", \"Nombre\", \"Codigo_Ciudad\") VALUES (?, ?)");
+    }
+
+    public static PreparedStatement InsertarCalle(Connection con) {
+        return getStatement(con, "INSERT INTO public.\"Calle\"(\"Nombre\", \"ID_Zona\", \"Codigo_Ciudad_Zona\") VALUES (?, ?, ?)");
+    }
+
 
     /*public static PreparedStatement GetSensoresCalle(Connection con,  int idZona, String nombreCalle, String sensor) {
         String sensorTabla = "", relacionTabla = "";

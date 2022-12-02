@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="126,0" last-zoom="0.7" max-obj-count="20"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="29,0" last-zoom="0.65" max-obj-count="20"
 	 default-schema="public" default-owner="postgres">
 <database name="smartStreet" is-template="false" allow-conns="true">
 </database>
@@ -84,7 +84,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Alumbrado" layer="0" unlogged="true" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="360" y="500"/>
+	<position x="283.077" y="540"/>
 	<column name="Id" not-null="true">
 		<type name="smallint" length="0"/>
 	</column>
@@ -119,7 +119,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Farola" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="820" y="720"/>
+	<position x="716.923" y="766.154"/>
 	<column name="Altura" not-null="true">
 		<type name="smallint" length="0"/>
 	</column>
@@ -157,7 +157,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Paso_Peatones" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="760" y="540"/>
+	<position x="693.846" y="590.769"/>
 	<column name="Longitud" not-null="true">
 		<type name="smallint" length="0"/>
 	</column>
@@ -167,36 +167,36 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</customidxs>
 </table>
 
-<table name="Sensor_Lluvia" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Sensor_Lluvia" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1020" y="40"/>
+	<position x="1024.62" y="0"/>
 
 	<customidxs object-type="constraint">
 		<object name="Sensor_Lluvia_pk" index="0"/>
 	</customidxs>
 </table>
 
-<table name="Sensor_temperatura" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Sensor_temperatura" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1020" y="360"/>
+	<position x="1032.31" y="413.846"/>
 
 	<customidxs object-type="constraint">
 		<object name="Sensor_temperatura_pk" index="0"/>
 	</customidxs>
 </table>
 
-<table name="Sensor_Movimiento" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Sensor_Movimiento" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1020" y="200"/>
+	<position x="1075.38" y="209.231"/>
 </table>
 
 <table name="Sensor_Infrarrojo" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1280" y="500"/>
+	<position x="1363.08" y="569.231"/>
 </table>
 
 <relationship name="Sensor_Lluvia_hereda_Sensor" type="relgen" layer="0"
@@ -224,7 +224,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Sensor_Luz" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1640" y="680"/>
+	<position x="1652.31" y="747.692"/>
 
 	<customidxs object-type="column">
 		<object name="Id_Farola" index="2"/>
@@ -311,47 +311,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<special-pk-cols indexes="0,1"/>
 </relationship>
 
-<relationship name="Calle(s)_tiene(n)_Sensor(es)Movimiento" type="relnn" layer="0"
-	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
-	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
-	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
-	 pk-col-pattern="id"
-	 custom-color="#550000"
-	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_Movimiento&quot;"
-	 src-required="false" dst-required="false"
-	 table-name="Calle_SMov"/>
-
-<relationship name="Calle(s)_tiene(n)_Sensor(es)Lluvia" type="relnn" layer="0"
-	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
-	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
-	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
-	 pk-col-pattern="id"
-	 custom-color="#550000"
-	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_Lluvia&quot;"
-	 src-required="false" dst-required="false"
-	 table-name="Calle_SLluv">
-	<label ref-type="name-label">
-		<position x="5.55762" y="5.03254"/>
-	</label>
-</relationship>
-
-<relationship name="Calle(s)_tiene(n)_Sensor(es)Temperatura" type="relnn" layer="0"
-	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
-	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
-	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
-	 pk-col-pattern="id"
-	 custom-color="#550000"
-	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_temperatura&quot;"
-	 src-required="false" dst-required="false"
-	 table-name="Calle_STemp"/>
-
 <table name="Medicion" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1620" y="0"/>
+	<position x="1600" y="20"/>
 	<column name="Valor">
 		<type name="integer" length="0"/>
 	</column>
@@ -393,17 +356,44 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#181b20"
+	 custom-color="#ff4800"
 	 src-table="public.&quot;Calle&quot;"
 	 dst-table="public.&quot;HoraPunta&quot;"
 	 src-required="true" dst-required="false">
 	<label ref-type="name-label">
-		<position x="-74.1932" y="-34.5323"/>
+		<position x="-91.8551" y="-23.3323"/>
 	</label>
 	<constraint name="HoraPunta_pk" type="pk-constr" table="public.&quot;HoraPunta&quot;">
 		<columns names="HoraInicio,HoraFin" ref-type="src-columns"/>
 	</constraint>
 	<special-pk-cols indexes="0,1"/>
 </relationship>
+
+<relationship name="Calle_tiene_Sensor(es)Lluvia" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#0000ff"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Sensor_Lluvia&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="Calle_tiene_Sensor(es)Movimiento" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#0000ff"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Sensor_Movimiento&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="Calle_tiene_Sensor(es)Temperatura" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#0000ff"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Sensor_temperatura&quot;"
+	 src-required="true" dst-required="false"/>
 
 </dbmodel>
