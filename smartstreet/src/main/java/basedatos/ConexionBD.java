@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
 
+import java.lang.NullPointerException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

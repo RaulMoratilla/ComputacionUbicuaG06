@@ -33,84 +33,84 @@ public class Topicos {
     }
 
     //getters and setters
-    public String get_idTopico() {
+    public String getIdTopico() {
         return _idTopico;
     }
 
-    public void set_idTopico(String _idTopico) {
-        this._idTopico = _idTopico;
+    public void setIdTopico(String p_idTopico) {
+        this._idTopico = p_idTopico;
     }
 
-    public String get_idCiudad() {
+    public String getIdCiudad() {
         return _idCiudad;
     }
 
-    public void set_idCiudad(String _idCiudad) {
-        this._idCiudad = _idCiudad;
+    public void setIdCiudad(String p_idCiudad) {
+        this._idCiudad = p_idCiudad;
     }
 
-    public String get_idZona() {
+    public String getIdZona() {
         return _idZona;
     }
 
-    public void set_idZona(String _idZona) {
-        this._idZona = _idZona;
+    public void setIdZona(String p_idZona) {
+        this._idZona = p_idZona;
     }
 
-    public String get_idCalle() {
+    public String getIdCalle() {
         return _idCalle;
     }
 
-    public void set_idCalle(String _idCalle) {
-        this._idCalle = _idCalle;
+    public void setIdCalle(String p_idCalle) {
+        this._idCalle = p_idCalle;
     }
 
-    public String get_idSLuz() {
+    public String getIdSLuz() {
         return _idSLuz;
     }
 
-    public void set_idSLuz(String _idSLuz) {
-        this._idSLuz = _idSLuz;
+    public void setIdSLuz(String p_idSLuz) {
+        this._idSLuz = p_idSLuz;
     }
 
-    public String get_idSInfra() {
+    public String getIdSInfra() {
         return _idSInfra;
     }
 
-    public void set_idSInfra(String _idSInfra) {
-        this._idSInfra = _idSInfra;
+    public void setIdSInfra(String p_idSInfra) {
+        this._idSInfra = p_idSInfra;
     }
 
-    public String get_idSMov() {
+    public String getIdSMov() {
         return _idSMov;
     }
 
-    public void set_idSMov(String _idSMov) {
-        this._idSMov = _idSMov;
+    public void setIdSMov(String p_idSMov) {
+        this._idSMov = p_idSMov;
     }
 
-    public String get_idSLluv() {
+    public String getIdSLluv() {
         return _idSLluv;
     }
 
-    public void set_idSLluv(String _idSLluv) {
-        this._idSLluv = _idSLluv;
+    public void setIdSLluv(String p_idSLluv) {
+        this._idSLluv = p_idSLluv;
     }
 
-    public String get_idSTemp() {
+    public String getIdSTemp() {
         return _idSTemp;
     }
 
-    public void set_idSTemp(String _idSTemp) {
-        this._idSTemp = _idSTemp;
+    public void setIdSTemp(String p_idSTemp) {
+        this._idSTemp = p_idSTemp;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setValue(String p_value) {
+        this.value = p_value;
     }
 
     @Override

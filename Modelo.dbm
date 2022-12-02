@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="128,0" last-zoom="0.7" max-obj-count="19"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="126,0" last-zoom="0.7" max-obj-count="20"
 	 default-schema="public" default-owner="postgres">
 <database name="smartStreet" is-template="false" allow-conns="true">
 </database>
@@ -61,7 +61,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Calle" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="560" y="60"/>
+	<position x="600" y="280"/>
 	<column name="Nombre" not-null="true">
 		<type name="varchar" length="70"/>
 	</column>
@@ -78,10 +78,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="Calle_pk" type="pk-constr" table="public.&quot;Calle&quot;">
 		<columns names="Nombre" ref-type="src-columns"/>
 	</constraint>
-	<special-pk-cols indexes="0"/>
+	<special-pk-cols indexes="0,1"/>
 </relationship>
 
-<table name="Alumbrado" layer="0" unlogged="true" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Alumbrado" layer="0" unlogged="true" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="360" y="500"/>
@@ -116,7 +116,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="Farola" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="Farola" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="820" y="720"/>
@@ -154,7 +154,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<special-pk-cols indexes="0,1"/>
 </relationship>
 
-<table name="Paso_Peatones" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="Paso_Peatones" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="760" y="540"/>
@@ -373,6 +373,35 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</label>
 	<constraint name="Medicion_pk" type="pk-constr" table="public.&quot;Medicion&quot;">
 		<columns names="MarcaTemporal" ref-type="src-columns"/>
+	</constraint>
+	<special-pk-cols indexes="0,1"/>
+</relationship>
+
+<table name="HoraPunta" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="540" y="20"/>
+	<column name="HoraInicio" not-null="true">
+		<type name="time" length="0"/>
+	</column>
+	<column name="HoraFin" not-null="true">
+		<type name="time" length="0"/>
+	</column>
+</table>
+
+<relationship name="Calle_tiene_HoraPunta" type="rel11" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#181b20"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;HoraPunta&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-74.1932" y="-34.5323"/>
+	</label>
+	<constraint name="HoraPunta_pk" type="pk-constr" table="public.&quot;HoraPunta&quot;">
+		<columns names="HoraInicio,HoraFin" ref-type="src-columns"/>
 	</constraint>
 	<special-pk-cols indexes="0,1"/>
 </relationship>
