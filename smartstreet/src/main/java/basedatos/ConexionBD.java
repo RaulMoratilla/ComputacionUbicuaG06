@@ -1,41 +1,97 @@
 package basedatos;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import logica.Log;
 
 public class ConexionBD {
 
     Connection conexion;
 
-    public ConexionBD() {
-        
-        try { 
-            try {
-                Class.forName("org.postgresql.Driver");
-            } catch (ClassNotFoundException ex) {
-                System.out.println("Error al registrar el driver de PostgreSQL: " + ex);
-            }
-            conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5433/new_database", "postgres", "postgres");
-            if (conexion != null) {
-                System.out.println("Conexión a base de datos ... Ok");
-            }
-
-        } catch (java.sql.SQLException sqle) {
-            System.out.println("Error: " + sqle);
-        }
-    }
-
-    public Connection getConexion ()
+    public Connection crearConexion(boolean autoCommit) throws NullPointerException
     {
-        return conexion;
+        Connection con = null;
+        int intentos = 3;
+        for (int i = 0; i < intentos; i++) 
+        {
+        	Log.logdb.info("Intento {} de conexion a la Base de Datos.", i);
+        	try
+	          {
+	            Context ctx = new InitialContext();
+	            // Get the connection factory configured in Tomcat (Cambiar la direccion)
+	            DataSource ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/ubicomp");
+
+	            // Obtiene una conexion
+	            con = ds.getConnection();
+				Calendar calendar = Calendar.getInstance();
+				java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
+	            Log.logdb.debug("Creacion de conexion. Identidficador de conexion {} || {}", con.toString(), date.toString());
+	            con.setAutoCommit(autoCommit);
+	        	Log.logdb.info("Conexion establecida en el intento: " + i);
+	            i = intentos;
+	          } catch (NamingException ex)
+	          {
+	            Log.logdb.error("ERROR intentando establecer conexion a la Base de Datos: {} => {}", i, ex); 
+	          } catch (SQLException ex)
+	          {
+	            Log.logdb.error("ERROR intentando conectar con SQL: {} => {}", i, ex);
+	            throw (new NullPointerException("Conexion a SQL = Null"));
+	          }
+		}        
+        return con;
     }
 
-    public void cierraConexion() {
-        try {
-            conexion.close();
-        } 
-        catch (Exception exception) {
-            System.out.println("Error cerrando la conexion");
-        }
+    public void cerrarTransaccion(Connection con) {
+        try
+          {
+            con.commit();
+            Log.logdb.debug("Transaccion cerrada correctamente.");
+          } catch (SQLException ex)
+          {
+            Log.logdb.error("ERROR al cerrar la transaccion: {}", ex);
+          }
+    }
+    
+    public void cancelarTransaccion(Connection con)
+    {
+        try
+          {
+            con.rollback();
+            Log.logdb.debug("Transaccion cancelada correctamente.");
+          } catch (SQLException ex)
+          {
+            Log.logdb.error("ERROR de SQL al cancelar la transaccion: {}", ex);
+          }
+    }
+
+    public void cerrarConexion(Connection con)
+    {
+        try
+          {
+        	Log.logdb.info("Closing the connection");
+            if (null != con)
+            {
+              Calendar calendar = Calendar.getInstance();
+              java.sql.Date date = new java.sql.Date(calendar.getTime().getTime());
+              Log.logdb.debug("Connection closed. Bd connection identifier: {} obtained in {}", con.toString(), date.toString());
+              con.close();
+            }
+
+        	Log.logdb.info("The connection has been closed");
+          } catch (SQLException e)
+          {
+        	  Log.logdb.error("ERROR sql closing the connection: {}", e);
+        	  e.printStackTrace();
+          }
     }
 
     public static PreparedStatement getStatement(Connection con, String query){
@@ -49,43 +105,37 @@ public class ConexionBD {
     }
 
     //**********LLAMADAS A BASE DE DATOS**********//
-    public static void insertar(String query){
-        Connection con = null;
-        PreparedStatement pstatament = null;
-        try {
-            con = new ConexionBD().getConexion();
-            pstatament = getStatement(con, query);
-            pstatament.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }finally{
-            try {
-                if(pstatament != null){
-                    pstatament.close();
-                }
-                if(con != null){
-                    con.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
     public static PreparedStatement GetCiudades(Connection con) {
-        return getStatement(con, "SELECT \"Nombre\" FROM public.\"Ciudad\"");
+        return getStatement(con, "SELECT * FROM public.\"Ciudad\"");
     }
 
-    public static PreparedStatement GetZonas(Connection con, int codigoCiudad) {
-        return getStatement(con, "SELECT \"ID_Zona\" FROM public.\"Zona\""
-                               + "WHERE \"Codigo_Ciudad\" = " + codigoCiudad);
+    public static PreparedStatement InsertarCiudad(Connection con) {
+        return getStatement(con, "INSERT INTO public.\"Ciudad\"(nombre, pais, codigo) VALUES (?, ?, ?)");
     }
 
-    public static PreparedStatement GetCalles(Connection con, int idZona) {
-        return getStatement(con, "SELECT \"Nombre\" FROM public.\"Calle\""
-                               + "WHERE \"ID_Zona\" = " + idZona);
+    public static PreparedStatement GetZonasDeCiudad(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Zona\" WHERE \"CodigoCiudad\"=?");
     }
 
-    public static PreparedStatement GetSensoresCalle(Connection con, String nombreCalle, int idZona, String sensor) {
+    public static PreparedStatement GetZonas(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Zona\"");
+    }
+
+    public static PreparedStatement GetCallesDeZona(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Calle\" WHERE \"ID_Zona\"=?");
+    }
+
+    public static PreparedStatement GetCallesDeCiudad(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Calle\" WHERE \"Codigo_Ciudad_Zona\"=?");
+    }
+
+    public static PreparedStatement GetCalles(Connection con) {
+        return getStatement(con, "SELECT \"Nombre\" FROM public.\"Calle\"");
+    }
+
+    
+
+    /*public static PreparedStatement GetSensoresCalle(Connection con,  int idZona, String nombreCalle, String sensor) {
         String sensorTabla = "", relacionTabla = "";
         switch (sensor) {
             case "Lluvia":
@@ -116,7 +166,7 @@ public class ConexionBD {
                                + "WHERE CS.\"Nombre_Calle\" in (SELECT \"Nombre\")"
                                                                + "FROM public.\"Calle\""
                                                                + "WHERE \"ID_Zona\" = " + idZona);
-    }
+    }*/
 
 }
 

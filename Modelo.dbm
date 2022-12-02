@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="129,0" last-zoom="0.7" max-obj-count="19"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="128,0" last-zoom="0.7" max-obj-count="19"
 	 default-schema="public" default-owner="postgres">
 <database name="smartStreet" is-template="false" allow-conns="true">
 </database>
@@ -216,7 +216,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.&quot;Paso_Peatones&quot;"
 	 dst-table="public.&quot;Alumbrado&quot;">
 	<label ref-type="name-label">
-		<position x="36.1426" y="-92.2017"/>
+		<position x="64.6426" y="-100.839"/>
 	</label>
 	<special-pk-cols indexes="0,1"/>
 </relationship>
