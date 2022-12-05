@@ -26,11 +26,11 @@ public class MQTTSuscriber implements MqttCallback
 		Connection con = null;
 		ArrayList<String> topics = new ArrayList<>();
 		try{
-			con = conector.obtainConnection(true);
+			con = conector.crearConexion(true);
 			Log.logmqtt.debug("Database Connected");
 			
 			//Get Cities to search the main topic
-			PreparedStatement psCity = ConexionBD.GetCities(con);
+			PreparedStatement psCity = ConexionBD.GetCiudades(con);
 			Log.logmqtt.debug("Query to search cities=> {}", psCity.toString());
 			ResultSet rsCity = psCity.executeQuery();
 			while (rsCity.next()){
@@ -41,7 +41,7 @@ public class MQTTSuscriber implements MqttCallback
 		} 
 		catch (NullPointerException e){Log.logmqtt.error("Error: {}", e);} 
 		catch (Exception e){Log.logmqtt.error("Error:{}", e);} 
-		finally{conector.closeConnection(con);}
+		finally{conector.cerrarConexion(con);}
 	}
 	
 	public void suscribeTopic(MQTTBroker broker, ArrayList<String> topics)
