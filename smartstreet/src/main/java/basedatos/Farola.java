@@ -1,15 +1,16 @@
 package basedatos;
 
 public class Farola {
-    private int _id, _altura, _idZonaCalle;
+    private int _id, _altura, _idZonaCalle, _codigoCiudad;
     private String _nombreCalle;
 
     //ctor.
-    public Farola(int p_id, int p_altura, String p_nombreCalle, int p_idZonaCalle) {
+    public Farola(int p_id, int p_altura, String p_nombreCalle, int p_idZonaCalle, int p_codigoCiudad) {
         this._id = p_id;
         this._altura = p_altura;
         this._nombreCalle = p_nombreCalle;
         this._idZonaCalle = p_idZonaCalle;
+        this._codigoCiudad = p_codigoCiudad;
     }
 
     //getters and setters
@@ -45,8 +46,22 @@ public class Farola {
         this._idZonaCalle = p_idZonaCalle;
     }
 
+    public int getCodigoCiudad() {
+        return _codigoCiudad;
+    }
+
+    public void setCodigoCiudad(int p_codigoCiudad) {
+        this._codigoCiudad = p_codigoCiudad;
+    }
+
     @Override
     public String toString() {
-        return "Farola " + _id + ": {altura=" + _altura + ", nombreCalle=" + _nombreCalle + ", idZonaCalle=" + _idZonaCalle + "}";
+        return "Farola{" +
+                "_id=" + _id +
+                ", _altura=" + _altura +
+                ", _idZonaCalle=" + _idZonaCalle +
+                ", _codigoCiudad=" + _codigoCiudad +
+                ", _nombreCalle='" + _nombreCalle + '\'' +
+                '}';
     }
 }

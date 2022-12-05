@@ -5,6 +5,8 @@ public class Ciudad {
     private String _nombre, _pais;
 
     //ctor.
+
+    
     public Ciudad(String p_codigo, String p_nombre, String p_pais) {
         this._codigo = p_codigo;
         this._nombre = p_nombre;

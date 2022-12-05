@@ -5,7 +5,7 @@ public class Calle {
     private String _codigoCiudadZona, _idZona;
 
     //ctor.
-    public Calle(int p_id, String p_nombre, String p_codigoCiudad, String p_codigoZona) {
+    public Calle(String p_nombre, String p_codigoCiudad, String p_codigoZona) {
         this._nombre = p_nombre;
         this._codigoCiudadZona = p_codigoCiudad;
         this._idZona = p_codigoZona;

@@ -2,13 +2,12 @@ package basedatos;
 
 public class Sensor_Infrarrojo {
     private int _id, _idPasoPeatones;
-    private String _tipo, _unidadMedida, _nombreCallePasoPeatones;
+    private String _unidadMedida, _nombreCallePasoPeatones;
 
     //ctor.
-    public Sensor_Infrarrojo(int p_id, int p_idFarola, String p_tipo, String p_unidadMedida, String p_nombreCalleFarola) {
+    public Sensor_Infrarrojo(int p_id, int p_idFarola, String p_unidadMedida, String p_nombreCalleFarola) {
         this._id = p_id;
         this._idPasoPeatones = p_idFarola;
-        this._tipo = p_tipo;
         this._unidadMedida = p_unidadMedida;
         this._nombreCallePasoPeatones = p_nombreCalleFarola;
     }
@@ -30,14 +29,6 @@ public class Sensor_Infrarrojo {
         this._idPasoPeatones = p_idFarola;
     }
 
-    public String getTipo() {
-        return _tipo;
-    }
-
-    public void setTipo(String p_tipo) {
-        this._tipo = p_tipo;
-    }
-
     public String getUnidadMedida() {
         return _unidadMedida;
     }
@@ -56,7 +47,12 @@ public class Sensor_Infrarrojo {
 
     @Override
     public String toString() {
-        return "Sensor_Luz " + _id + ": {idFarola=" + _idPasoPeatones + ", tipo=" + _tipo + ", unidadMedida=" + _unidadMedida + ", nombreCalleFarola=" + _nombreCallePasoPeatones + "}";
+        return "Sensor_Infrarrojo{" +
+                "_id=" + _id +
+                ", _idPasoPeatones=" + _idPasoPeatones +
+                ", _unidadMedida='" + _unidadMedida + '\'' +
+                ", _nombreCallePasoPeatones='" + _nombreCallePasoPeatones + '\'' +
+                '}';
     }
 }
 

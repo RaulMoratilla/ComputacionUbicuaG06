@@ -2,12 +2,11 @@ package basedatos;
 
 public class Sensor_Lluvia {
     private int _id, _idZonaCalle;
-    private String _tipo, _unidadMedida, _nombreCalle;
+    private String _unidadMedida, _nombreCalle;
 
     //ctor.
-    public Sensor_Lluvia(int p_id, String p_tipo, String p_unidadMedida, String p_nombreCalle, int p_idZonaCalle) {
+    public Sensor_Lluvia(int p_id, String p_unidadMedida, String p_nombreCalle, int p_idZonaCalle) {
         this._id = p_id;
-        this._tipo = p_tipo;
         this._unidadMedida = p_unidadMedida;
         this._nombreCalle = p_nombreCalle;
         this._idZonaCalle = p_idZonaCalle;
@@ -20,14 +19,6 @@ public class Sensor_Lluvia {
 
     public void setId(int p_id) {
         this._id = p_id;
-    }
-
-    public String getTipo() {
-        return _tipo;
-    }
-
-    public void setTipo(String p_tipo) {
-        this._tipo = p_tipo;
     }
 
     public String getUnidadMedida() {
@@ -56,7 +47,11 @@ public class Sensor_Lluvia {
 
     @Override
     public String toString() {
-        return "Sensor_Lluvia " + _id + ": {tipo=" + _tipo + ", unidadMedida=" + _unidadMedida + ", nombreCalle=" + _nombreCalle + ", idZonaCalle=" + _idZonaCalle + "}";
+        return "Sensor_Lluvia{" +
+                "_id=" + _id +
+                ", _idZonaCalle=" + _idZonaCalle +
+                ", _unidadMedida='" + _unidadMedida + '\'' +
+                ", _nombreCalle='" + _nombreCalle + '\'' +
+                '}';
     }
-    
 }
