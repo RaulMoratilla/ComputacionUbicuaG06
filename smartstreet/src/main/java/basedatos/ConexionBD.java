@@ -136,6 +136,7 @@ public class ConexionBD {
         return getStatement(con, "SELECT \"Nombre\" FROM public.\"Calle\" WHERE \"Nombre\"=? AND \"ID_Zona\"=? AND \"Codigo_Ciudad_Zona\"=?");
     }
 
+    //cambiar a GetSensor y GetSensorCalle, y añadir GetSensoresCalle
     public static PreparedStatement GetInfraDeCalle(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Sensor_Infrarrojo\" WHERE \"Nombre_Calle_Paso_Peatones\"=?");
     }
@@ -180,20 +181,23 @@ public class ConexionBD {
         return getStatement(con, "SELECT * FROM public.\"Medicion\"");
     }
 
-    /*
-    public static PreparedStatement GetMedicionTipo(Connection con) {
-        return getStatement(con, "SELECT * FROM public.\"Medicion\" WHERE \"Tipo_Sensor\"=?");
+    public static PreparedStatement GetMedicion(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Medicion\" WHERE \"Id\"=?");
     }
 
-    public static PreparedStatement GetMedicionSensor(Connection con) {
-        return getStatement(con, "SELECT * FROM public.\"Medicion\" WHERE \"Id_Sensor\"=? AND \"Tipo_Sensor\"=?");
+    public static PreparedStatement GetMedicionesTipo(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Medicion\" WHERE \"?\" IS NOT null"); 
+    }
+    public static PreparedStatement GetMedicionesSensor(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Medicion\" WHERE \"?\"=?");
     }
     
+    /*
     public static PreparedStatement GetMedicionCalle(Connection con) {
-        return getStatement(con, "SELECT * FROM public.\"Medicion\" natural inner join public.\"Sensor\" WHERE \"Id_Sensor\"=? AND \"Tipo_Sensor\"=?");
+        return getStatement(con, "SELECT * FROM public.\"Medicion\"");
     }*/
 
-    public static PreparedStatement GetHoraPunta(Connection con) {
+    public static PreparedStatement GetHorasPuntaCalle(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Hora_Punta\" WHERE \"Nombre_Calle\"=?");
     }
 
@@ -215,7 +219,7 @@ public class ConexionBD {
     }
 
     public static PreparedStatement InsertarMedicion(Connection con) {
-        return getStatement(con, "INSERT INTO public.\"Medicion\"(\"Valor\", \"MarcaTemporal\", \"Id_sensor\", \"Tipo_Sensor\") VALUES (?, ?, ?, ?, ?, ?, ?)");
+        return getStatement(con, "INSERT INTO public.\"Medicion\"(\"Id\", \"Valor\", \"MarcaTemporal\", \"?\") VALUES (?, ?, ?, ?)");
     }
 
     public static PreparedStatement InsertarPasoPeatones(Connection con) {
@@ -264,7 +268,7 @@ public class ConexionBD {
     }
 
     public static PreparedStatement ActualizarMedicion(Connection con) {
-        return getStatement(con, "UPDATE public.\"Medicion\" SET \"Valor\"=?, \"MarcaTemporal\"=?, \"Id_sensor\"=?, \"Tipo_Sensor\"=? WHERE \"Id_sensor\"=?");
+        return getStatement(con, "UPDATE public.\"Medicion\" SET \"Valor\"=?, \"MarcaTemporal\"=? WHERE \"Id\"=?");
     }
 
     public static PreparedStatement ActualizarPasoPeatones(Connection con) {
@@ -313,31 +317,31 @@ public class ConexionBD {
     }
 
     public static PreparedStatement BorrarMedicion(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Medicion\" WHERE \"Id_sensor\"=?");
+        return getStatement(con, "DELETE FROM public.\"Medicion\" WHERE \"?\"=?");
     }
 
     public static PreparedStatement BorrarPasoPeatones(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Paso_Peatones\" WHERE \"Nombre_Calle\"=?");
+        return getStatement(con, "DELETE FROM public.\"Paso_Peatones\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarSensorInfrarrojo(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Sensor_Infrarrojo\" WHERE \"Nombre_Calle_Paso_Peatones\"=?");
+        return getStatement(con, "DELETE FROM public.\"Sensor_Infrarrojo\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarSensorLluvia(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Sensor_Lluvia\" WHERE \"Nombre_Calle\"=?");
+        return getStatement(con, "DELETE FROM public.\"Sensor_Lluvia\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarSensorLuz(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Sensor_Luz\" WHERE \"Nombre_Calle_Farola\"=?");
+        return getStatement(con, "DELETE FROM public.\"Sensor_Luz\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarSensorMovimiento(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Sensor_Movimiento\" WHERE \"Nombre_Calle\"=?");
+        return getStatement(con, "DELETE FROM public.\"Sensor_Movimiento\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarSensorTemperatura(Connection con) {
-        return getStatement(con, "DELETE FROM public.\"Sensor_Temperatura\" WHERE \"Nombre_Calle\"=?");
+        return getStatement(con, "DELETE FROM public.\"Sensor_Temperatura\" WHERE \"Id\"=?");
     }
 
     public static PreparedStatement BorrarZona(Connection con) {

@@ -1,52 +1,54 @@
 package basedatos;
 
+import java.sql.Timestamp;
+
 public class Medicion {
-    private String _idSensor, _tipoSensor, _valor, _marcaTemporal;
+    private int _id, _valor, _idSensor;
+    private Timestamp _marcaTemporal;
 
     //ctor.
-    public Medicion(String p_idSensor, String p_tipoSensor, String p_valor, String p_marcaTemporal) {
-        this._idSensor = p_idSensor;
-        this._tipoSensor = p_tipoSensor;
+    public Medicion(int p_id, int p_valor, Timestamp p_marcaTemporal, int p_idSensor) {
+        this._id = p_id;
         this._valor = p_valor;
         this._marcaTemporal = p_marcaTemporal;
+        this._idSensor = p_idSensor;
     }
 
     //getters and setters
-
-    public String get_idSensor() {
-        return _idSensor;
+    public int getId() {
+        return _id;
     }
 
-    public void set_idSensor(String _idSensor) {
-        this._idSensor = _idSensor;
+    public void setId(int p_id) {
+        this._id = p_id;
     }
 
-    public String get_tipoSensor() {
-        return _tipoSensor;
-    }
-
-    public void set_tipoSensor(String _tipoSensor) {
-        this._tipoSensor = _tipoSensor;
-    }
-
-    public String get_valor() {
+    public int getValor() {
         return _valor;
     }
 
-    public void set_valor(String _valor) {
-        this._valor = _valor;
+    public void setValor(int p_valor) {
+        this._valor = p_valor;
     }
 
-    public String get_marcaTemporal() {
+    public Timestamp getMarcaTemporal() {
         return _marcaTemporal;
     }
 
-    public void set_marcaTemporal(String _marcaTemporal) {
-        this._marcaTemporal = _marcaTemporal;
+    public void setMarcaTemporal(Timestamp p_marcaTemporal) {
+        this._marcaTemporal = p_marcaTemporal;
+    }
+
+    public int getIdSensor() {
+        return _idSensor;
+    }
+
+    public void setIdSensor(int p_idSensor) {
+        this._idSensor = p_idSensor;
     }
 
     @Override
     public String toString() {
-        return "Medicion{" + "_idSensor=" + _idSensor + ", _tipoSensor=" + _tipoSensor + ", _valor=" + _valor + ", _marcaTemporal=" + _marcaTemporal + '}';
+        return "Medicion{" + "_id=" + _id + ", _valor=" + _valor + ", _marcaTemporal=" + _marcaTemporal + ", _idSensor=" + _idSensor + '}';
     }
 }

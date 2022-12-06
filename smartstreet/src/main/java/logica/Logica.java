@@ -203,4 +203,127 @@ public class Logica {
         }
         return calle;
     }
+
+    //getMedicionBD
+    public static ArrayList<Medicion> getMedicionesBD(){
+        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try{
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetMediciones(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
+                mediciones.add(medicion);
+            }
+        }catch(SQLException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(NullPointerException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(Exception e){
+            Log.log.error("Error:{}", e);
+            mediciones = new ArrayList<Medicion>();
+        }finally{
+            conector.cerrarConexion(con);
+        }
+        return mediciones;
+    }
+
+    //getMedicionTipo
+    public static ArrayList<Medicion> getMedicionesTipoBD(String tipoSensor){
+        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try{
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetMedicionesTipo(con);
+            ps.setString(1, tipoSensor);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
+                mediciones.add(medicion);
+            }
+        }catch(SQLException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(NullPointerException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(Exception e){
+            Log.log.error("Error:{}", e);
+            mediciones = new ArrayList<Medicion>();
+        }finally{
+            conector.cerrarConexion(con);
+        }
+        return mediciones;
+    }
+
+    //getMedicionesSensor
+    public static ArrayList<Medicion> getMedicionesSensorBD(String tipoSensor, String idSensor){
+        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try{
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetMedicionesSensor(con);
+            ps.setString(1, tipoSensor);
+            ps.setString(2, idSensor);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
+                mediciones.add(medicion);
+            }
+        }catch(SQLException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(NullPointerException e){
+            Log.log.error("Error: {}", e);
+            mediciones = new ArrayList<Medicion>();
+        }catch(Exception e){
+            Log.log.error("Error:{}", e);
+            mediciones = new ArrayList<Medicion>();
+        }finally{
+            conector.cerrarConexion(con);
+        }
+        return mediciones;
+    }
+
+    //getSensores
+    public static ArrayList<Sensor> getSensoresBD(){
+        ArrayList<Sensor> sensores = new ArrayList<Sensor>();
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try{
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetSensores(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Sensor sensor = new Sensor(rs.getString("ID"), rs.getString("Tipo"), rs.getString("ID_Calle"), rs.getString("Codigo_Ciudad_Calle"));
+                sensores.add(sensor);
+            }
+        }catch(SQLException e){
+            Log.log.error("Error: {}", e);
+            sensores = new ArrayList<Sensor>();
+        }catch(NullPointerException e){
+            Log.log.error("Error: {}", e);
+            sensores = new ArrayList<Sensor>();
+        }catch(Exception e){
+            Log.log.error("Error:{}", e);
+            sensores = new ArrayList<Sensor>();
+        }finally{
+            conector.cerrarConexion(con);
+        }
+        return sensores;
+    }
 }
