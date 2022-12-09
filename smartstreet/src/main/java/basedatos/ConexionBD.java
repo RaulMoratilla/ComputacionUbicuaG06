@@ -147,6 +147,10 @@ public class ConexionBD {
         return getStatement(con, "SELECT * FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=?");
     }
 
+    public static PreparedStatement GetNumMediciones(Connection con) {
+        return getStatement(con, "SELECT COUNT(*) as NumMediciones FROM public.\"Sensor\"");
+    }
+    
     //Insertar datos en tablas
     public static PreparedStatement InsertarCiudad(Connection con) {
         return getStatement(con, "INSERT INTO public.\"Ciudad\"(\"Codigo\", \"Nombre\", \"Pais\") VALUES (?, ?, ?)");

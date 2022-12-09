@@ -1,8 +1,12 @@
 package basedatos;
 
 public class Topicos {
-    private String _idTopico, _idCiudad, _idZona, _idCalle;
-    private String _idLuz, _idInfra, _idMov, _idLluv, _idTemp;
+    private String _idTopico; 
+    private String _idCiudad;
+    private String _idZona; 
+    private String _idCalle;
+    private String _idSensores;
+    private String _idHoraConf, _idPasoP;
     private String value;
 
     public Topicos() {
@@ -10,112 +14,91 @@ public class Topicos {
         this._idCiudad = null;
         this._idZona = null;
         this._idTopico = null;
-        this._idLuz = null;
-        this._idInfra = null;
-        this._idMov = null;
-        this._idLluv = null;
-        this._idTemp = null;
+        this._idSensores = null;
+        this._idPasoP = null;
         this.value = null;
+        this._idHoraConf = null;
     }
     
     //ctor.
-    public Topicos(String p_idTopico, String p_idCiudad, String p_idZona, String p_idCalle, String p_idSLuz, String p_idSInfra, String p_idSMov, String p_idSLluv, String p_idSTemp, String p_value) {
+    public Topicos(String p_idTopico, String p_idCiudad, String p_idZona, String p_idCalle, String p_idSensores, String p_idPasoP, String p_value, String p_idHoraConf) {
         this._idTopico = p_idTopico;
         this._idCiudad = p_idCiudad;
         this._idZona = p_idZona;
         this._idCalle = p_idCalle;
-        this._idLuz = p_idSLuz;
-        this._idInfra = p_idSInfra;
-        this._idMov = p_idSMov;
-        this._idLluv = p_idSLluv;
-        this._idTemp = p_idSTemp;
+        this._idSensores = p_idSensores;
+        this._idPasoP = p_idPasoP;
         this.value = p_value;
+        this._idHoraConf = p_idHoraConf;
     }
 
     //getters and setters
-    public String getIdTopico() {
+    public String get_idTopico() {
         return _idTopico;
     }
 
-    public void setIdTopico(String p_idTopico) {
-        this._idTopico = p_idTopico;
+    public void set_idTopico(String _idTopico) {
+        this._idTopico = _idTopico;
     }
 
-    public String getIdCiudad() {
+    public String get_idCiudad() {
         return _idCiudad;
     }
 
-    public void setIdCiudad(String p_idCiudad) {
-        this._idCiudad = p_idCiudad;
+    public void set_idCiudad(String _idCiudad) {
+        this._idCiudad = _idCiudad;
     }
 
-    public String getIdZona() {
+    public String get_idZona() {
         return _idZona;
     }
 
-    public void setIdZona(String p_idZona) {
-        this._idZona = p_idZona;
+    public void set_idZona(String _idZona) {
+        this._idZona = _idZona;
     }
 
-    public String getIdCalle() {
+    public String get_idCalle() {
         return _idCalle;
     }
 
-    public void setIdCalle(String p_idCalle) {
-        this._idCalle = p_idCalle;
+    public void set_idCalle(String _idCalle) {
+        this._idCalle = _idCalle;
     }
 
-    public String getIdSLuz() {
-        return _idLuz;
+    public String get_idSensores() {
+        return _idSensores;
     }
 
-    public void setIdSLuz(String p_idSLuz) {
-        this._idLuz = p_idSLuz;
+    public void set_idSensores(String _idSensores) {
+        this._idSensores = _idSensores;
     }
 
-    public String getIdSInfra() {
-        return _idInfra;
+    public String get_idPasoP() {
+        return _idPasoP;
     }
 
-    public void setIdSInfra(String p_idSInfra) {
-        this._idInfra = p_idSInfra;
-    }
-
-    public String getIdSMov() {
-        return _idMov;
-    }
-
-    public void setIdSMov(String p_idSMov) {
-        this._idMov = p_idSMov;
-    }
-
-    public String getIdSLluv() {
-        return _idLluv;
-    }
-
-    public void setIdSLluv(String p_idSLluv) {
-        this._idLluv = p_idSLluv;
-    }
-
-    public String getIdSTemp() {
-        return _idTemp;
-    }
-
-    public void setIdSTemp(String p_idSTemp) {
-        this._idTemp = p_idSTemp;
+    public void set_idPasoP(String _idPasoP) {
+        this._idPasoP = _idPasoP;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String p_value) {
-        this.value = p_value;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String get_idHoraConf() {
+        return _idHoraConf;
+    }
+
+    public void set_idHoraConf(String _idHoraConf) {
+        this._idHoraConf = _idHoraConf;
     }
 
     @Override
     public String toString() {
-        return "Topicos{" + "_idTopico=" + _idTopico + ", _idCiudad=" + _idCiudad + ", _idZona=" + _idZona + ", _idCalle=" + _idCalle + ", _idSLuz=" + _idLuz + ", _idSInfra=" + _idInfra + ", _idSMov=" + _idMov + ", _idSLluv=" + _idLluv + ", _idSTemp=" + _idTemp + ", value=" + value + '}';
+        return "Topicos{" + "_idTopico=" + _idTopico + ", _idCiudad=" + _idCiudad + ", _idZona=" + _idZona + ", _idCalle=" + _idCalle + ", _idSensores=" + _idSensores + ", _idPasoP=" + _idPasoP + ", value=" + value + ", _idHoraConf=" + _idHoraConf + '}';
     }
-
 }
