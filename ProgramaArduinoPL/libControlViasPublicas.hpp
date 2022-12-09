@@ -1,15 +1,19 @@
-struct luz {
+struct Luz {
   int pin;
   String topic;
 };
-typedef struct luz Luz;
 
-struct sensor {
+struct SenTH {
+  int pin;
+  String topicTemp;
+  String topicHum;
+};
+
+struct Sensor {
   int pin;
   int correccion;
   String topic;
 };
-typedef struct sensor Sensor;
 
 float temperatura;
 float humedad;
@@ -18,16 +22,17 @@ int msRevNoche;
 int lluvia;
 bool noche;
 
-Luz luzTH[1];
-Sensor senTH[2];
+Luz luzTemp[N_LUZ_TEMP];
+Luz luzHum[N_LUZ_HUM];
+SenTH senTH[N_SEN_TH];
 
-Luz luzNoche[1];
-Sensor senLuz[1];
+Luz luzNoche[N_LUZ_NOCHE];
+Sensor senLuz[N_SEN_NOCHE];
 
-Luz luzLluvia[1];
-Sensor senLluvia[1];
+Luz luzLluvia[N_LUZ_LLUVIA];
+Sensor senLluvia[N_SEN_LLUVIA];
 
-Sensor senMovimiento[1];
+Sensor senMovimiento[N_SEN_MOV];
 
 void gestionarLuzD(bool encender, Luz l) {
   if (encender) {
@@ -42,25 +47,31 @@ void gestionarLuzA(int potencia, Luz l) {
   analogWrite(l.pin, potencia);
 }
 
-void gestionarLuces(int potencia, Luz luces[], int tamArray) {
+void gestionarLucesA(int potencia, Luz luces[], int tamArray) {
   for (int i ; i < tamArray ; i++) {
     analogWrite(luces[i].pin, potencia);
   }
 }
 
-void gestionLuzTemperaturaHumedad(int tipo, int dato) {
-  if (tipo == 0) {
-    temperatura = dato;
-  } else {
-    humedad = dato;
-  }
-  bool encender = temperatura <= 0 || humedad > 95;
-  for (int i ; i < sizeof(luzTH)/sizeof(luzTH[0]) ; i++) {
+void gestionarLucesD(bool encender, Luz luces[], int tamArray) {
+  for (int i ; i < tamArray ; i++) {
     if (encender) {
-      gestionarLuzA(255, luzTH[i]);      
+      digitalWrite(luces[i].pin, HIGH);
     } else {
-      gestionarLuzA(0, luzTH[i]);
-    }   
+      digitalWrite(luces[i].pin, LOW);
+    }
+  }
+}
+
+void gestionLuzTemperatura(int dato) {
+  for (int i ; i < N_LUZ_TEMP ; i++) {
+    gestionarLucesD(dato < 0, luzTemp, N_LUZ_TEMP); 
+  }
+}
+
+void gestionLuzHumedad(int dato) {
+  for (int i ; i < N_LUZ_HUM ; i++) {
+    gestionarLucesD(dato > 95, luzHum, N_LUZ_HUM); 
   }
 }
 
@@ -68,13 +79,13 @@ void gestionLuzNoche(int dato) {
   nivelLuz = dato;
   if (nivelLuz == 0) {
     if (msRevNoche + 10000 < millis()) {
-      for (int i ; i < sizeof(luzNoche)/sizeof(luzNoche[0]) ; i++) {
+      for (int i ; i < N_LUZ_NOCHE ; i++) {
         gestionarLuzA(50, luzNoche[i]);
       } 
     }
   } 
   else if (noche) {
-    for (int i ; i < sizeof(luzNoche)/sizeof(luzNoche[0]) ; i++) {
+    for (int i ; i < N_LUZ_NOCHE ; i++) {
       gestionarLuzA(0, luzNoche[i]);
     } 
   }
@@ -85,7 +96,7 @@ void gestionLuzNoche(int dato) {
 void gestionLuzLluvia(int dato) {
   lluvia = dato;
   bool encender = dato == HIGH;
-  for (int i ; i < sizeof(luzLluvia)/sizeof(luzLluvia[0]) ; i++) {
+  for (int i ; i < N_LUZ_LLUVIA ; i++) {
     if (encender) {
       gestionarLuzA(255, luzLluvia[i]);      
     } else {
@@ -97,17 +108,17 @@ void gestionLuzLluvia(int dato) {
 void llamada(int tipo, int dato, int tiempo) {
   switch (tipo) {
       case 0:
-        gestionLuzTemperaturaHumedad(tipo, dato);
+        gestionLuzTemperatura(dato);
         break;
       case 1:
-        gestionLuzTemperaturaHumedad(tipo, dato);
+        gestionLuzHumedad(dato);
         break;
       case 2:
         gestionLuzNoche(dato);
         break;
       case 3:
         if (dato == 1 && noche) {
-          gestionarLuces(255, luzNoche, 1);
+          gestionarLucesA(255, luzNoche, N_LUZ_NOCHE);
           msRevNoche = tiempo;
         } else if (msRevNoche + 10000 < millis()) {
           gestionLuzNoche(nivelLuz);
@@ -142,38 +153,54 @@ void iniciarPinSensor(Sensor sensores[], int tamArray) {
   }
 }
 
+void iniciarPinSensorTH(SenTH sensores[], int tamArray) {
+  for (int i ; i < tamArray ; i++) {
+    pinMode(sensores[i].pin, INPUT);
+  }
+}
+
 void iniciarPinLuz(Luz luces[], int tamArray) {
   for (int i ; i < tamArray ; i++) {
     pinMode(luces[i].pin, OUTPUT);
   }
 }
 
-void controlarHumedad(Sensor s, DHT dht) {
-  Serial.print("Humedad: ");
-  float h = dht.readHumidity();
-  PublisMqtt(1, h, millis(), s.topic);
+void controlarHumedad() {
+  for (int i = 0 ; i < N_SEN_TH ; i++) {
+    Serial.print("Humedad: ");
+    float h = dht.readHumidity();
+    PublisMqtt(1, h, millis(), senTH[i].topicHum);
+  }
 }
 
-void controlarTemperatura(Sensor s, DHT dht) {
-  Serial.print("Temperatura: ");
-  float t = dht.readTemperature()*0.97;
-  PublisMqtt(0, t, millis(), s.topic);
+void controlarTemperatura() {
+  for (int i = 0 ; i < N_SEN_TH ; i++) {
+    Serial.print("Temperatura: ");
+    float t = dht.readTemperature()*0.97;
+    PublisMqtt(0, t, millis(), senTH[i].topicTemp);
+  }
 }
 
-void controlarLucesNoche(Sensor s) {
-  Serial.print("Luz: ");
-  int nivelLuz = analogRead(s.pin);
-  PublisMqtt(2, nivelLuz, millis(), s.topic);
+void controlarLuz() {
+  for (int i = 0 ; i < N_SEN_NOCHE ; i++) {
+    Serial.print("Luz: ");
+    int nivelLuz = analogRead(senLuz[i].pin);
+    PublisMqtt(2, nivelLuz, millis(), senLuz[i].topic);
+  }
 }
 
-void controlarLucesLluvia(Sensor s) {
-  Serial.print("Lluvia: ");
-  int lluvia = digitalRead(s.pin);
-  PublisMqtt(4, lluvia, millis(), s.topic);
+void controlarLluvia() {
+  for (int i = 0 ; i < N_SEN_LLUVIA ; i++) {
+    Serial.print("Lluvia: ");
+    int lluvia = digitalRead(senLluvia[i].pin);
+    PublisMqtt(4, lluvia, millis(), senLluvia[i].topic);
+  }
 }
 
-void controlarLucesMovimiento(Sensor s) {
-  Serial.print("Movimiento: ");
-  int movimiento = digitalRead(s.pin);
-  PublisMqtt(3, movimiento, millis(), s.topic);
+void controlarMovimiento() {
+  for (int i = 0 ; i < N_SEN_MOV ; i++) {
+    Serial.print("Movimiento: ");
+    int movimiento = digitalRead(senMovimiento[i].pin);
+    PublisMqtt(3, movimiento, millis(), senMovimiento[i].topic);
+  }
 }
