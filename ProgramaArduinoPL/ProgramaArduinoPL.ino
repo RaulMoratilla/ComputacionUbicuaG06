@@ -4,11 +4,19 @@
 
 #include "DHT.h"
 
+#define N_LUZ_HUM 1
+#define N_LUZ_TEMP 1
+#define N_SEN_TH 1
+#define N_LUZ_LLUVIA 1
+#define N_SEN_LLUVIA 1
+#define N_LUZ_NOCHE 1
+#define N_SEN_NOCHE 1
+#define N_SEN_MOV 1
+
 #define DHTPIN 15     // Pin donde está conectado el sensor
-
 #define DHTTYPE DHT22   // Sensor DHT22
-
 DHT dht(DHTPIN, DHTTYPE);
+
 #include "config.h"
 #include "ESP32_Utils.hpp"
 //#include "ESP32_Utils_MQTT.hpp"
@@ -16,14 +24,16 @@ DHT dht(DHTPIN, DHTTYPE);
 //#include "MQTT.hpp"
 
 void setup() {
+
+  luzTemp[0].pin = 4;
+  luzTemp[0].topic = "maqueta/maqueta/calle1/sensores/sTemp";
   
-  luzTH[0].pin = 4;
-  luzTH[0].topic = "maqueta/maqueta/calle1/sensores/sTemp";
-  
+  luzHum[0].pin = 4;
+  luzHum[0].topic = "maqueta/maqueta/calle1/sensores/sHum";
+
   senTH[0].pin = 15;
-  senTH[0].topic = "maqueta/maqueta/calle1/sensores/sTemp";
-  senTH[1].pin = 15;
-  senTH[1].topic = "maqueta/maqueta/calle1/sensores/sTemp";
+  senTH[0].topicHum = "maqueta/maqueta/calle1/sensores/sHum";
+  senTH[0].topicTemp = "maqueta/maqueta/calle1/sensores/sTemp";
 
   luzNoche[0].pin = 23;
   luzNoche[0].topic = "maqueta/maqueta/calle1/sensores/sLuz";
@@ -40,16 +50,16 @@ void setup() {
   senMovimiento[0].pin = 13;
   senMovimiento[0].topic = "maqueta/maqueta/calle1/sensores/movilidad";
 
+  dht.begin();
 
-  iniciarPinSensor(senTH, 2);
+  iniciarPinSensorTH(senTH, 1);
   iniciarPinSensor(senLuz, 1);
   iniciarPinSensor(senLluvia, 1);
   iniciarPinSensor(senMovimiento, 1);
-  iniciarPinLuz(luzTH, 1);
+  iniciarPinLuz(luzTemp, 1);
+  iniciarPinLuz(luzHum, 1);
   iniciarPinLuz(luzNoche, 1);
   iniciarPinLuz(luzLluvia, 1);
-   
-  dht.begin();
 
   //SuscribeMqtt(luzTH);
   //SuscribeMqtt(luzNoche);
@@ -64,22 +74,22 @@ void setup() {
   //SPIFFS.begin();
   //ConnectWiFi_STA();
   //InitMqtt();
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 }
 
 void loop() {
-  controlarHumedad(senTH[0], dht);
-  controlarLucesMovimiento(senMovimiento[0]);
+  controlarHumedad();
+  controlarMovimiento();
   delay(1000);
-  controlarLucesNoche(senLuz[0]);
-  controlarLucesMovimiento(senMovimiento[0]);
+  controlarLuz();
+  controlarMovimiento();
   delay(1000);
-  controlarTemperatura(senTH[0], dht);
-  controlarLucesMovimiento(senMovimiento[0]);
+  controlarTemperatura();
+  controlarMovimiento();
   delay(1000);
-  controlarLucesLluvia(senLluvia[0]);
-  controlarLucesMovimiento(senMovimiento[0]);
+  controlarLluvia();
+  controlarMovimiento();
   delay(1000);
   //HandleMqtt();
   //PublisMqtt(millis());
