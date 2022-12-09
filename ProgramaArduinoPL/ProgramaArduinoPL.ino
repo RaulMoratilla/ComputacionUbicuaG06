@@ -33,7 +33,7 @@ void setup() {
   luzTemp[0].pin = 4;
   luzTemp[0].topic = "maqueta/maqueta/calle1/sensores/sTemp";
   
-  luzHum[0].pin = 4;
+  luzHum[0].pin = 16;
   luzHum[0].topic = "maqueta/maqueta/calle1/sensores/sHum";
 
   senTH[0].pin = 15;
@@ -54,8 +54,6 @@ void setup() {
 
   senMovimiento[0].pin = 13;
   senMovimiento[0].topic = "maqueta/maqueta/calle1/sensores/movilidad";
-
-  Serial.println("Sensores y luces creados");
 
   dht.begin();
 
@@ -80,18 +78,26 @@ void setup() {
 }
 
 void loop() {
+  HandleMqtt();
   controlarHumedad();
+  HandleMqtt();
   controlarMovimiento();
+  HandleMqtt();
   delay(1000);
   controlarLuz();
+  HandleMqtt();
   controlarMovimiento();
+  HandleMqtt();
   delay(1000);
   controlarTemperatura();
+  HandleMqtt();
   controlarMovimiento();
+  HandleMqtt();
   delay(1000);
   controlarLluvia();
-  controlarMovimiento();
-  delay(1000);
   HandleMqtt();
+  controlarMovimiento();
+  HandleMqtt();
+  delay(1000);
   //PublisMqtt(millis());
 }

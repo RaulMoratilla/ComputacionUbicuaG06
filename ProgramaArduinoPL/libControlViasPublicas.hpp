@@ -107,39 +107,44 @@ void gestionLuzLluvia(int dato) {
 
 void OnMqttReceived(char* topic, byte* payload, unsigned int length) {
     
-    String content = "";
-    for (size_t i = 0; i < length; i++) {
-        content.concat((char)payload[i]);
-    }
+  String content = "";
+  for (size_t i = 0; i < length; i++) {
+      content.concat((char)payload[i]);
+  }
     
-    int tipo, dato, tiempo;
-    tipo = content.substring(0, content.indexOf("-")).toInt();
-    String aux = content.substring(content.indexOf("-")+1, -1);
-    dato = aux.substring(0, content.indexOf("-")).toInt();
-    tiempo = aux.substring(content.indexOf("-")+1, -1).toInt();
+  int tipo, dato, tiempo;
+  tipo = content.substring(0, content.indexOf("-")).toInt();
+  String aux = content.substring(content.indexOf("-")+1, -1);
+  dato = aux.substring(0, aux.indexOf("-")).toInt();
+  tiempo = aux.substring(aux.indexOf("-")+1, -1).toInt();
 
-    switch (tipo) {
-      case 0:
-        gestionLuzTemperatura(dato);
-        break;
-      case 1:
-        gestionLuzHumedad(dato);
-        break;
-      case 2:
-        gestionLuzNoche(dato);
-        break;
-      case 3:
-        if (dato == 1 && noche) {
-          gestionarLucesA(255, luzNoche, N_LUZ_NOCHE);
-          msRevNoche = tiempo;
-        } else if (msRevNoche + 10000 < millis()) {
-          gestionLuzNoche(nivelLuz);
-        }
-        break;
-      case 4:
-        gestionLuzLluvia(dato);
-        break;
-    }
+  switch (tipo) {
+    case 0:
+      gestionLuzTemperatura(dato);
+      break;
+    case 1:
+      gestionLuzHumedad(dato);
+      break;
+    case 2:
+      gestionLuzNoche(dato);
+      break;
+    case 3:
+      Serial.print("Dato movimiento: ");
+      Serial.println(dato);
+      Serial.print("Noche: ");
+      Serial.println(noche);      
+      if (dato == 1 && noche) {
+        gestionarLucesA(255, luzNoche, N_LUZ_NOCHE);
+        msRevNoche = tiempo;
+      } else if (msRevNoche + 10000 < millis()) {
+        gestionLuzNoche(nivelLuz);
+      }
+      break;
+    case 4:
+      gestionLuzLluvia(dato);
+      break;
+  }
+
 }
 
 void llamada(int tipo, int dato, int tiempo) {
@@ -174,12 +179,10 @@ void PublisMqtt(int tipo, int data, int tiempo, char* topic) {
     payload.concat((String)data);
     payload.concat("-");
     payload.concat((String)tiempo);
+
+    Serial.print("Enviando: ");
+    Serial.println(payload);
     mqttClient.publish(topic, String(payload).c_str());
-    Serial.print(tipo);
-    Serial.print("-");
-    Serial.print(data);
-    Serial.print("-");
-    Serial.println(tiempo);
     //llamada(tipo, data, tiempo);
 }
 
@@ -204,7 +207,6 @@ void iniciarPinLuz(Luz luces[], int tamArray) {
 
 void controlarHumedad() {
   for (int i = 0 ; i < N_SEN_TH ; i++) {
-    Serial.print("Humedad: ");
     float h = dht.readHumidity();
     PublisMqtt(1, h, millis(), senTH[i].topicHum);
   }
@@ -212,7 +214,6 @@ void controlarHumedad() {
 
 void controlarTemperatura() {
   for (int i = 0 ; i < N_SEN_TH ; i++) {
-    Serial.print("Temperatura: ");
     float t = dht.readTemperature()*0.97;
     PublisMqtt(0, t, millis(), senTH[i].topicTemp);
   }
@@ -220,7 +221,6 @@ void controlarTemperatura() {
 
 void controlarLuz() {
   for (int i = 0 ; i < N_SEN_NOCHE ; i++) {
-    Serial.print("Luz: ");
     int nivelLuz = analogRead(senLuz[i].pin);
     PublisMqtt(2, nivelLuz, millis(), senLuz[i].topic);
   }
@@ -228,7 +228,6 @@ void controlarLuz() {
 
 void controlarLluvia() {
   for (int i = 0 ; i < N_SEN_LLUVIA ; i++) {
-    Serial.print("Lluvia: ");
     int lluvia = digitalRead(senLluvia[i].pin);
     PublisMqtt(4, lluvia, millis(), senLluvia[i].topic);
   }
@@ -236,7 +235,6 @@ void controlarLluvia() {
 
 void controlarMovimiento() {
   for (int i = 0 ; i < N_SEN_MOV ; i++) {
-    Serial.print("Movimiento: ");
     int movimiento = digitalRead(senMovimiento[i].pin);
     PublisMqtt(3, movimiento, millis(), senMovimiento[i].topic);
   }
