@@ -30,7 +30,7 @@ public class Logica {
 			{
 				Ciudad ciudad = new Ciudad(rs.getString("Codigo"), rs.getString("Nombre"), rs.getString("Pais"));
 				ciudades.add(ciudad);
-			}	
+			}
 		} catch (SQLException e)
 		{
 			Log.log.error("Error: {}", e);
@@ -50,8 +50,8 @@ public class Logica {
 		return ciudades;
 	}
 
-    public static ArrayList<Zona> getZonasBD() {
-        ArrayList<Zona> zonas = new ArrayList<Zona>();
+    public static Zona getZonaBD(int codigoCiudad, int idZona) {
+        Zona zona = null;
 
         ConexionBD conector = new ConexionBD();
         Connection con = null;
@@ -59,26 +59,23 @@ public class Logica {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
 
-            PreparedStatement ps = ConexionBD.GetZonas(con);
+            PreparedStatement ps = ConexionBD.GetZona(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Zona zona = new Zona(rs.getInt("ID"), rs.getString("Nombre"), rs.getString("Codigo_Ciudad"));
-                zonas.add(zona);
-            }
+            zona = new Zona(rs.getInt("ID"), rs.getString("Nombre"), rs.getString("Codigo_Ciudad"));
+
         } catch (SQLException e) {
             Log.log.error("Error: {}", e);
-            zonas = new ArrayList<Zona>();
         } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
-            zonas = new ArrayList<Zona>();
         } catch (Exception e) {
             Log.log.error("Error:{}", e);
-            zonas = new ArrayList<Zona>();
         } finally {
             conector.cerrarConexion(con);
         }
-        return zonas;
+        return zona;
     }
 
     public static ArrayList<Zona> getZonasCiudadBD(String codigoCiudad) {
@@ -90,7 +87,7 @@ public class Logica {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
 
-            PreparedStatement ps = ConexionBD.GetZonasDeCiudad(con);
+            PreparedStatement ps = ConexionBD.GetZonasCiudad(con);
             ps.setString(1, codigoCiudad);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
@@ -113,217 +110,241 @@ public class Logica {
         return zonas;
     }
 
-    public static ArrayList<Calle> getCallesBD(){
-        ArrayList<Calle> calles = new ArrayList<Calle>();
-        ConexionBD conector = new ConexionBD();
-        Connection con = null;
-        try{
-            con = conector.crearConexion(true);
-            Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetCalles(con);
-            Log.log.info("Query=> {}", ps.toString());
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Calle calle = new Calle(rs.getString("Nombre"), rs.getString("ID_Zona"), rs.getString("Codigo_Ciudad_Zona"));
-                calles.add(calle);
-            }
-        }catch(SQLException e){
-            Log.log.error("Error: {}", e);
-            calles = new ArrayList<Calle>();
-        }catch(NullPointerException e){
-            Log.log.error("Error: {}", e);
-            calles = new ArrayList<Calle>();
-        }catch(Exception e){
-            Log.log.error("Error:{}", e);
-            calles = new ArrayList<Calle>();
-        }finally{
-            conector.cerrarConexion(con);
-        }
-        return calles;
-    }
-
-    public static ArrayList<Calle> getCallesCiudadBD(String idZona, String codigoCiudad){
-        ArrayList<Calle> calles = new ArrayList<Calle>();
-        ConexionBD conector = new ConexionBD();
-        Connection con = null;
-        try{
-            con = conector.crearConexion(true);
-            Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetCallesDeCiudad(con);
-            ps.setString(1, idZona);
-            ps.setString(2, codigoCiudad);
-            Log.log.info("Query=> {}", ps.toString());
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Calle calle = new Calle(rs.getString("Nombre"), rs.getString("ID_Zona"), rs.getString("Codigo_Ciudad_Zona"));
-                calles.add(calle);
-            }
-        }catch(SQLException e){
-            Log.log.error("Error: {}", e);
-            calles = new ArrayList<Calle>();
-        }catch(NullPointerException e){
-            Log.log.error("Error: {}", e);
-            calles = new ArrayList<Calle>();
-        }catch(Exception e){
-            Log.log.error("Error:{}", e);
-            calles = new ArrayList<Calle>();
-        }finally{
-            conector.cerrarConexion(con);
-        }
-        return calles;
-    }
-
-    public static Calle getCalleBD(String nombreCalle, String idZona, String codigoCiudad){
+    public static Calle getCalleBD(int codigoCiudad, int idZona, String nombreCalle) {
         Calle calle = null;
+
         ConexionBD conector = new ConexionBD();
         Connection con = null;
-        try{
+        try {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
+
             PreparedStatement ps = ConexionBD.GetCalle(con);
-            ps.setString(1, nombreCalle);
-            ps.setString(2, idZona);
-            ps.setString(3, codigoCiudad);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                calle = new Calle(rs.getString("Nombre"), rs.getString("ID_Zona"), rs.getString("Codigo_Ciudad_Zona"));
-            }
-        }catch(SQLException e){
+            calle = new Calle(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona"), rs.getString("Nombre"));
+
+        } catch (SQLException e) {
             Log.log.error("Error: {}", e);
-            calle = null;
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
-            calle = null;
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.log.error("Error:{}", e);
-            calle = null;
-        }finally{
+        } finally {
             conector.cerrarConexion(con);
         }
         return calle;
     }
 
-    //getMedicionBD
-    public static ArrayList<Medicion> getMedicionesBD(){
-        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
+    public static ArrayList<Calle> getCallesZonaBD(int codigoCiudad, int idZona) {
+        ArrayList<Calle> calles = new ArrayList<Calle>();
+
         ConexionBD conector = new ConexionBD();
         Connection con = null;
-        try{
+        try {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetMediciones(con);
+
+            PreparedStatement ps = ConexionBD.GetCallesZona(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
-                mediciones.add(medicion);
+            while (rs.next()) {
+                Calle calle = new Calle(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona"), rs.getString("Nombre"));
+                calles.add(calle);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(NullPointerException e){
+            calles = new ArrayList<Calle>();
+        } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(Exception e){
+            calles = new ArrayList<Calle>();
+        } catch (Exception e) {
             Log.log.error("Error:{}", e);
-            mediciones = new ArrayList<Medicion>();
-        }finally{
+            calles = new ArrayList<Calle>();
+        } finally {
             conector.cerrarConexion(con);
         }
-        return mediciones;
+        return calles;
     }
 
-    //getMedicionTipo
-    public static ArrayList<Medicion> getMedicionesTipoBD(String tipoSensor){
-        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
-        ConexionBD conector = new ConexionBD();
-        Connection con = null;
-        try{
-            con = conector.crearConexion(true);
-            Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetMedicionesTipo(con);
-            ps.setString(1, tipoSensor);
-            Log.log.info("Query=> {}", ps.toString());
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
-                mediciones.add(medicion);
-            }
-        }catch(SQLException e){
-            Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(NullPointerException e){
-            Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(Exception e){
-            Log.log.error("Error:{}", e);
-            mediciones = new ArrayList<Medicion>();
-        }finally{
-            conector.cerrarConexion(con);
-        }
-        return mediciones;
-    }
-
-    //getMedicionesSensor
-    public static ArrayList<Medicion> getMedicionesSensorBD(String tipoSensor, String idSensor){
-        ArrayList<Medicion> mediciones = new ArrayList<Medicion>();
-        ConexionBD conector = new ConexionBD();
-        Connection con = null;
-        try{
-            con = conector.crearConexion(true);
-            Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetMedicionesSensor(con);
-            ps.setString(1, tipoSensor);
-            ps.setString(2, idSensor);
-            Log.log.info("Query=> {}", ps.toString());
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Medicion medicion = new Medicion(rs.getInt("ID"), rs.getInt("Valor"), rs.getTimestamp("MarcaTemporal"), rs.getInt("Unidad"));
-                mediciones.add(medicion);
-            }
-        }catch(SQLException e){
-            Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(NullPointerException e){
-            Log.log.error("Error: {}", e);
-            mediciones = new ArrayList<Medicion>();
-        }catch(Exception e){
-            Log.log.error("Error:{}", e);
-            mediciones = new ArrayList<Medicion>();
-        }finally{
-            conector.cerrarConexion(con);
-        }
-        return mediciones;
-    }
-
-    //getSensores
-    public static ArrayList<Sensor> getSensoresBD(){
+    //getSensoresCalleDB
+    public static ArrayList<Sensor> getSensoresCalleBD(int codigoCiudad, int idZona, String nombreCalle) {
         ArrayList<Sensor> sensores = new ArrayList<Sensor>();
+
         ConexionBD conector = new ConexionBD();
         Connection con = null;
-        try{
+        try {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
-            PreparedStatement ps = ConexionBD.GetSensores(con);
+
+            PreparedStatement ps = ConexionBD.GetSensoresCalle(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                Sensor sensor = new Sensor(rs.getString("ID"), rs.getString("Tipo"), rs.getString("ID_Calle"), rs.getString("Codigo_Ciudad_Calle"));
+            while (rs.next()) {
+                Sensor sensor = new Sensor(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getString("Tipo"), rs.getString("UnidadMedida"), rs.getTimestamp("MarcaTemporal"), rs.getFloat("Valor"));
                 sensores.add(sensor);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             Log.log.error("Error: {}", e);
             sensores = new ArrayList<Sensor>();
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
             sensores = new ArrayList<Sensor>();
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.log.error("Error:{}", e);
             sensores = new ArrayList<Sensor>();
-        }finally{
+        } finally {
             conector.cerrarConexion(con);
         }
         return sensores;
+    }
+
+    //getSensoresTipoCalleBD
+    public static ArrayList<Sensor> getSensoresTipoCalleBD(int codigoCiudad, int idZona, String nombreCalle, String tipo) {
+        ArrayList<Sensor> sensores = new ArrayList<Sensor>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetSensoresTipoCalle(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
+            ps.setString(4, tipo);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Sensor sensor = new Sensor(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getString("Tipo"), rs.getString("UnidadMedida"), rs.getTimestamp("MarcaTemporal"), rs.getFloat("Valor"));
+                sensores.add(sensor);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+            sensores = new ArrayList<Sensor>();
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+            sensores = new ArrayList<Sensor>();
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+            sensores = new ArrayList<Sensor>();
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return sensores;
+    }
+
+    public static ArrayList<Registro> getRegistrosCalleBD(int codigoCiudad, int idZona, String nombreCalle) {
+        ArrayList<Registro> registros = new ArrayList<Registro>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetRegistrosCalle(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Registro registro = new Registro(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getString("Tipo"), rs.getString("UnidadMedida"), rs.getTimestamp("MarcaTemporal"), rs.getFloat("Valor"));
+                registros.add(registro);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+            registros = new ArrayList<Registro>();
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return registros;
+    }    
+
+    //getRegistrosCalleTipoBD
+    public static ArrayList<Registro> getRegistrosCalleTipoBD(int codigoCiudad, int idZona, String nombreCalle, String tipo) {
+        ArrayList<Registro> registros = new ArrayList<Registro>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetRegistrosCalleTipo(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
+            ps.setString(4, tipo);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Registro registro = new Registro(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getString("Tipo"), rs.getString("UnidadMedida"), rs.getTimestamp("MarcaTemporal"), rs.getFloat("Valor"));
+                registros.add(registro);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+            registros = new ArrayList<Registro>();
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return registros;
+    }
+
+    //getHorasPuntaCalleBD
+    public static ArrayList<HoraPunta> getHorasPuntaCalleBD(int codigoCiudad, int idZona, String nombreCalle) {
+        ArrayList<HoraPunta> horasPunta = new ArrayList<HoraPunta>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetHorasPuntaCalle(con);
+            ps.setInt(1, codigoCiudad);
+            ps.setInt(2, idZona);
+            ps.setString(3, nombreCalle);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoraPunta registro = new HoraPunta(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getTime("HoraInicio"), rs.getTime("HoraFin"));
+                horasPunta.add(registro);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+            horasPunta = new ArrayList<HoraPunta>();
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+            horasPunta = new ArrayList<HoraPunta>();
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+            horasPunta = new ArrayList<HoraPunta>();
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return horasPunta;
     }
 }

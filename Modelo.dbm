@@ -3,35 +3,43 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="29,0" last-zoom="0.65" max-obj-count="20"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="167,149" last-zoom="0.65" max-obj-count="12"
 	 default-schema="public" default-owner="postgres">
-<database name="smartStreet" is-template="false" allow-conns="true">
+<database name="smartStreet" encoding="UTF8" lc-collate="Spanish_Spain.1252" lc-ctype="Spanish_Spain.1252" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
 </database>
 
-<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+<schema name="public" layer="0" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
-<table name="Zona" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Zona" layer="0" collapse-mode="2" pagination="true" attribs-page="0" ext-attribs-page="0" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="240" y="280"/>
+	<position x="1040" y="180"/>
 	<column name="ID" not-null="true">
 		<type name="smallint" length="0"/>
 	</column>
 	<column name="Nombre" not-null="true">
-		<type name="varchar" length="0"/>
+		<type name="character varying" length="0"/>
 	</column>
+	<column name="Codigo_Ciudad" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<constraint name="Zona_pk" type="pk-constr" table="public.&quot;Zona&quot;">
+		<columns names="ID,Codigo_Ciudad" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <table name="Ciudad" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="260" y="40"/>
+	<position x="520" y="180"/>
 	<column name="Nombre" not-null="true">
-		<type name="varchar" length="50"/>
+		<type name="character varying" length="50"/>
 	</column>
 	<column name="Pais" not-null="true">
-		<type name="varchar" length="40"/>
+		<type name="character varying" length="40"/>
 	</column>
 	<column name="Codigo" not-null="true">
 		<type name="smallint" length="0"/>
@@ -41,359 +49,244 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<relationship name="Ciudad_tiene_una_o_mas_Zonas" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
-	 src-table="public.&quot;Ciudad&quot;"
-	 dst-table="public.&quot;Zona&quot;"
-	 src-required="true" dst-required="false">
-	<label ref-type="name-label">
-		<position x="-36.9579" y="-28.1323"/>
-	</label>
-	<constraint name="Zona_pk" type="pk-constr" table="public.&quot;Zona&quot;">
-		<columns names="ID" ref-type="src-columns"/>
-	</constraint>
-	<special-pk-cols indexes="0"/>
-</relationship>
-
 <table name="Calle" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="600" y="280"/>
+	<position x="1020" y="400"/>
 	<column name="Nombre" not-null="true">
-		<type name="varchar" length="70"/>
+		<type name="character varying" length="70"/>
 	</column>
-</table>
-
-<relationship name="Zona_tiene_una_o_mas_Calles" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
-	 src-table="public.&quot;Zona&quot;"
-	 dst-table="public.&quot;Calle&quot;"
-	 src-required="true" dst-required="false">
+	<column name="ID_Zona" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="Codigo_Ciudad_Zona" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
 	<constraint name="Calle_pk" type="pk-constr" table="public.&quot;Calle&quot;">
-		<columns names="Nombre" ref-type="src-columns"/>
-	</constraint>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<table name="Alumbrado" layer="0" unlogged="true" collapse-mode="2" max-obj-count="4" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="283.077" y="540"/>
-	<column name="Id" not-null="true">
-		<type name="smallint" length="0"/>
-	</column>
-
-	<customidxs object-type="column">
-		<object name="Nombre_Calle" index="0"/>
-	</customidxs>
-
-	<customidxs object-type="constraint">
-		<object name="Calle_fk" index="0"/>
-	</customidxs>
-</table>
-
-<table name="Sensor" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1540" y="240"/>
-	<column name="Id" not-null="true">
-		<type name="smallint" length="0"/>
-	</column>
-	<column name="Tipo" not-null="true">
-		<type name="varchar" length="50"/>
-	</column>
-	<column name="UnidadMedida" not-null="true">
-		<type name="varchar" length="40"/>
-	</column>
-	<constraint name="Sensor_pk" type="pk-constr" table="public.&quot;Sensor&quot;">
-		<columns names="Id,Tipo" ref-type="src-columns"/>
+		<columns names="Nombre,ID_Zona,Codigo_Ciudad_Zona" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="Farola" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="Medicion" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="716.923" y="766.154"/>
-	<column name="Altura" not-null="true">
-		<type name="smallint" length="0"/>
-	</column>
-
-	<customidxs object-type="constraint">
-		<object name="Farola_pk" index="0"/>
-	</customidxs>
-</table>
-
-<relationship name="Calle_tiene_un_Alumbrado_o_mas" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
-	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Alumbrado&quot;"
-	 src-required="true" dst-required="false">
-	<constraint name="Alumbrado_pk" type="pk-constr" table="public.&quot;Alumbrado&quot;">
-		<columns names="Id" ref-type="src-columns"/>
-	</constraint>
-	<special-pk-cols indexes="0"/>
-</relationship>
-
-<relationship name="Farola_hereda_Alumbrado" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Farola&quot;"
-	 dst-table="public.&quot;Alumbrado&quot;">
-	<label ref-type="name-label">
-		<position x="-49.8574" y="16.3604"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<table name="Paso_Peatones" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="693.846" y="590.769"/>
-	<column name="Longitud" not-null="true">
-		<type name="smallint" length="0"/>
-	</column>
-
-	<customidxs object-type="constraint">
-		<object name="Paso_Peatones_pk" index="0"/>
-	</customidxs>
-</table>
-
-<table name="Sensor_Lluvia" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1024.62" y="0"/>
-
-	<customidxs object-type="constraint">
-		<object name="Sensor_Lluvia_pk" index="0"/>
-	</customidxs>
-</table>
-
-<table name="Sensor_temperatura" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1032.31" y="413.846"/>
-
-	<customidxs object-type="constraint">
-		<object name="Sensor_temperatura_pk" index="0"/>
-	</customidxs>
-</table>
-
-<table name="Sensor_Movimiento" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1075.38" y="209.231"/>
-</table>
-
-<table name="Sensor_Infrarrojo" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1363.08" y="569.231"/>
-</table>
-
-<relationship name="Sensor_Lluvia_hereda_Sensor" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Sensor_Lluvia&quot;"
-	 dst-table="public.&quot;Sensor&quot;">
-	<label ref-type="name-label">
-		<position x="1.8642" y="-6.4786"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<relationship name="Paso_Peatones_hereda_Alumbrado" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#976a1f"
-	 src-table="public.&quot;Paso_Peatones&quot;"
-	 dst-table="public.&quot;Alumbrado&quot;">
-	<label ref-type="name-label">
-		<position x="64.6426" y="-100.839"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<table name="Sensor_Luz" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1652.31" y="747.692"/>
-
-	<customidxs object-type="column">
-		<object name="Id_Farola" index="2"/>
-		<object name="Nombre_Calle_Farola" index="1"/>
-	</customidxs>
-
-	<customidxs object-type="constraint">
-		<object name="Farola_fk" index="1"/>
-		<object name="Sensor_Luz_pk" index="0"/>
-		<object name="Sensor_Luz_uq" index="2"/>
-	</customidxs>
-</table>
-
-<relationship name="Sensor_temperatura_hereda_Sensor" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Sensor_temperatura&quot;"
-	 dst-table="public.&quot;Sensor&quot;">
-	<label ref-type="name-label">
-		<position x="0.864199" y="2.51645"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<relationship name="Sensor_Movimiento_hereda_Sensor" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Sensor_Movimiento&quot;"
-	 dst-table="public.&quot;Sensor&quot;">
-	<label ref-type="name-label">
-		<position x="0.864199" y="-3.40168"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<relationship name="Sensor_Infrarrojo_hereda_Sensor" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Sensor_Infrarrojo&quot;"
-	 dst-table="public.&quot;Sensor&quot;">
-	<label ref-type="name-label">
-		<position x="-3.73028" y="6.59832"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<relationship name="Sensor_Luz_hereda_Sensor" type="relgen" layer="0"
-	 pk-pattern="{dt}_pk"
-	 custom-color="#ff0000"
-	 src-table="public.&quot;Sensor_Luz&quot;"
-	 dst-table="public.&quot;Sensor&quot;">
-	<label ref-type="name-label">
-		<position x="104.629" y="10.2983"/>
-	</label>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<relationship name="Farola_tiene_SensorLuz" type="rel11" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#ff4800"
-	 src-table="public.&quot;Farola&quot;"
-	 dst-table="public.&quot;Sensor_Luz&quot;"
-	 src-required="true" dst-required="false">
-	<constraint name="Sensor_Luz_pk" type="pk-constr" alias="Sensor_Luz_pk" protected="true" table="public.&quot;Sensor_Luz&quot;">
-		</constraint>
-	<special-pk-cols indexes="0"/>
-</relationship>
-
-<relationship name="Paso_Peatones_tiene_Sensor(es)Infrarrojo(s)" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
-	 src-table="public.&quot;Paso_Peatones&quot;"
-	 dst-table="public.&quot;Sensor_Infrarrojo&quot;"
-	 src-required="true" dst-required="false">
-	<label ref-type="name-label">
-		<position x="-6.72081" y="-47.8839"/>
-	</label>
-	<constraint name="Sensor_Infrarrojo_pk" type="pk-constr" alias="Sensor_Infrarrojo_pk" protected="true" table="public.&quot;Sensor_Infrarrojo&quot;">
-		</constraint>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
-
-<table name="Medicion" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1600" y="20"/>
-	<column name="Valor">
-		<type name="integer" length="0"/>
-	</column>
+	<position x="1140" y="940"/>
 	<column name="MarcaTemporal" not-null="true">
 		<type name="timestamp" length="0"/>
 	</column>
-</table>
-
-<relationship name="Sensor_realiza_Medicion(es)" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
-	 src-table="public.&quot;Sensor&quot;"
-	 dst-table="public.&quot;Medicion&quot;"
-	 src-required="true" dst-required="false">
-	<label ref-type="name-label">
-		<position x="109.626" y="-15.7323"/>
-	</label>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
 	<constraint name="Medicion_pk" type="pk-constr" table="public.&quot;Medicion&quot;">
 		<columns names="MarcaTemporal" ref-type="src-columns"/>
 	</constraint>
-	<special-pk-cols indexes="0,1"/>
-</relationship>
+</table>
 
 <table name="HoraPunta" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="540" y="20"/>
+	<position x="420" y="380"/>
 	<column name="HoraInicio" not-null="true">
 		<type name="time" length="0"/>
 	</column>
 	<column name="HoraFin" not-null="true">
 		<type name="time" length="0"/>
 	</column>
+	<column name="Nombre_Calle" not-null="true">
+		<type name="character varying" length="70"/>
+	</column>
+	<column name="ID_Zona_Calle" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="Codigo_Ciudad_Zona_Calle" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<constraint name="HoraPunta_pk" type="pk-constr" table="public.&quot;HoraPunta&quot;">
+		<columns names="HoraInicio,HoraFin,Nombre_Calle,ID_Zona_Calle,Codigo_Ciudad_Zona_Calle" ref-type="src-columns"/>
+	</constraint>
 </table>
 
-<relationship name="Calle_tiene_HoraPunta" type="rel11" layer="0"
+<table name="Temperatura" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="180" y="660"/>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
+	<column name="Hora">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="UnidadMedida" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+
+	<customidxs object-type="column">
+		<object name="Codigo_Ciudad_Zona_Calle" index="5"/>
+		<object name="ID_Zona_Calle" index="4"/>
+		<object name="Nombre_Calle" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Calle_fk" index="1"/>
+		<object name="Temperatura_pk" index="0"/>
+		<object name="Temperatura_uq" index="2"/>
+	</customidxs>
+</table>
+
+<relationship name="Temperatura_has_one_Calle" type="rel11" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#ff4800"
+	 custom-color="#aa0000"
 	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;HoraPunta&quot;"
+	 dst-table="public.&quot;Temperatura&quot;"
 	 src-required="true" dst-required="false">
-	<label ref-type="name-label">
-		<position x="-91.8551" y="-23.3323"/>
-	</label>
-	<constraint name="HoraPunta_pk" type="pk-constr" table="public.&quot;HoraPunta&quot;">
-		<columns names="HoraInicio,HoraFin" ref-type="src-columns"/>
-	</constraint>
-	<special-pk-cols indexes="0,1"/>
+	<special-pk-cols indexes="0,1,2"/>
 </relationship>
 
-<relationship name="Calle_tiene_Sensor(es)Lluvia" type="rel1n" layer="0"
+<table name="Luz" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="620" y="660"/>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
+	<column name="Hora">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="UnidadMedida" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+</table>
+
+<table name="Lluvia" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1060" y="660"/>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
+	<column name="Hora">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="UnidadMedida" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+</table>
+
+<table name="Movimiento" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1520" y="660"/>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
+	<column name="Hora">
+		<type name="timestamp" length="50"/>
+	</column>
+	<column name="UnidadMedida" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+</table>
+
+<table name="Infrarrojo" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1960" y="660"/>
+	<column name="Valor">
+		<type name="float" length="0"/>
+	</column>
+	<column name="Hora">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="UnidadMedida" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+</table>
+
+<relationship name="Luz_has_one_Calle" type="rel11" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
+	 custom-color="#aa0000"
 	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_Lluvia&quot;"
-	 src-required="true" dst-required="false"/>
+	 dst-table="public.&quot;Luz&quot;"
+	 src-required="true" dst-required="false">
+	<special-pk-cols indexes="0,1,2"/>
+</relationship>
 
-<relationship name="Calle_tiene_Sensor(es)Movimiento" type="rel1n" layer="0"
+<relationship name="Lluvia_has_one_Calle" type="rel11" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
+	 custom-color="#aa0000"
 	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_Movimiento&quot;"
-	 src-required="true" dst-required="false"/>
+	 dst-table="public.&quot;Lluvia&quot;"
+	 src-required="true" dst-required="false">
+	<special-pk-cols indexes="0,1,2"/>
+</relationship>
 
-<relationship name="Calle_tiene_Sensor(es)Temperatura" type="rel1n" layer="0"
+<relationship name="Movimiento_has_one_Calle" type="rel11" layer="0"
 	 src-col-pattern="{sc}_{st}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="{st}_fk"
-	 custom-color="#0000ff"
+	 custom-color="#aa0000"
 	 src-table="public.&quot;Calle&quot;"
-	 dst-table="public.&quot;Sensor_temperatura&quot;"
+	 dst-table="public.&quot;Movimiento&quot;"
 	 src-required="true" dst-required="false"/>
 
+<relationship name="Infrarrojo_has_one_Calle" type="rel11" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aa0000"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Infrarrojo&quot;"
+	 src-required="true" dst-required="false"/>
+
+<constraint name="Ciudad_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.&quot;Ciudad&quot;" table="public.&quot;Zona&quot;">
+	<columns names="Codigo_Ciudad" ref-type="src-columns"/>
+	<columns names="Codigo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Zona_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.&quot;Zona&quot;" table="public.&quot;Calle&quot;">
+	<columns names="ID_Zona,Codigo_Ciudad_Zona" ref-type="src-columns"/>
+	<columns names="ID,Codigo_Ciudad" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Calle_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.&quot;Calle&quot;" table="public.&quot;HoraPunta&quot;">
+	<columns names="Nombre_Calle,ID_Zona_Calle,Codigo_Ciudad_Zona_Calle" ref-type="src-columns"/>
+	<columns names="Nombre,ID_Zona,Codigo_Ciudad_Zona" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="&quot;rel_Zona_Ciudad&quot;" type="relfk" layer="0"
+	 custom-color="#4257fe"
+	 src-table="public.&quot;Zona&quot;"
+	 dst-table="public.&quot;Ciudad&quot;" reference-fk="Ciudad_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_Calle_Zona&quot;" type="relfk" layer="0"
+	 custom-color="#f39bde"
+	 src-table="public.&quot;Calle&quot;"
+	 dst-table="public.&quot;Zona&quot;" reference-fk="Zona_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_HoraPunta_Calle&quot;" type="relfk" layer="0"
+	 custom-color="#47be23"
+	 src-table="public.&quot;HoraPunta&quot;"
+	 dst-table="public.&quot;Calle&quot;" reference-fk="Calle_fk"
+	 src-required="false" dst-required="true"/>
+
+<permission>
+	<object name="public" type="schema"/>
+	<roles names="postgres"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="public" type="schema"/>
+	<privileges create="true" usage="true"/>
+</permission>
 </dbmodel>

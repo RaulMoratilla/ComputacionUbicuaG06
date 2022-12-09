@@ -2,10 +2,10 @@ package basedatos;
 
 public class Calle {
     private String _nombre;
-    private String _codigoCiudadZona, _idZona;
+    private int _codigoCiudadZona, _idZona;
 
     //ctor.
-    public Calle(String p_nombre, String p_codigoCiudad, String p_codigoZona) {
+    public Calle(int p_codigoCiudad, int p_codigoZona, String p_nombre) {
         this._nombre = p_nombre;
         this._codigoCiudadZona = p_codigoCiudad;
         this._idZona = p_codigoZona;
@@ -20,19 +20,19 @@ public class Calle {
         this._nombre = p_nombre;
     }
 
-    public String getCodigoCiudad() {
+    public int getCodigoCiudad() {
         return _codigoCiudadZona;
     }
 
-    public void setCodigoCiudad(String p_codigoCiudad) {
+    public void setCodigoCiudad(int p_codigoCiudad) {
         this._codigoCiudadZona = p_codigoCiudad;
     }
 
-    public String getCodigoZona() {
+    public int getCodigoZona() {
         return _idZona;
     }
 
-    public void setCodigoZona(String p_codigoZona) {
+    public void setCodigoZona(int p_codigoZona) {
         this._idZona = p_codigoZona;
     }
 

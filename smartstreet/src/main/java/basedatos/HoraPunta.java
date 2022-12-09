@@ -1,13 +1,13 @@
 package basedatos;
-//import datetime
-import java.time.LocalTime;
+import java.sql.Time;
 
 public class HoraPunta {
-    private LocalTime _horaInicio, _horaFin;
-    private String _nombreCalle, _idZonaCalle, _codigoCiudadCalle;
+    private Time _horaInicio, _horaFin;
+    private String _nombreCalle;
+    private int _idZonaCalle, _codigoCiudadCalle;
 
     //ctor.
-    public HoraPunta(LocalTime p_horaInicio, LocalTime p_horaFin, String p_nombreCalle, String p_idZonaCalle, String p_codigoCiudadCalle) {
+    public HoraPunta(int p_codigoCiudadCalle, int p_idZonaCalle, String p_nombreCalle,  Time p_horaInicio, Time p_horaFin) {
         this._horaInicio = p_horaInicio;
         this._horaFin = p_horaFin;
         this._nombreCalle = p_nombreCalle;
@@ -16,19 +16,19 @@ public class HoraPunta {
     }
 
     //getters and setters
-    public LocalTime getHoraInicio() {
+    public Time getHoraInicio() {
         return _horaInicio;
     }
 
-    public void setHoraInicio(LocalTime p_horaInicio) {
+    public void setHoraInicio(Time p_horaInicio) {
         this._horaInicio = p_horaInicio;
     }
 
-    public LocalTime getHoraFin() {
+    public Time getHoraFin() {
         return _horaFin;
     }
 
-    public void setHoraFin(LocalTime p_horaFin) {
+    public void setHoraFin(Time p_horaFin) {
         this._horaFin = p_horaFin;
     }
 
@@ -40,19 +40,19 @@ public class HoraPunta {
         this._nombreCalle = p_nombreCalle;
     }
 
-    public String getIdZonaCalle() {
+    public int getIdZonaCalle() {
         return _idZonaCalle;
     }
 
-    public void setIdZonaCalle(String p_idZonaCalle) {
+    public void setIdZonaCalle(int p_idZonaCalle) {
         this._idZonaCalle = p_idZonaCalle;
     }
 
-    public String getCodigoCiudadCalle() {
+    public int getCodigoCiudadCalle() {
         return _codigoCiudadCalle;
     }
 
-    public void setCodigoCiudadCalle(String p_codigoCiudadCalle) {
+    public void setCodigoCiudadCalle(int p_codigoCiudadCalle) {
         this._codigoCiudadCalle = p_codigoCiudadCalle;
     }
 
