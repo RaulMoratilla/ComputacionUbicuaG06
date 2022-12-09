@@ -1,4 +1,15 @@
 
+void SuscribeMqtt() {
+
+  mqttClient.subscribe((char*)luzHum[0].topic);
+  mqttClient.subscribe((char*)luzTemp[0].topic);
+  mqttClient.subscribe((char*)luzLluvia[0].topic);
+  mqttClient.subscribe((char*)luzNoche[0].topic);
+
+
+}
+
+
 void InitMqtt() {
   Serial.print("Connecto to MQTT - ");
   Serial.print(MQTT_BROKER_ADRESS);
