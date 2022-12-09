@@ -206,7 +206,7 @@ public class Logica {
     }
 
     //getSensoresTipoCalleBD
-    public static ArrayList<Sensor> getSensoresTipoCalleBD(int codigoCiudad, int idZona, String nombreCalle, String tipo) {
+    public static ArrayList<Sensor> getSensoresCalleTipoBD(int codigoCiudad, int idZona, String nombreCalle, String tipo) {
         ArrayList<Sensor> sensores = new ArrayList<Sensor>();
 
         ConexionBD conector = new ConexionBD();
@@ -215,7 +215,7 @@ public class Logica {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
 
-            PreparedStatement ps = ConexionBD.GetSensoresTipoCalle(con);
+            PreparedStatement ps = ConexionBD.GetSensoresCalleTipo(con);
             ps.setInt(1, codigoCiudad);
             ps.setInt(2, idZona);
             ps.setString(3, nombreCalle);

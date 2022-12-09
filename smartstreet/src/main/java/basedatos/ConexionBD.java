@@ -106,7 +106,6 @@ public class ConexionBD {
     }
 
     //**********LLAMADAS A BASE DE DATOS**********//
-
     //Extraer datos de tablas
     public static PreparedStatement GetCiudades(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Ciudad\"");
@@ -132,10 +131,10 @@ public class ConexionBD {
         return getStatement(con, "SELECT * FROM public.\"Sensor\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=?");
     }
 
-    public static PreparedStatement GetSensoresTipoCalle(Connection con) {
+    public static PreparedStatement GetSensoresCalleTipo(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Sensor\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? AND \"Tipo\"=?");
     }
-
+ 
     public static PreparedStatement GetRegistrosCalle(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Registro\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=?");
     }
@@ -174,7 +173,6 @@ public class ConexionBD {
     }
 
     //Actualizar datos en tablas
-
     public static PreparedStatement ActualizarCalle(Connection con) {
         return getStatement(con, "UPDATE public.\"Calle\" SET \"Nombre\"=? WHERE \"Codigo_Ciudad_Zona\"=? AND \"ID_Zona\"=? AND \"Nombre\"=?");
     }
