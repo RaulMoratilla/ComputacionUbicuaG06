@@ -1,15 +1,12 @@
 package com.ubicua.smartstreet.Data;
 
 public class Zona {
-    private int id;
+    private int id,codigoCiudad;
     private String nombre;
 
-    public Zona() {
-
-    }
-
-    public Zona(int id, String nombre) {
+    public Zona(int id, int codigoCiudad, String nombre) {
         this.id = id;
+        this.codigoCiudad = codigoCiudad;
         this.nombre = nombre;
     }
 
@@ -19,6 +16,14 @@ public class Zona {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCodigoCiudad() {
+        return codigoCiudad;
+    }
+
+    public void setCodigoCiudad(int codigoCiudad) {
+        this.codigoCiudad = codigoCiudad;
     }
 
     public String getNombre() {

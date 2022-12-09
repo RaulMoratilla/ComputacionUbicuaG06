@@ -1,21 +1,21 @@
 package com.ubicua.smartstreet.Data;
 
 public class Ciudad {
-    private int id;
-    private String nombre;
-    
+    private int codigo;
+    private String nombre,pais;
 
-    public Ciudad(int id,String nombre) {
-        this.id = id;
-        this.nombre=nombre;
+    public Ciudad(int codigo, String nombre, String pais) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.pais = pais;
     }
 
-    public int getId() {
-        return id;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -24,5 +24,13 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 }
