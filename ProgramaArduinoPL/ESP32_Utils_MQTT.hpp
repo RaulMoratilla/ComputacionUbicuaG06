@@ -1,12 +1,9 @@
 
 void SuscribeMqtt() {
-
   mqttClient.subscribe((char*)luzHum[0].topic);
   mqttClient.subscribe((char*)luzTemp[0].topic);
   mqttClient.subscribe((char*)luzLluvia[0].topic);
   mqttClient.subscribe((char*)luzNoche[0].topic);
-
-
 }
 
 
