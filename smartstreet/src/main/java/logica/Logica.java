@@ -26,7 +26,7 @@ public class Logica {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next())
 			{
-				Ciudad ciudad = new Ciudad(rs.getString("Codigo"), rs.getString("Nombre"), rs.getString("Pais"));
+				Ciudad ciudad = new Ciudad(rs.getInt("Codigo"), rs.getString("Nombre"), rs.getString("Pais"));
 				ciudades.add(ciudad);
 			}
 		} catch (SQLException e)
@@ -76,7 +76,7 @@ public class Logica {
         return zona;
     }
 
-    public static ArrayList<Zona> getZonasCiudadBD(String codigoCiudad) {
+    public static ArrayList<Zona> getZonasCiudadBD(int codigoCiudad) {
         ArrayList<Zona> zonas = new ArrayList<Zona>();
 
         ConexionBD conector = new ConexionBD();
@@ -86,7 +86,7 @@ public class Logica {
             Log.log.debug("Database Connected");
 
             PreparedStatement ps = ConexionBD.GetZonasCiudad(con);
-            ps.setString(1, codigoCiudad);
+            ps.setInt(1, codigoCiudad);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

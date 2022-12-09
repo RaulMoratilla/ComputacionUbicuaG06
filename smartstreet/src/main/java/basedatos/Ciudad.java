@@ -1,24 +1,24 @@
 package basedatos;
 
 public class Ciudad {
-    private String _codigo;
+    private int _codigo;
     private String _nombre, _pais;
 
     //ctor.
 
     
-    public Ciudad(String p_codigo, String p_nombre, String p_pais) {
+    public Ciudad(int p_codigo, String p_nombre, String p_pais) {
         this._codigo = p_codigo;
         this._nombre = p_nombre;
         this._pais = p_pais;
     }
 
     //getters and setters
-    public String getCodigo() {
+    public int getCodigo() {
         return _codigo;
     }
 
-    public void setCodigo(String p_codigo) {
+    public void setCodigo(int p_codigo) {
         this._codigo = p_codigo;
     }
 
