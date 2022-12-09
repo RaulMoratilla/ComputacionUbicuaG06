@@ -1,18 +1,18 @@
 struct Luz {
   int pin;
-  String topic;
+  char* topic;
 };
 
 struct SenTH {
   int pin;
-  String topicTemp;
-  String topicHum;
+  char* topicTemp;
+  char* topicHum;
 };
 
 struct Sensor {
   int pin;
   int correccion;
-  String topic;
+  char* topic;
 };
 
 float temperatura;
@@ -95,7 +95,7 @@ void gestionLuzNoche(int dato) {
 
 void gestionLuzLluvia(int dato) {
   lluvia = dato;
-  bool encender = dato == HIGH;
+  bool encender = dato == LOW;
   for (int i ; i < N_LUZ_LLUVIA ; i++) {
     if (encender) {
       gestionarLuzA(255, luzLluvia[i]);      
@@ -103,6 +103,43 @@ void gestionLuzLluvia(int dato) {
       gestionarLuzA(0, luzLluvia[i]);
     }
   }
+}
+
+void OnMqttReceived(char* topic, byte* payload, unsigned int length) {
+    
+    String content = "";
+    for (size_t i = 0; i < length; i++) {
+        content.concat((char)payload[i]);
+    }
+    
+    int tipo, dato, tiempo;
+    tipo = content.substring(0, content.indexOf("-")).toInt();
+    String aux = content.substring(content.indexOf("-")+1, -1);
+    dato = aux.substring(0, content.indexOf("-")).toInt();
+    tiempo = aux.substring(content.indexOf("-")+1, -1).toInt();
+
+    switch (tipo) {
+      case 0:
+        gestionLuzTemperatura(dato);
+        break;
+      case 1:
+        gestionLuzHumedad(dato);
+        break;
+      case 2:
+        gestionLuzNoche(dato);
+        break;
+      case 3:
+        if (dato == 1 && noche) {
+          gestionarLucesA(255, luzNoche, N_LUZ_NOCHE);
+          msRevNoche = tiempo;
+        } else if (msRevNoche + 10000 < millis()) {
+          gestionLuzNoche(nivelLuz);
+        }
+        break;
+      case 4:
+        gestionLuzLluvia(dato);
+        break;
+    }
 }
 
 void llamada(int tipo, int dato, int tiempo) {
@@ -130,20 +167,20 @@ void llamada(int tipo, int dato, int tiempo) {
     }
 }
 
-void PublisMqtt(int tipo, int data, int tiempo, String topic) {
-    /*payload = "";
+void PublisMqtt(int tipo, int data, int tiempo, char* topic) {
+    String payload = "";
     payload = String(tipo);
     payload.concat("-");
     payload.concat((String)data);
     payload.concat("-");
     payload.concat((String)tiempo);
-    mqttClient.publish(topic, (char*)payload.c_str());*/
+    mqttClient.publish(topic, String(payload).c_str());
     Serial.print(tipo);
     Serial.print("-");
     Serial.print(data);
     Serial.print("-");
     Serial.println(tiempo);
-    llamada(tipo, data, tiempo);
+    //llamada(tipo, data, tiempo);
 }
 
 
