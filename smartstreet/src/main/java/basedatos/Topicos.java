@@ -2,7 +2,7 @@ package basedatos;
 
 public class Topicos {
     private String _idTopico, _idCiudad, _idZona, _idCalle;
-    private String _idSLuz, _idSInfra, _idSMov, _idSLluv, _idSTemp;
+    private String _idLuz, _idInfra, _idMov, _idLluv, _idTemp;
     private String value;
 
     public Topicos() {
@@ -10,11 +10,11 @@ public class Topicos {
         this._idCiudad = null;
         this._idZona = null;
         this._idTopico = null;
-        this._idSLuz = null;
-        this._idSInfra = null;
-        this._idSMov = null;
-        this._idSLluv = null;
-        this._idSTemp = null;
+        this._idLuz = null;
+        this._idInfra = null;
+        this._idMov = null;
+        this._idLluv = null;
+        this._idTemp = null;
         this.value = null;
     }
     
@@ -24,11 +24,11 @@ public class Topicos {
         this._idCiudad = p_idCiudad;
         this._idZona = p_idZona;
         this._idCalle = p_idCalle;
-        this._idSLuz = p_idSLuz;
-        this._idSInfra = p_idSInfra;
-        this._idSMov = p_idSMov;
-        this._idSLluv = p_idSLluv;
-        this._idSTemp = p_idSTemp;
+        this._idLuz = p_idSLuz;
+        this._idInfra = p_idSInfra;
+        this._idMov = p_idSMov;
+        this._idLluv = p_idSLluv;
+        this._idTemp = p_idSTemp;
         this.value = p_value;
     }
 
@@ -66,43 +66,43 @@ public class Topicos {
     }
 
     public String getIdSLuz() {
-        return _idSLuz;
+        return _idLuz;
     }
 
     public void setIdSLuz(String p_idSLuz) {
-        this._idSLuz = p_idSLuz;
+        this._idLuz = p_idSLuz;
     }
 
     public String getIdSInfra() {
-        return _idSInfra;
+        return _idInfra;
     }
 
     public void setIdSInfra(String p_idSInfra) {
-        this._idSInfra = p_idSInfra;
+        this._idInfra = p_idSInfra;
     }
 
     public String getIdSMov() {
-        return _idSMov;
+        return _idMov;
     }
 
     public void setIdSMov(String p_idSMov) {
-        this._idSMov = p_idSMov;
+        this._idMov = p_idSMov;
     }
 
     public String getIdSLluv() {
-        return _idSLluv;
+        return _idLluv;
     }
 
     public void setIdSLluv(String p_idSLluv) {
-        this._idSLluv = p_idSLluv;
+        this._idLluv = p_idSLluv;
     }
 
     public String getIdSTemp() {
-        return _idSTemp;
+        return _idTemp;
     }
 
     public void setIdSTemp(String p_idSTemp) {
-        this._idSTemp = p_idSTemp;
+        this._idTemp = p_idSTemp;
     }
 
     public String getValue() {
@@ -115,7 +115,7 @@ public class Topicos {
 
     @Override
     public String toString() {
-        return "Topicos{" + "_idTopico=" + _idTopico + ", _idCiudad=" + _idCiudad + ", _idZona=" + _idZona + ", _idCalle=" + _idCalle + ", _idSLuz=" + _idSLuz + ", _idSInfra=" + _idSInfra + ", _idSMov=" + _idSMov + ", _idSLluv=" + _idSLluv + ", _idSTemp=" + _idSTemp + ", value=" + value + '}';
+        return "Topicos{" + "_idTopico=" + _idTopico + ", _idCiudad=" + _idCiudad + ", _idZona=" + _idZona + ", _idCalle=" + _idCalle + ", _idSLuz=" + _idLuz + ", _idSInfra=" + _idInfra + ", _idSMov=" + _idMov + ", _idSLluv=" + _idLluv + ", _idSTemp=" + _idTemp + ", value=" + value + '}';
     }
 
 }
