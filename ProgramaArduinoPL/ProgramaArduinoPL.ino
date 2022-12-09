@@ -4,6 +4,9 @@
 
 #include "DHT.h"
 
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
 #define N_LUZ_HUM 1
 #define N_LUZ_TEMP 1
 #define N_SEN_TH 1
@@ -18,12 +21,14 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 #include "config.h"
-#include "ESP32_Utils.hpp"
-//#include "ESP32_Utils_MQTT.hpp"
 #include "libControlViasPublicas.hpp"
-//#include "MQTT.hpp"
+#include "MQTT.hpp"
+#include "ESP32_Utils.hpp"
+#include "ESP32_Utils_MQTT.hpp"
 
 void setup() {
+
+  Serial.begin(115200);
 
   luzTemp[0].pin = 4;
   luzTemp[0].topic = "maqueta/maqueta/calle1/sensores/sTemp";
@@ -50,6 +55,8 @@ void setup() {
   senMovimiento[0].pin = 13;
   senMovimiento[0].topic = "maqueta/maqueta/calle1/sensores/movilidad";
 
+  Serial.println("Sensores y luces creados");
+
   dht.begin();
 
   iniciarPinSensorTH(senTH, 1);
@@ -61,9 +68,6 @@ void setup() {
   iniciarPinLuz(luzNoche, 1);
   iniciarPinLuz(luzLluvia, 1);
 
-  //SuscribeMqtt(luzTH);
-  //SuscribeMqtt(luzNoche);
-
   temperatura = 15.6;
   humedad = 50;
   nivelLuz = 150;
@@ -71,11 +75,8 @@ void setup() {
   lluvia = 0;
   noche = false;
 
-  //SPIFFS.begin();
-  //ConnectWiFi_STA();
-  //InitMqtt();
-  Serial.begin(115200);
-
+  ConnectWiFi_STA();
+  InitMqtt();
 }
 
 void loop() {
@@ -91,6 +92,6 @@ void loop() {
   controlarLluvia();
   controlarMovimiento();
   delay(1000);
-  //HandleMqtt();
+  HandleMqtt();
   //PublisMqtt(millis());
 }
