@@ -10,6 +10,11 @@ public class Zona {
         this.nombre = nombre;
     }
 
+    public Zona(int id, String name) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     public int getId() {
         return id;
     }
