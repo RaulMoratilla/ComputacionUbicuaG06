@@ -111,12 +111,20 @@ public class ConexionBD {
         return getStatement(con, "SELECT * FROM public.\"Ciudad\"");
     }
 
+    public static PreparedStatement GetCiudad(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Ciudad\" WHERE \"Codigo\"=?");
+    }
+
     public static PreparedStatement GetZona(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Zona\" WHERE \"ID_Zona\"=? AND \"Codigo_Ciudad\"=?");
     }
 
     public static PreparedStatement GetZonasCiudad(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"Zona\" WHERE \"Codigo_Ciudad\"=?");
+    }
+
+    public static PreparedStatement GetZonas(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Zona\"");
     }
     
     public static PreparedStatement GetCalle(Connection con) {
@@ -143,14 +151,28 @@ public class ConexionBD {
         return getStatement(con, "SELECT * FROM public.\"Registro\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? AND \"Tipo\"=?");
     }
 
+    public static PreparedStatement GetRegistrosUltimaSemana(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"Registro\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? WHERE \"MarcaTemporal\" BETWEEN ? AND ?");
+    }
+
     public static PreparedStatement GetHorasPuntaCalle(Connection con) {
         return getStatement(con, "SELECT * FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=?");
+    }
+
+    public static PreparedStatement GetHorasPuntaCalleFija(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? AND \"Fijo\"=True");
+    }
+
+    public static PreparedStatement GetHorasPuntaCalleNoFija(Connection con) {
+        return getStatement(con, "SELECT * FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? AND \"Fijo\"=False");
     }
 
     public static PreparedStatement GetNumMediciones(Connection con) {
         return getStatement(con, "SELECT COUNT(*) as NumMediciones FROM public.\"Sensor\"");
     }
     
+    /*get registros movimiento ultima semana*/
+
     //Insertar datos en tablas
     public static PreparedStatement InsertarCiudad(Connection con) {
         return getStatement(con, "INSERT INTO public.\"Ciudad\"(\"Codigo\", \"Nombre\", \"Pais\") VALUES (?, ?, ?)");
@@ -173,7 +195,7 @@ public class ConexionBD {
     }
 
     public static PreparedStatement InsertarHorasPunta(Connection con) {
-        return getStatement(con, "INSERT INTO public.\"HorasPunta\"(\"Codigo_Ciudad_Zona_Calle\", \"ID_Zona_Calle\", \"Nombre_Calle\", \"HoraInicio\", \"HoraFin\") VALUES (?, ?, ?, ?, ?)");
+        return getStatement(con, "INSERT INTO public.\"HorasPunta\"(\"Codigo_Ciudad_Zona_Calle\", \"ID_Zona_Calle\", \"Nombre_Calle\", \"HoraInicio\", \"HoraFin\", \"Fijo\") VALUES (?, ?, ?, ?, ?, ?)");
     }
 
     //Actualizar datos en tablas
@@ -216,6 +238,10 @@ public class ConexionBD {
 
     public static PreparedStatement EliminarHorasPunta(Connection con) {
         return getStatement(con, "DELETE FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=?");
+    }
+
+    public static PreparedStatement EliminarHorasPuntaCalleNoFija(Connection con) {
+        return getStatement(con, "DELETE FROM public.\"HorasPunta\" WHERE \"Codigo_Ciudad_Zona_Calle\"=? AND \"ID_Zona_Calle\"=? AND \"Nombre_Calle\"=? AND \"Fijo\"=False");
     }
 }
 

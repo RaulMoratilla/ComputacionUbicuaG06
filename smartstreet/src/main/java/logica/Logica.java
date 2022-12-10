@@ -4,12 +4,49 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import basedatos.*;
 
 public class Logica {
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-aa HH:MM:ss");
+
+    public static Ciudad getCiudadBD(int codigoCiudad)
+	{
+        Ciudad ciudad = null;
+
+		ConexionBD conector = new ConexionBD();
+		Connection con = null;
+		try
+		{
+			con = conector.crearConexion(true);
+			Log.log.debug("Database Connected");
+			
+			PreparedStatement ps = ConexionBD.GetCiudades(con);
+			Log.log.info("Query=> {}", ps.toString());
+            ps.setInt(1, codigoCiudad);
+			ResultSet rs = ps.executeQuery();
+			ciudad = new Ciudad(rs.getInt("Codigo"), rs.getString("Nombre"), rs.getString("Pais"));
+		} catch (SQLException e)
+		{
+			Log.log.error("Error: {}", e);
+		} catch (NullPointerException e)
+		{
+			Log.log.error("Error: {}", e);
+		} catch (Exception e)
+		{
+			Log.log.error("Error:{}", e);
+		} finally
+		{
+			conector.cerrarConexion(con);
+		}
+		return ciudad;
+	}
 
     public static ArrayList<Ciudad> getCiudadesBD()
 	{
@@ -63,7 +100,7 @@ public class Logica {
             ps.setInt(2, idZona);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
-            zona = new Zona(rs.getInt("ID"), rs.getString("Nombre"), rs.getString("Codigo_Ciudad"));
+            zona = new Zona(rs.getInt("Codigo_Ciudad"), rs.getInt("ID"), rs.getString("Nombre"));
 
         } catch (SQLException e) {
             Log.log.error("Error: {}", e);
@@ -75,6 +112,32 @@ public class Logica {
             conector.cerrarConexion(con);
         }
         return zona;
+    }
+
+    public static ArrayList<Zona> getZonas() {
+        ArrayList<Zona> zonas = new ArrayList<>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetZona(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            zonas.add(new Zona(rs.getInt("Codigo_Ciudad"), rs.getInt("ID"), rs.getString("Nombre")));
+
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return zonas;
     }
 
     public static ArrayList<Zona> getZonasCiudadBD(int codigoCiudad) {
@@ -91,7 +154,7 @@ public class Logica {
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Zona zona = new Zona(rs.getInt("ID"), rs.getString("Nombre"), rs.getString("Codigo_Ciudad"));
+                Zona zona = new Zona(rs.getInt("Codigo_Ciudad"), rs.getInt("ID"), rs.getString("Nombre"));
                 zonas.add(zona);
             }
         } catch (SQLException e) {
@@ -242,6 +305,42 @@ public class Logica {
         return sensores;
     }
 
+    public static ArrayList<Registro> getRegistrosUltimaSemana(Calle calle) {
+        ArrayList<Registro> registros = new ArrayList<Registro>();
+
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.GetRegistrosUltimaSemana(con);
+            ps.setInt(1, calle.getCodigoCiudad());
+            ps.setInt(2, calle.getCodigoZona());
+            ps.setString(3, calle.getNombre());
+            ps.setTimestamp(4, Timestamp.valueOf(sdf.format(LocalDateTime.now())));
+            ps.setTimestamp(5, Timestamp.valueOf(sdf.format(LocalDateTime.now().minusDays(7))));
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Registro registro = new Registro(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getString("Tipo"), rs.getString("UnidadMedida"), rs.getTimestamp("MarcaTemporal"), rs.getFloat("Valor"));
+                registros.add(registro);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+            registros = new ArrayList<Registro>();
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+            registros = new ArrayList<Registro>();
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return registros;
+    }
+
     public static ArrayList<Registro> getRegistrosCalleBD(int codigoCiudad, int idZona, String nombreCalle) {
         ArrayList<Registro> registros = new ArrayList<Registro>();
 
@@ -329,7 +428,7 @@ public class Logica {
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                HoraPunta registro = new HoraPunta(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getTime("HoraInicio"), rs.getTime("HoraFin"));
+                HoraPunta registro = new HoraPunta(rs.getInt("Codigo_Ciudad_Zona"), rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), rs.getTime("HoraInicio"), rs.getTime("HoraFin"), rs.getBoolean("Fijo"));
                 horasPunta.add(registro);
             }
         } catch (SQLException e) {
@@ -532,5 +631,96 @@ public class Logica {
         } finally {
             conector.cerrarConexion(con);
         }
+    }
+
+    public static ArrayList<HoraPunta> getHorasPuntaFija(Calle calle) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        ArrayList<HoraPunta> horasPunta = new ArrayList<>();
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetHorasPuntaCalleFija(con);
+            ps.setInt(1, calle.getCodigoCiudad());
+            ps.setInt(1, calle.getCodigoZona());
+            ps.setString(2, calle.getNombre());
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoraPunta horaPunta = new HoraPunta(rs.getInt("Codigo_Ciudad_Zona_Calle"), 
+                                                    rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), 
+                                                    rs.getTime("horaInicio"), rs.getTime("horaFin"), rs.getBoolean("Fijo"));
+                horasPunta.add(horaPunta);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return horasPunta;
+    }
+
+    //getHorasPuntaNoFija
+    public static ArrayList<HoraPunta> getHorasPuntaNoFija(Calle calle) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        ArrayList<HoraPunta> horasPunta = new ArrayList<>();
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetHorasPuntaCalleNoFija(con);
+            ps.setInt(1, calle.getCodigoCiudad());
+            ps.setInt(1, calle.getCodigoZona());
+            ps.setString(2, calle.getNombre());
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoraPunta horaPunta = new HoraPunta(rs.getInt("Codigo_Ciudad_Zona_Calle"), 
+                                                    rs.getInt("ID_Zona_Calle"), rs.getString("Nombre_Calle"), 
+                                                    rs.getTime("horaInicio"), rs.getTime("horaFin"), rs.getBoolean("Fijo"));
+                horasPunta.add(horaPunta);
+            }
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return horasPunta;
+    }
+
+    //eliminarHoraPuntaNoFija
+    public static void eliminarHoraPuntaNoFija(Calle calle) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.EliminarHorasPuntaCalleNoFija(con);
+            ps.setInt(1, calle.getCodigoCiudad());
+            ps.setInt(2, calle.getCodigoZona());
+            ps.setString(3, calle.getNombre());
+            Log.log.info("Query=> {}", ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+    }
+
+    public static void insertarHoraPuntaNoFija(int codigoCiudad, int codigoZona, String nombre, Time time, Time time2,
+            boolean b) {
     }
 }

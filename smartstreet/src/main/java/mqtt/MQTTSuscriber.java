@@ -33,9 +33,8 @@ public class MQTTSuscriber implements MqttCallback
 			Log.logmqtt.debug("Query to search cities=> {}", psCity.toString());
 			ResultSet rsCity = psCity.executeQuery();
 			while (rsCity.next()){
-				topics.add("City" + rsCity.getInt("ID")+"/#");
+				topics.add(rsCity.getString("Nombre")+"/#");
 			}
-			topics.add("test");
 			suscribeTopic(broker, topics);			
 		} 
 		catch (NullPointerException e){Log.logmqtt.error("Error: {}", e);} 
@@ -89,8 +88,13 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idCalle(topics[2].replace("calle1", ""));
 			newTopic.set_idPasoP(topics[5].replace("sensores", ""));
 			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
+			           
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
 			
+
+			/*
+			 * Cambiar a buscar si hay 1 medicion de un tipo concreto
+			 */
 			if (Logica.obtenerNumeroMediciones()==0){
 				Logica.insertarMedicionBD(newTopic);
 				Logica.insertarRegistroBD(newTopic);
@@ -100,24 +104,15 @@ public class MQTTSuscriber implements MqttCallback
 				Logica.insertarRegistroBD(newTopic);
 			}
 		}
-		/*else if (topic.contains("horarioConflictivo")) {
+		else if (topic.contains("horarioConflictivo")) {
 			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
 			newTopic.set_idZona(topics[1].replace("zona1", ""));
 			newTopic.set_idCalle(topics[2].replace("calle1", ""));
 			newTopic.set_idHoraConf(topics[4].replace("sensores", ""));
 			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, horarioConflictivo{}: {}", 
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
-			
-			if (Logica.obtenerNumeroMediciones()==0){
-				Logica.insertarMedicionBD(newTopic);
-				Logica.insertarRegistroBD(newTopic);
-			}
-			else if (Logica.obtenerNumeroMediciones()==1){
-				Logica.actualizarMedicionBD(newTopic);
-				Logica.insertarRegistroBD(newTopic);
-			}
-		}*/
-		else if(topic.contains("sHum") || topic.contains("movilidad") || topic.contains("sLuz") || topic.contains("sTemp") || topic.contains("sLluvia"))
+		}
+		else if(topic.contains("humedad") || topic.contains("movimiento") || topic.contains("luz") || topic.contains("temperatura") || topic.contains("lluvia"))
 		{
 			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
 			newTopic.set_idZona(topics[1].replace("zona1", ""));
@@ -125,7 +120,10 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idSensores(topics[4].replace("sensores", ""));
 			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
-			
+		
+			/*
+			 * Cambiar a buscar si hay 1 medicion de un tipo concreto
+			 */
 			if (Logica.obtenerNumeroMediciones()==0){
 				Logica.insertarMedicionBD(newTopic);
 				Logica.insertarRegistroBD(newTopic);
@@ -142,7 +140,7 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idCalle(topics[2].replace("Calle", ""));
 			Log.logmqtt.info("Mensaje de ciudad{}, zona{}, calle{}: {}", newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), message.toString());
 		}
-	   	else if(topic.contains("zona1"))
+	   	else if(topic.contains("zonaMaqueta"))
     	{
 			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
 			newTopic.set_idZona(topics[1].replace("zona1", ""));
@@ -150,7 +148,7 @@ public class MQTTSuscriber implements MqttCallback
 		}
 		else
 		{
-			if(topic.contains("ciudad1"))
+			if(topic.contains("maqueta"))
 			{
 				newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
 				Log.logmqtt.info("Mensaje from city{}: {}", 

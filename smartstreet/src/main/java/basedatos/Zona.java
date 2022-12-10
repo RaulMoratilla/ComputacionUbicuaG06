@@ -1,11 +1,11 @@
 package basedatos;
 
 public class Zona {
-    private int _id;
-    private String _nombre, _codigoCiudad;
+    private int _id, _codigoCiudad;
+    private String _nombre;
 
     //ctor.
-    public Zona(int p_id, String p_nombre, String p_codigoCiudad) {
+    public Zona(int p_codigoCiudad, int p_id, String p_nombre) {
         this._id = p_id;
         this._nombre = p_nombre;
         this._codigoCiudad = p_codigoCiudad;
@@ -28,11 +28,11 @@ public class Zona {
         this._nombre = p_nombre;
     }
 
-    public String getCodigoCiudad() {
+    public int getCodigoCiudad() {
         return _codigoCiudad;
     }
 
-    public void setCodigoCiudad(String p_codigoCiudad) {
+    public void setCodigoCiudad(int p_codigoCiudad) {
         this._codigoCiudad = p_codigoCiudad;
     }
 

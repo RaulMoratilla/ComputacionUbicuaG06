@@ -5,14 +5,16 @@ public class HoraPunta {
     private Time _horaInicio, _horaFin;
     private String _nombreCalle;
     private int _idZonaCalle, _codigoCiudadCalle;
+    private boolean _fijo;
 
     //ctor.
-    public HoraPunta(int p_codigoCiudadCalle, int p_idZonaCalle, String p_nombreCalle,  Time p_horaInicio, Time p_horaFin) {
+    public HoraPunta(int p_codigoCiudadCalle, int p_idZonaCalle, String p_nombreCalle,  Time p_horaInicio, Time p_horaFin, boolean p_fijo) {
         this._horaInicio = p_horaInicio;
         this._horaFin = p_horaFin;
         this._nombreCalle = p_nombreCalle;
         this._idZonaCalle = p_idZonaCalle;
         this._codigoCiudadCalle = p_codigoCiudadCalle;
+        this._fijo = p_fijo;
     }
 
     //getters and setters
@@ -54,6 +56,14 @@ public class HoraPunta {
 
     public void setCodigoCiudadCalle(int p_codigoCiudadCalle) {
         this._codigoCiudadCalle = p_codigoCiudadCalle;
+    }
+
+    public boolean isFijo() {
+        return _fijo;
+    }
+
+    public void setFijo(boolean p_fijo) {
+        this._fijo = p_fijo;
     }
 
     //toString
