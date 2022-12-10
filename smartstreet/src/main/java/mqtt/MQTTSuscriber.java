@@ -33,7 +33,7 @@ public class MQTTSuscriber implements MqttCallback
 			Log.logmqtt.debug("Query to search cities=> {}", psCity.toString());
 			ResultSet rsCity = psCity.executeQuery();
 			while (rsCity.next()){
-				topics.add(rsCity.getString("Nombre")+"/#");
+				topics.add(rsCity.getString("maqueta")+"/#");
 			}
 			suscribeTopic(broker, topics);			
 		} 
