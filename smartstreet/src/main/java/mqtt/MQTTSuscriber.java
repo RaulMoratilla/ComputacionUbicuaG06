@@ -29,7 +29,6 @@ public class MQTTSuscriber implements MqttCallback
 			con = conector.crearConexion(true);
 			Log.logmqtt.debug("Database Connected");
 			
-			//Get Cities to search the main topic
 			PreparedStatement psCity = ConexionBD.GetCiudades(con);
 			Log.logmqtt.debug("Query to search cities=> {}", psCity.toString());
 			ResultSet rsCity = psCity.executeQuery();
@@ -78,42 +77,87 @@ public class MQTTSuscriber implements MqttCallback
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception 
 	{
-       Log.logmqtt.info("{}: {}", topic, message.toString());
-       String[] topics = topic.split("/");
-       Topicos newTopic = new Topicos();
-       newTopic.setValue(message.toString());
-       if(topic.contains("Sensor"))
-       {
-		   newTopic.setIdCity(topics[0].replace("City", ""));
-		   newTopic.setIdStation(topics[1].replace("Station", ""));
-		   newTopic.setIdSensor(topics[2].replace("Sensor", ""));
-    	   Log.logmqtt.info("Mensaje from city{}, station{} sensor{}: {}", 
-    			   newTopic.getIdCity(), newTopic.getIdStation(), newTopic.getIdSensor(), message.toString());
-    	   
-    	   //Store the information of the sensor
-    	   Logica.storeNewMeasurement(newTopic);
-       }else
-       {
-    	   if(topic.contains("Station"))
-    	   {
-    		   newTopic.setIdCity(topics[0].replace("City", ""));
-    		   newTopic.setIdStation(topics[1].replace("Station", ""));
-        	   Log.logmqtt.info("Mensaje from city{}, station{}: {}", 
-        			   newTopic.getIdCity(), newTopic.getIdStation(), message.toString());
-    	   }else
-    	   {
-    		   if(topic.contains("City"))
-        	   {
-    			   newTopic.setIdCity(topics[0].replace("City", ""));
-    	    	   Log.logmqtt.info("Mensaje from city{}: {}", 
-    	    			   newTopic.getIdCity(), message.toString());
-        	   }else
-        	   {
-        		   
-        	   }
-    	   }
-       }
-	}
+		Log.logmqtt.info("{}: {}", topic, message.toString());
+		String[] topics = topic.split("/");
+		Topicos newTopic = new Topicos();
+		newTopic.setValue(message.toString());
+		
+		if(topic.contains("pasoCebra1"))
+		{
+			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+			newTopic.set_idZona(topics[1].replace("zona1", ""));
+			newTopic.set_idCalle(topics[2].replace("calle1", ""));
+			newTopic.set_idPasoP(topics[5].replace("sensores", ""));
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
+					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
+			
+			if (Logica.obtenerNumeroMediciones()==0){
+				Logica.insertarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+			else if (Logica.obtenerNumeroMediciones()==1){
+				Logica.actualizarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+		}
+		/*else if (topic.contains("horarioConflictivo")) {
+			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+			newTopic.set_idZona(topics[1].replace("zona1", ""));
+			newTopic.set_idCalle(topics[2].replace("calle1", ""));
+			newTopic.set_idHoraConf(topics[4].replace("sensores", ""));
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, horarioConflictivo{}: {}", 
+					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
+			
+			if (Logica.obtenerNumeroMediciones()==0){
+				Logica.insertarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+			else if (Logica.obtenerNumeroMediciones()==1){
+				Logica.actualizarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+		}*/
+		else if(topic.contains("sHum") || topic.contains("movilidad") || topic.contains("sLuz") || topic.contains("sTemp") || topic.contains("sLluvia"))
+		{
+			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+			newTopic.set_idZona(topics[1].replace("zona1", ""));
+			newTopic.set_idCalle(topics[2].replace("calle1", ""));
+			newTopic.set_idSensores(topics[4].replace("sensores", ""));
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
+					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
+			
+			if (Logica.obtenerNumeroMediciones()==0){
+				Logica.insertarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+			else if (Logica.obtenerNumeroMediciones()==1){
+				Logica.actualizarMedicionBD(newTopic);
+				Logica.insertarRegistroBD(newTopic);
+			}
+		}
+		else if(topic.contains("calle1"))
+    	{
+			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+			newTopic.set_idZona(topics[1].replace("zona1", ""));
+			newTopic.set_idCalle(topics[2].replace("Calle", ""));
+			Log.logmqtt.info("Mensaje de ciudad{}, zona{}, calle{}: {}", newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), message.toString());
+		}
+	   	else if(topic.contains("zona1"))
+    	{
+			newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+			newTopic.set_idZona(topics[1].replace("zona1", ""));
+			Log.logmqtt.info("Mensaje de ciudad{}, zona{}: {}",	newTopic.get_idCiudad(), newTopic.get_idZona(), message.toString());
+		}
+		else
+		{
+			if(topic.contains("ciudad1"))
+			{
+				newTopic.set_idCiudad(topics[0].replace("ciudad1", ""));
+				Log.logmqtt.info("Mensaje from city{}: {}", 
+						newTopic.get_idCiudad(), message.toString());
+			}
+		}
+    }
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) 

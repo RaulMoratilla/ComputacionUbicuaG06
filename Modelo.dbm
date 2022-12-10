@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="243,123" last-zoom="0.85" max-obj-count="7"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="236,364" last-zoom="0.9" max-obj-count="7"
 	 default-schema="public" default-owner="postgres">
 <database name="smartStreet" encoding="UTF8" lc-collate="Spanish_Spain.1252" lc-ctype="Spanish_Spain.1252" is-template="false" allow-conns="true">
 	<role name="postgres"/>
@@ -74,7 +74,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="MarcaTemporal" not-null="true">
 		<type name="timestamp" length="0"/>
 	</column>
-	<column name="UnidadMedida" not-null="true">
+	<column name="UnidadMedida">
 		<type name="character varying" length="50"/>
 	</column>
 	<column name="Valor" not-null="true">
@@ -125,13 +125,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="Tipo" not-null="true">
 		<type name="character varying" length="50"/>
 	</column>
-	<column name="MarcaTemporal">
+	<column name="MarcaTemporal" not-null="true">
 		<type name="timestamp" length="0"/>
 	</column>
-	<column name="UnidadMedida" not-null="true">
+	<column name="UnidadMedida">
 		<type name="character varying" length="50"/>
 	</column>
-	<column name="Valor">
+	<column name="Valor" not-null="true">
 		<type name="float" length="0"/>
 	</column>
 

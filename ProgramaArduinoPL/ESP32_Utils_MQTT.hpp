@@ -1,9 +1,12 @@
 
 void SuscribeMqtt() {
-  mqttClient.subscribe((char*)luzHum[0].topic);
-  mqttClient.subscribe((char*)luzTemp[0].topic);
-  mqttClient.subscribe((char*)luzLluvia[0].topic);
-  mqttClient.subscribe((char*)luzNoche[0].topic);
+  mqttClient.subscribe(luzHum[0].topic);
+  mqttClient.subscribe(luzTemp[0].topic);
+  mqttClient.subscribe(luzLluvia[0].topic);
+  mqttClient.subscribe("maqueta/maqueta/calle1/sensores/sLuz");
+  mqttClient.subscribe("maqueta/maqueta/calle1/sensores/movilidad");
+  mqttClient.subscribe(luzPasoCebra[0].topic);
+  mqttClient.subscribe(luzHorario[0].topic);
 }
 
 
@@ -19,7 +22,7 @@ void InitMqtt() {
 
 void ConnectMqtt() {
   while (!mqttClient.connected()) {
-    Serial.print("Starting MQTT connection...");
+    Serial.println("Starting MQTT connection...");
     if (mqttClient.connect(MQTT_CLIENT_NAME,"","")) {
       SuscribeMqtt();
     }

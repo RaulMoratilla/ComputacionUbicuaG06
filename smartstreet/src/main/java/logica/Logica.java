@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import basedatos.*;
@@ -344,5 +345,192 @@ public class Logica {
             conector.cerrarConexion(con);
         }
         return horasPunta;
+    }
+
+    //insertarSensorBD
+    public static void insertarMedicionBD(Topicos newTopic) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            String unidadMedida = null;
+            switch (newTopic.get_idSensores()) {
+                case "sHum":
+                    unidadMedida = "g/m3";
+                    break;
+                case "sTemp":
+                    unidadMedida = "ºC";
+                    break;
+                case "sLuz":
+                    unidadMedida = "cd";
+                    break;
+                case "movimiento":
+                    unidadMedida = "";
+                    break;
+                case "sLluvia":
+                    unidadMedida = "l/m2";
+                    break;
+                case "pasoPeatones":
+                    unidadMedida = "";
+                    break;
+                default:
+                    unidadMedida = "";
+                    break;
+            }
+
+            PreparedStatement ps = ConexionBD.InsertarRegistro(con);
+            ps.setInt(1, Integer.parseInt(newTopic.get_idCiudad()));
+            ps.setInt(2, Integer.parseInt(newTopic.get_idZona()));
+            ps.setString(3, newTopic.get_idCalle());
+            ps.setString(4, newTopic.get_idSensores());
+            Timestamp marcaTemporal = new Timestamp(System.currentTimeMillis());
+            ps.setTimestamp(5, marcaTemporal);
+            ps.setString(6, unidadMedida);
+            ps.setFloat(7, Float.parseFloat(newTopic.getValue()));
+            Log.log.info("Query=> {}", ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+    }
+    
+    //actualizarMedicionBD
+    public static void actualizarMedicionBD(Topicos newTopic) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            String unidadMedida = null;
+            switch (newTopic.get_idSensores()) {
+                case "sHum":
+                    unidadMedida = "g/m3";
+                    break;
+                case "sTemp":
+                    unidadMedida = "ºC";
+                    break;
+                case "sLuz":
+                    unidadMedida = "cd";
+                    break;
+                case "movimiento":
+                    unidadMedida = "";
+                    break;
+                case "sLluvia":
+                    unidadMedida = "l/m2";
+                    break;
+                case "pasoPeatones":
+                    unidadMedida = "";
+                    break;
+                default:
+                    unidadMedida = "";
+                    break;
+            }
+
+            PreparedStatement ps = ConexionBD.ActualizarSensor(con);
+            Timestamp marcaTemporal = new Timestamp(System.currentTimeMillis());
+            ps.setTimestamp(1, marcaTemporal);
+            ps.setString(2, unidadMedida);
+            ps.setFloat(3, Float.parseFloat(newTopic.getValue()));
+            
+            ps.setInt(4, Integer.parseInt(newTopic.get_idCiudad()));
+            ps.setInt(5, Integer.parseInt(newTopic.get_idZona()));
+            ps.setString(6, newTopic.get_idCalle());
+            ps.setString(7, newTopic.get_idSensores());
+            Log.log.info("Query=> {}", ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+    }
+
+    //obtenerNumeroMediciones
+    public static int obtenerNumeroMediciones() {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        int numeroMediciones = 0;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetNumMediciones(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            numeroMediciones = rs.getInt("NumMediciones");
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return numeroMediciones;
+    }
+
+    //insertarRegistroBD
+    public static void insertarRegistroBD(Topicos newTopic) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            String unidadMedida = null;
+            switch (newTopic.get_idSensores()) {
+                case "sHum":
+                    unidadMedida = "g/m3";
+                    break;
+                case "sTemp":
+                    unidadMedida = "ºC";
+                    break;
+                case "sLuz":
+                    unidadMedida = "cd";
+                    break;
+                case "movimiento":
+                    unidadMedida = "";
+                    break;
+                case "sLluvia":
+                    unidadMedida = "l/m2";
+                    break;
+                case "pasoPeatones":
+                    unidadMedida = "";
+                    break;
+                default:
+                    unidadMedida = "";
+                    break;
+            }
+
+            PreparedStatement ps = ConexionBD.InsertarRegistro(con);
+            ps.setInt(1, Integer.parseInt(newTopic.get_idCiudad()));
+            ps.setInt(2, Integer.parseInt(newTopic.get_idZona()));
+            ps.setString(3, newTopic.get_idCalle());
+            ps.setString(4, newTopic.get_idSensores());
+            Timestamp marcaTemporal = new Timestamp(System.currentTimeMillis());
+            ps.setTimestamp(5, marcaTemporal);
+            ps.setString(6, unidadMedida);
+            ps.setFloat(7, Float.parseFloat(newTopic.getValue()));
+            Log.log.info("Query=> {}", ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
     }
 }
