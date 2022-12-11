@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 import basedatos.*;
 
@@ -564,6 +563,30 @@ public class Logica {
             con = conector.crearConexion(true);
             Log.log.debug("Database Connected");
             PreparedStatement ps = ConexionBD.GetNumMediciones(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ResultSet rs = ps.executeQuery();
+            numeroMediciones = rs.getInt("NumMediciones");
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+        return numeroMediciones;
+    }
+
+    public static int obtenerNumeroMedicionesTipo(String tipo) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        int numeroMediciones = 0;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.GetNumMedicionesTipo(con);
+            ps.setString(1, tipo);
             Log.log.info("Query=> {}", ps.toString());
             ResultSet rs = ps.executeQuery();
             numeroMediciones = rs.getInt("NumMediciones");

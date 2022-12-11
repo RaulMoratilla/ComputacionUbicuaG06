@@ -170,6 +170,10 @@ public class ConexionBD {
     public static PreparedStatement GetNumMediciones(Connection con) {
         return getStatement(con, "SELECT COUNT(*) as NumMediciones FROM public.\"Sensor\"");
     }
+
+    public static PreparedStatement GetNumMedicionesTipo(Connection con) {
+        return getStatement(con, "SELECT COUNT(*) as NumMediciones FROM public.\"Sensor\" WHERE \"Tipo\"=?");
+    }
     
     /*get registros movimiento ultima semana*/
 
