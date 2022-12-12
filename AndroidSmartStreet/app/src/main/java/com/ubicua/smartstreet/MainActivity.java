@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(MainActivity.this, SelectCalleActivity.class);
-                startActivity(i);
+                setContentView(R.layout.activity_select_calle);
+                //Intent i = new Intent(MainActivity.this, SelectCalleActivity.class);
+                //startActivity(i);
+
             }
         }, TIME_OUT);
 
