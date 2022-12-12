@@ -1,23 +1,23 @@
 package com.ubicua.smartstreet.Data;
 
 public class Calle {
-    private int id, codigoCiudadZona;
+    private int idZona, codigoCiudadZona;
     String nombre;
 
     public Calle(int id, int codigoCiudadZona, String nombre) {
-        this.id = id;
+        this.idZona = id;
         this.codigoCiudadZona = codigoCiudadZona;
         this.nombre = nombre;
     }
 
     public int getId()
     {
-        return id;
+        return idZona;
     }
 
     public void setId(int id)
     {
-        this.id = id;
+        this.idZona = id;
     }
 
     public int getCodigoCiudadZona()

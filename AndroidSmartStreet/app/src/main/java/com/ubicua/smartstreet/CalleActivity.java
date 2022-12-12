@@ -9,10 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -23,6 +19,10 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class CalleActivity extends AppCompatActivity {
 
@@ -41,17 +41,7 @@ public class CalleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_station);
 
-        //Init the TextViews
-        this.tvstationname = this.findViewById(R.id.stationname);
-        this.tvstationinfo = this.findViewById(R.id.stationInfo);
-
-        //Get the value of the station id from the previous activity
-        station = getIntent().getStringExtra("stationId");
-        stationName = getIntent().getStringExtra("stationName");
-
-        tvstationname.setText(stationName);
 
         //Configure the mqtt client who will send the notifications about the selected station
         String clientId = MqttClient.generateClientId();
@@ -159,3 +149,8 @@ public class CalleActivity extends AppCompatActivity {
     }
 }
 
+
+
+//TODO:Hacer algo que lea la información de la calle por http hay que hacer que se recargue
+
+//TODO load calle, en se encarga de recibir y actualizar algo del servidor

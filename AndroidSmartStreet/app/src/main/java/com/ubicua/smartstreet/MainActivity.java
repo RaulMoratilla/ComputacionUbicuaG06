@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Intent i = new Intent(MainActivity.this, SelectCalleActivity.class);
                 startActivity(i);
-                finish();
             }
         }, TIME_OUT);
+
     }
 }

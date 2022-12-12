@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven{url "http://repo.eclipse.org/content/repositories/paho-realeses/"
+            allowInsecureProtocol = true}
+
     }
 }
 rootProject.name = "SmartStreet"

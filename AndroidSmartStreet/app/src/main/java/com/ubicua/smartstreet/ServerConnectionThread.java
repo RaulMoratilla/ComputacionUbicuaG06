@@ -35,11 +35,11 @@ class ServerConnectionThread extends Thread{
             Log.d(tag, "get json: " + response);
             JSONArray jsonarray = new JSONArray(response);
             //Read Responses and fill the spinner
-            if(urlStr.contains("GetCities")){
-                activity.setListCities(jsonarray);
+            if(urlStr.contains("GetZonasCiudad")){
+                activity.setListZonas(jsonarray);
             }else{
-                if (urlStr.contains("GetStationsCity")){
-                    activity.setListStations(jsonarray);
+                if (urlStr.contains("GetCallesZona")){
+                    activity.setListCalles(jsonarray);
                 }
             }
         }
@@ -47,6 +47,8 @@ class ServerConnectionThread extends Thread{
             e.printStackTrace();
         }
     }
+
+
     //Get the input strean and convert into String
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
