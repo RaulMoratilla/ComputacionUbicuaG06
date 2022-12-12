@@ -30,12 +30,14 @@ public class HiloAlertaHorarioConf extends Thread {
             while (!horariosConflictivosCopia.isEmpty()) {
                 for (HoraPunta h: horariosConflictivosCopia) {
                     if (h.getHoraInicio().toLocalTime().isBefore(LocalTime.now())) {
-                        String topico = _ciudad.getNombre() + "/" + _zona.getNombre() + "/" + h.getNombreCalle() + "/sensores/horarioConflictivo";
-                        MQTTPublisher.publish(new MQTTBroker(), topico, "6-1-0");
+                        String topico = _ciudad.getNombre() + "/" + _zona.getNombre() + "/calles/" + h.getNombreCalle() + "/horarioConflictivo";
+                        MQTTPublisher.publish(new MQTTBroker(), topico, "6-1");
+                        Log.logmqtt.info("Se publicó en el topico " + topico + " el mensaje 6-1");
                     }
                     else if (h.getHoraFin().toLocalTime().isBefore(LocalTime.now())) {
-                        String topico = _ciudad.getNombre() + "/" + _zona.getNombre() + "/" + h.getNombreCalle() + "/sensores/horarioConflictivo";
-                        MQTTPublisher.publish(new MQTTBroker(), topico, "6-0-0");
+                        String topico = _ciudad.getNombre() + "/" + _zona.getNombre() + "/calles/" + h.getNombreCalle() + "/horarioConflictivo";
+                        MQTTPublisher.publish(new MQTTBroker(), topico, "6-0");
+                        Log.logmqtt.info("Se publicó en el topico " + topico + " el mensaje 6-0");
                         horariosConflictivosCopia.remove(h);
                     }
                 }

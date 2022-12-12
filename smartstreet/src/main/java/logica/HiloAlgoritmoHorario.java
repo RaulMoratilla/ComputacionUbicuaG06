@@ -47,7 +47,7 @@ public class HiloAlgoritmoHorario extends Thread{
             for (ArrayList<Time> hora : horarioConflictivoNuevo) {
                 HoraPunta horaPunta = new HoraPunta(calle.getCodigoCiudad(), calle.getCodigoZona(), calle.getNombre(), hora.get(0), hora.get(1), false);
                 horariosConflictivosZona.add(horaPunta);
-                Logica.insertarHoraPuntaNoFija(calle.getCodigoCiudad(), calle.getCodigoZona(), calle.getNombre(), hora.get(0), hora.get(1), false);
+                Logica.insertarHoraPunta(horaPunta);
             }
         }
 

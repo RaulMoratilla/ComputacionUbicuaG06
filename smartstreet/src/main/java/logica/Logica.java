@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -14,6 +13,51 @@ import basedatos.*;
 
 public class Logica {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-aa HH:MM:ss");
+
+    //insertarCiudad
+    public static void insertarCiudadBD(int codigoCiudad) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.InsertarCiudad(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ps.setInt(1, codigoCiudad);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+    }
+
+    public static void insertarZonaBD(int codigoCiudad) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+
+            PreparedStatement ps = ConexionBD.InsertarCiudad(con);
+            Log.log.info("Query=> {}", ps.toString());
+            ps.setInt(1, codigoCiudad);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
+    }
 
     public static Ciudad getCiudadBD(int codigoCiudad)
 	{
@@ -27,8 +71,8 @@ public class Logica {
 			Log.log.debug("Database Connected");
 			
 			PreparedStatement ps = ConexionBD.GetCiudades(con);
-			Log.log.info("Query=> {}", ps.toString());
             ps.setInt(1, codigoCiudad);
+			Log.log.info("Query=> {}", ps.toString());
 			ResultSet rs = ps.executeQuery();
 			ciudad = new Ciudad(rs.getInt("Codigo"), rs.getString("Nombre"), rs.getString("Pais"));
 		} catch (SQLException e)
@@ -489,7 +533,7 @@ public class Logica {
             Log.log.info("Query=> {}", ps.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
-            Log.log.error("Error: {}", e);
+            Log.log.error("No se ha podido realizar la inserción: {}", e);
         } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
         } catch (Exception e) {
@@ -544,7 +588,7 @@ public class Logica {
             Log.log.info("Query=> {}", ps.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
-            Log.log.error("Error: {}", e);
+            Log.log.error("No se ha podido actualizar la medicion: {}", e);
         } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
         } catch (Exception e) {
@@ -646,7 +690,7 @@ public class Logica {
             Log.log.info("Query=> {}", ps.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
-            Log.log.error("Error: {}", e);
+            Log.log.error("No se ha podido insertar el registro: {}", e);
         } catch (NullPointerException e) {
             Log.log.error("Error: {}", e);
         } catch (Exception e) {
@@ -743,7 +787,29 @@ public class Logica {
         }
     }
 
-    public static void insertarHoraPuntaNoFija(int codigoCiudad, int codigoZona, String nombre, Time time, Time time2,
-            boolean b) {
+    //insertarHoraPunta
+    public static void insertarHoraPunta(HoraPunta horaPunta) {
+        ConexionBD conector = new ConexionBD();
+        Connection con = null;
+        try {
+            con = conector.crearConexion(true);
+            Log.log.debug("Database Connected");
+            PreparedStatement ps = ConexionBD.InsertarHorasPunta(con);
+            ps.setInt(1, horaPunta.getCodigoCiudadCalle());
+            ps.setInt(2, horaPunta.getIdZonaCalle());
+            ps.setTime(4, horaPunta.getHoraInicio());
+            ps.setTime(5, horaPunta.getHoraFin());
+            ps.setBoolean(6, horaPunta.isFijo());
+            Log.log.info("Query=> {}", ps.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Log.log.error("Error: {}", e);
+        } catch (NullPointerException e) {
+            Log.log.error("Error: {}", e);
+        } catch (Exception e) {
+            Log.log.error("Error:{}", e);
+        } finally {
+            conector.cerrarConexion(con);
+        }
     }
 }

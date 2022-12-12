@@ -26,7 +26,7 @@ public class InicializacionProyecto implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce)
 	{
 		try {
-            String [] cmd = {"mosquitto", "-c", "mosquitto.com"};
+            String [] cmd = {"systemctl", "start", "mosquitto.service"};
             Runtime.getRuntime().exec(cmd);
         } catch (Exception e) {
             e.printStackTrace();
