@@ -1,4 +1,3 @@
-
 package mqtt;
 
 import java.sql.Connection;
@@ -76,14 +75,6 @@ public class MQTTSuscriber implements MqttCallback
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception 
 	{
-
-		/*
-		 *
-		 * AVISAR A RAUL PARA EL CAMBIO DE NOMBRES DE LOS TOPICS
-		 * Puede cambiar a ciudad1 y zona1
-		 * Cambiar primer pasoCebra por ultrasonido
-		 *  
-		 */
 		Log.logmqtt.info("{}: {}", topic, message.toString());
 		String[] topics = topic.split("/");
 		Topicos newTopic = new Topicos();
@@ -95,7 +86,7 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idZona(topics[1].replace("zonaMaqueta", ""));
 			newTopic.set_idCalle(topics[2].replace("calle", ""));
 			newTopic.set_idPasoP(topics[5].replace("pasoCebra", ""));
-			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor {}: {}", 
 			           
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
 			
@@ -113,7 +104,7 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idZona(topics[1].replace("zonaMaqueta", ""));
 			newTopic.set_idCalle(topics[2].replace("calle", ""));
 			newTopic.set_idHoraConf(topics[4]);
-			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, horarioConflictivo{}: {}", 
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, horarioConflictivo {}: {}", 
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
 		}
 		else if(topic.contains("humedad") || topic.contains("movimiento") || topic.contains("luz") || topic.contains("temperatura") || topic.contains("lluvia"))
@@ -124,7 +115,7 @@ public class MQTTSuscriber implements MqttCallback
 			newTopic.set_idZona(topics[1].replace("zonaMaqueta", ""));
 			newTopic.set_idCalle(topics[2].replace("calle", ""));
 			newTopic.set_idSensores(topics[4]);
-			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor{}: {}", 
+			Log.logmqtt.info("Mensaje from ciudad{}, zona{}, calle{}, sensor {}: {}", 
 					newTopic.get_idCiudad(), newTopic.get_idZona(), newTopic.get_idCalle(), newTopic.get_idSensores(), message.toString());
 
 			if (Logica.obtenerNumeroMedicionesTipo(tipo)==0){

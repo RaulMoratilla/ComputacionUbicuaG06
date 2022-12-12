@@ -25,6 +25,13 @@ public class InicializacionProyecto implements ServletContextListener {
 	 */
 	public void contextInitialized(ServletContextEvent sce)
 	{
+		try {
+            String [] cmd = {"mosquitto", "-c", "mosquitto.com"};
+            Runtime.getRuntime().exec(cmd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 		Log.log.info("-->Suscribe Topics<--");
 		MQTTBroker broker = new MQTTBroker();
 		MQTTSuscriber suscriber = new MQTTSuscriber();
