@@ -6,127 +6,112 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".MainActivity">
 
-<TextView
-    android:id="@+id/textViewHora"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="260dp"
-    android:layout_marginTop="100dp"
-    android:text="Hora"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
-<TextView
-    android:id="@+id/textViewCalle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="100dp"
-    android:text="Selecciona la calle"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="218dp"
+        android:layout_height="246dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
 
-<Spinner
-    android:id="@+id/spinnerCalle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="16dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewCalle" />
+    <TextView
+        android:id="@+id/textViewCalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="288dp"
+        android:layout_marginTop="24dp"
+        android:text="Selecciona la calle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerZona" />
 
+    <Spinner
+        android:id="@+id/spinnerCalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="352dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCalle" />
 
-<TextView
-    android:id="@+id/textViewZona"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginTop="28dp"
-    android:text="Selecciona la zona"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewZona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="28dp"
+        android:text="Selecciona la zona"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<Spinner
-    android:id="@+id/spinnerZona"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="16dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewZona" />
+    <Spinner
+        android:id="@+id/spinnerZona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="352dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewZona" />
 
-<Button
-    android:id="@+id/buttonCalle"
-    android:layout_width="118dp"
-    android:layout_height="46dp"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="16dp"
-    android:text="Ver calle"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/spinnerCalle" />
+    <Button
+        android:id="@+id/buttonCalle"
+        android:layout_width="149dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="256dp"
+        android:layout_marginTop="28dp"
+        android:text="Ver calle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCalle" />
 
-<TextView
-    android:id="@+id/textViewTime"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="308dp"
-    android:layout_marginTop="100dp"
-    android:text="TextView"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewClima"
+        android:layout_width="401dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="Datos sobre el clima"
+        android:textColor="#3F51B5"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalle" />
 
-<Button
-    android:id="@+id/buttonRecargar"
-    android:layout_width="118dp"
-    android:layout_height="46dp"
-    android:layout_marginStart="260dp"
-    android:layout_marginTop="16dp"
-    android:text="Recargar"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/spinnerCalle" />
+    <TextView
+        android:id="@+id/textViewFranja"
+        android:layout_width="401dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="Franjas horarias clonfictivas"
+        android:textColor="#3F51B5"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textHumedad" />
 
-<TextView
-    android:id="@+id/textViewClima"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="36dp"
-    android:textColor="#3F51B5"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    android:text="Datos sobre el clima:"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/buttonCalle" />
-
-<TextView
-    android:id="@+id/textViewFranja"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="28dp"
-    android:layout_marginTop="36dp"
-    android:text="Franjas horarias clonfictivas:"
-    android:textColor="#3F51B5"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textHumedad" />
-
-<TextView
-    android:id="@+id/textTemp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="52dp"
-    android:layout_marginTop="24dp"
-    android:text="Temperatura:"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewClima" />
+    <TextView
+        android:id="@+id/textTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="24dp"
+        android:text="Temperatura:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClima" />
 
     <TextView
         android:id="@+id/textLluvia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="24dp"
         android:text="Clima:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTemp" />
@@ -135,48 +120,57 @@ tools:context=".MainActivity">
         android:id="@+id/textHumedad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="24dp"
         android:text="Hemadad:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLluvia" />
 
     <TextView
         android:id="@+id/textFranja1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:text="Franja1:"
+        android:layout_width="403dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="Franja1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
 
+
     <TextView
-    android:id="@+id/textFranja2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="52dp"
-    android:layout_marginTop="36dp"
-    android:text="Franja2:"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textFranja1" />
+        android:id="@+id/textFranja2"
+        android:layout_width="403dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="Franja2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja1" />
 
-<TextView
-    android:id="@+id/textFranja3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="52dp"
-    android:layout_marginTop="36dp"
-    android:text="Franja3:"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textFranja2" />
-
+    <TextView
+        android:id="@+id/textFranja3"
+        android:layout_width="403dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="Franja3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja2" />
 
     <TextView
         android:id="@+id/textTemperatura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
+        android:layout_marginStart="208dp"
         android:layout_marginTop="24dp"
         android:text="Escoja una calle"
         app:layout_constraintStart_toStartOf="parent"
@@ -186,8 +180,8 @@ tools:context=".MainActivity">
         android:id="@+id/textLloviendo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
         android:text="Escoja una calle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTemperatura" />
@@ -196,8 +190,8 @@ tools:context=".MainActivity">
         android:id="@+id/textHumedo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
         android:text="Escoja una calle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLloviendo" />

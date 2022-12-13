@@ -88,8 +88,9 @@ public class SelectCalleActivity extends AppCompatActivity {
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), "tcp://172.20.10.10:1883", clientId);
 
-        arrayZona.add("zona1");
-        arrayCalle.add("calle1");
+        //TODO
+        //arrayZona.add("zona1");
+        //arrayCalle.add("calle1");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_calle);
@@ -98,7 +99,6 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.spinnerCalle = this.findViewById(R.id.spinnerCalle);
         this.spinnerZona = this.findViewById(R.id.spinnerZona);
         this.buttonCalle = this.findViewById(R.id.buttonCalle);
-        this.buttonRecargar = this.findViewById(R.id.buttonRecargar);
         this.temp=this.findViewById(R.id.textTemperatura);
         temp.setTextColor(Color.WHITE);
         this.lluvi=this.findViewById(R.id.textLloviendo);
@@ -119,10 +119,11 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.arrayZona = new ArrayList<>();
 
         //Initial load of cities and stations
-        loadZonas();
-        if(arrayZona.size()>0) {
-           spinnerZona.setSelection(0);
-        }
+        //TODO
+        //loadZonas();
+        //if(arrayZona.size()>0) {
+        //   spinnerZona.setSelection(0);
+        //}
         //Add action when the spinner of the cities changes
 
         spinnerZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -132,12 +133,16 @@ public class SelectCalleActivity extends AppCompatActivity {
                 Log.i(tag, "Zona seleccionada:" + listZona.get(i).getNombre());
 
                 //Get the list of stations of the selected city and set them into the spinner
-                loadCalles(idZona);
+                //loadCalles(idZona);
                 spinnerCalle.setAdapter(new ArrayAdapter<String>
                         (context, android.R.layout.simple_spinner_item, arrayCalle));
+                //TODO
+                /*
                 if(arrayCalle.size()>0) {
                     spinnerCalle.setSelection(0);
                 }
+
+                 */
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
