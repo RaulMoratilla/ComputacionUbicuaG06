@@ -22,7 +22,7 @@ tools:context=".MainActivity">
         android:id="@+id/textViewCalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="288dp"
+        android:layout_marginStart="260dp"
         android:layout_marginTop="24dp"
         android:text="Selecciona la calle"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@ tools:context=".MainActivity">
         android:id="@+id/spinnerCalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="352dp"
+        android:layout_marginStart="332dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCalle" />
@@ -41,7 +41,7 @@ tools:context=".MainActivity">
         android:id="@+id/textViewZona"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="284dp"
+        android:layout_marginStart="264dp"
         android:layout_marginTop="28dp"
         android:text="Selecciona la zona"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@ tools:context=".MainActivity">
         android:id="@+id/spinnerZona"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="352dp"
+        android:layout_marginStart="328dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewZona" />
@@ -60,18 +60,18 @@ tools:context=".MainActivity">
         android:id="@+id/buttonCalle"
         android:layout_width="149dp"
         android:layout_height="45dp"
-        android:layout_marginStart="256dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="24dp"
         android:text="Ver calle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCalle" />
 
     <TextView
         android:id="@+id/textViewClima"
-        android:layout_width="401dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="377dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:ellipsize="middle"
         android:focusable="auto"
         android:gravity="center|center_vertical"
@@ -127,44 +127,198 @@ tools:context=".MainActivity">
         app:layout_constraintTop_toBottomOf="@+id/textLluvia" />
 
     <TextView
-        android:id="@+id/textFranja1"
-        android:layout_width="403dp"
-        android:layout_height="24dp"
+        android:id="@+id/textFranja0"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="24dp"
         android:ellipsize="middle"
         android:focusable="auto"
         android:gravity="center|center_vertical"
-        android:text="Franja1"
+        android:text="00:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
 
 
     <TextView
+        android:id="@+id/textFranja1"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="01:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
+
+    <TextView
         android:id="@+id/textFranja2"
-        android:layout_width="403dp"
-        android:layout_height="24dp"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="02:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
+
+    <TextView
+        android:id="@+id/textFranja3"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="03:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
+
+    <TextView
+        android:id="@+id/textFranja4"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="04:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
+
+    <TextView
+        android:id="@+id/textFranja5"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="05:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFranja" />
+
+    <TextView
+        android:id="@+id/textFranja6"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="24dp"
         android:ellipsize="middle"
         android:focusable="auto"
         android:gravity="center|center_vertical"
-        android:text="Franja2"
+        android:text="06:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja0" />
+
+    <TextView
+        android:id="@+id/textFranja12"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="12:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja6" />
+
+    <TextView
+        android:id="@+id/textFranja7"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="07:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFranja1" />
 
     <TextView
-        android:id="@+id/textFranja3"
-        android:layout_width="403dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="4dp"
+        android:id="@+id/textFranja8"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="140dp"
         android:layout_marginTop="24dp"
         android:ellipsize="middle"
         android:focusable="auto"
         android:gravity="center|center_vertical"
-        android:text="Franja3"
+        android:text="08:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFranja2" />
+
+    <TextView
+        android:id="@+id/textFranja9"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="09:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja3" />
+
+    <TextView
+        android:id="@+id/textFranja10"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="10:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja4" />
+
+    <TextView
+        android:id="@+id/textFranja11"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="11:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja5" />
+    <TextView
+        android:id="@+id/textFranja13"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="13:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja7" />
+    <TextView
+        android:id="@+id/textFranja14"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="14:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja8" />
 
     <TextView
         android:id="@+id/textTemperatura"

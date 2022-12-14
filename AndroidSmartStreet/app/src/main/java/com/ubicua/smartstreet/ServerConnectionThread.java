@@ -26,6 +26,8 @@ class ServerConnectionThread extends Thread{
     public void run()    {
         String response = "";
         try {
+            System.out.println("Corriendo");
+
             URL url = new URL(urlStr);
             HttpURLConnection urlConnection = null;
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -35,12 +37,17 @@ class ServerConnectionThread extends Thread{
             Log.d(tag, "get json: " + response);
             JSONArray jsonarray = new JSONArray(response);
             //Read Responses and fill the spinner
+
+            System.out.println("Corriendo2");
             if(urlStr.contains("GetZonasCiudad")){
                 activity.setListZonas(jsonarray);
-            }else{
-                if (urlStr.contains("GetCallesZona")){
+            }
+            else if(urlStr.contains("GetCallesZona"))
+            {
                     activity.setListCalles(jsonarray);
-                }
+            }
+            else if(urlStr.contains("GetSensoresCalle")){
+                    activity.setJsonValores(jsonarray);
             }
         }
         catch (IOException | JSONException e) {

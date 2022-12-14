@@ -4,11 +4,11 @@ import java.sql.Timestamp;
 
 public class Sensor {
     int codigoCiudadZonaCalle, idZonaCalle;
-    float valor;
+    double valor;
     String nombreCalle, tipo, unidadMedida;
     Timestamp marcaTemporal;
 
-    public Sensor(int codigoCiudadZonaCalle, int idZonaCalle, float valor, String nombreCalle, String tipo, String unidadMedida, Timestamp marcaTemporal) {
+    public Sensor(int codigoCiudadZonaCalle, int idZonaCalle, double valor, String nombreCalle, String tipo, String unidadMedida) {
         this.codigoCiudadZonaCalle = codigoCiudadZonaCalle;
         this.idZonaCalle = idZonaCalle;
         this.valor = valor;
@@ -34,7 +34,7 @@ public class Sensor {
         this.idZonaCalle = idZonaCalle;
     }
 
-    public float getValor() {
+    public double getValor() {
         return valor;
     }
 
@@ -72,5 +72,18 @@ public class Sensor {
 
     public void setMarcaTemporal(Timestamp marcaTemporal) {
         this.marcaTemporal = marcaTemporal;
+    }
+
+    @Override
+    public String toString() {
+        return "Sensor{" +
+                "codigoCiudadZonaCalle=" + codigoCiudadZonaCalle +
+                ", idZonaCalle=" + idZonaCalle +
+                ", valor=" + valor +
+                ", nombreCalle='" + nombreCalle + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", unidadMedida='" + unidadMedida + '\'' +
+                ", marcaTemporal=" + marcaTemporal +
+                '}';
     }
 }

@@ -21,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.ubicua.smartstreet.Data.Calle;
 import com.ubicua.smartstreet.Data.Zona;
+import com.ubicua.smartstreet.Data.Sensor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,6 +64,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     private TextView f2;
     private TextView f3;
     ArrayList<String> arrayCalle;
+    ArrayList<String> arrayValores;
     private ArrayList<Calle> listCalle;
     ArrayList<String> arrayZona;
     private ArrayList<Zona> listZona;
@@ -76,7 +78,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     private String stationName = "";
     private TextView tvstationname;
     private TextView tvstationinfo;
-
+    private JSONArray jsonValores;
 
     public SelectCalleActivity() {
         super();
@@ -87,10 +89,6 @@ public class SelectCalleActivity extends AppCompatActivity {
 
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), "tcp://172.20.10.10:1883", clientId);
-
-        //TODO
-        //arrayZona.add("zona1");
-        //arrayCalle.add("calle1");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_calle);
@@ -103,27 +101,29 @@ public class SelectCalleActivity extends AppCompatActivity {
         temp.setTextColor(Color.WHITE);
         this.lluvi=this.findViewById(R.id.textLloviendo);
         lluvi.setTextColor(Color.WHITE);
-        this.humedo=this.findViewById(R.id.textLloviendo);
+        this.humedo=this.findViewById(R.id.textHumedo);
         humedo.setTextColor(Color.WHITE);
         this.f1=this.findViewById(R.id.textFranja1);
-        f1.setTextColor(Color.WHITE);
         this.f2=this.findViewById(R.id.textFranja2);
-        f2.setTextColor(Color.WHITE);
         this.f3=this.findViewById(R.id.textFranja3);
-        f3.setTextColor(Color.WHITE);
 
         //init the arraylist to incorpore the information
         this.listCalle = new ArrayList<>();
         this.listZona = new ArrayList<>();
         this.arrayCalle = new ArrayList<>();
         this.arrayZona = new ArrayList<>();
+        this.arrayValores = new ArrayList<>();
+
+        //TODO
+        //arrayZona.add("zona1");
+        //arrayCalle.add("calle1");
 
         //Initial load of cities and stations
         //TODO
-        //loadZonas();
-        //if(arrayZona.size()>0) {
-        //   spinnerZona.setSelection(0);
-        //}
+        loadZonas();
+        if(arrayZona.size()>0) {
+           spinnerZona.setSelection(0);
+        }
         //Add action when the spinner of the cities changes
 
         spinnerZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -133,16 +133,14 @@ public class SelectCalleActivity extends AppCompatActivity {
                 Log.i(tag, "Zona seleccionada:" + listZona.get(i).getNombre());
 
                 //Get the list of stations of the selected city and set them into the spinner
-                //loadCalles(idZona);
+                loadCalles(idZona);
                 spinnerCalle.setAdapter(new ArrayAdapter<String>
                         (context, android.R.layout.simple_spinner_item, arrayCalle));
                 //TODO
-                /*
+
                 if(arrayCalle.size()>0) {
                     spinnerCalle.setSelection(0);
                 }
-
-                 */
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -229,7 +227,7 @@ public class SelectCalleActivity extends AppCompatActivity {
                     @Override
                     public void deliveryComplete(IMqttDeliveryToken token) {}
                 });
-                cambiarTextos();
+                cambiar(idCalle);
             }
         });
     }
@@ -238,7 +236,7 @@ public class SelectCalleActivity extends AppCompatActivity {
 
     //Search the cities and fill the spinner with the information
     private void loadZonas(){
-        String url = "http://172.20.10.10:8080/smartstreet/GetZonasCiudad?codigoCiudad=ciudad1";
+        String url = "http://192.168.210.14:8080/smartstreet/GetZonasCiudad?codigoCiudad=1";
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
         try {
             thread.join();
@@ -248,7 +246,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     //Search the stations of the selected city and fill the spinner with the information
     private void loadCalles(final int calleId){
 
-        String url = "http://172.20.10.10:8080/smartstreet/GetCallesZona?idZona="+calleId;
+        String url = "http://192.168.210.14:8080/smartstreet/GetCallesZona?codigoCiudad=1&idZona="+calleId;
         this.listCalle = new ArrayList<>();
         this.arrayCalle = new ArrayList<>();
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
@@ -262,10 +260,10 @@ public class SelectCalleActivity extends AppCompatActivity {
         try {
             for (int i = 0; i < jsonZonas.length(); i++) {
                 JSONObject jsonobject = jsonZonas.getJSONObject(i);
-                listZona.add(new Zona(jsonobject.getInt("id"),
-                        jsonobject.getInt("codigoCiudad"),
-                        jsonobject.getString("nombre")));
-                arrayZona.add(jsonobject.getString("nombre"));
+                listZona.add(new Zona(jsonobject.getInt("_id"),
+                        jsonobject.getInt("_codigoCiudad"),
+                        jsonobject.getString("_nombre")));
+                arrayZona.add(jsonobject.getString("_nombre"));
             }
             spinnerZona.setAdapter(new ArrayAdapter<String>(context,
                     android.R.layout.simple_spinner_item, arrayZona));
@@ -280,24 +278,73 @@ public class SelectCalleActivity extends AppCompatActivity {
         try {
             for (int i = 0; i < jsonZonas.length(); i++) {
                 JSONObject jsonobject = jsonZonas.getJSONObject(i);
-                listCalle.add(new Calle(jsonobject.getInt("idZona"),
-                        jsonobject.getInt("codigoCiudadZona"),
-                        jsonobject.getString("nombre")));
-                arrayCalle.add(jsonobject.getString("nombre"));
-                Log.e(tag,"Calle " + jsonobject.getString("nombre"));
+                listCalle.add(new Calle(jsonobject.getInt("_idZona"),
+                        jsonobject.getInt("_codigoCiudadZona"),
+                        jsonobject.getString("_nombre")));
+                arrayCalle.add(jsonobject.getString("_nombre"));
+                Log.e(tag,"Calle " + jsonobject.getString("_nombre"));
             }
         }catch (Exception e){
             Log.e(tag,"Error: " + e);
         }
     }
 
-    public void cambiarTextos(){
+    public void cargarValores(JSONArray jsonValores){
+        Log.e(tag,"Cargando los valores " + jsonValores);
+        ArrayList<Sensor> array =new ArrayList<>();
+        double valor;
+        String tipo;
+        try {
+            if (jsonValores!=null){
+                for (int i = 0; i < jsonValores.length(); i++) {
+                    JSONObject jsonobject = jsonValores.getJSONObject(i);
+                    array.add(new Sensor(jsonobject.getInt("_codigoCiudadZonaCalle"),
+                            jsonobject.getInt("_idZonaCalle"),
+                            jsonobject.getDouble("_valor"),
+                            jsonobject.getString("_nombreCalle"),
+                            jsonobject.getString("_tipo"),
+                            jsonobject.getString("_unidadMedida")));
+                    Log.e(tag,array.get(i).getTipo());
+
+                    tipo=jsonobject.getString("_tipo");
+                    valor=jsonobject.getDouble("_valor");
+                    if (tipo.equals("temperatura")){
+                        temp.setText(String.valueOf(valor)+"ºC");
+                    }else if(tipo.equals("humedad")){
+                        humedo.setText(String.valueOf(valor)+"%");
+                    }else if (tipo.equals("lluvia")){
+                        if (valor==0){
+                            lluvi.setText("No está lloviendo");
+                        }else{
+                            lluvi.setText("Está lloviendo");
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            Log.e(tag,"Error: " + e);
+        }
+    }
+    public void cambiar(int idCalle){
+        String url = "http://192.168.210.14:8080/smartstreet/GetSensoresCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle=calle"+idCalle;
+        ServerConnectionThread thread = new ServerConnectionThread(this, url);
+        try {
+            thread.join();
+        }catch (InterruptedException e){}
+        cargarValores(jsonValores);
+        temp.setTextColor(Color.GRAY);
+        lluvi.setTextColor(Color.GRAY);
+        humedo.setTextColor(Color.GRAY);
         f1.setText("7:30-8:30");
         f1.setTextColor(Color.RED);
         f2.setText("14:00-15:00");
         f2.setTextColor(Color.RED);
         f3.setText("19:00-20:00");
         f3.setTextColor(Color.GREEN);
+    }
+
+    public void setJsonValores(JSONArray jsonValores) {
+        this.jsonValores=jsonValores;
     }
 
     //MQTT topics to suscribe the application
