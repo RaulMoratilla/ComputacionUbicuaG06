@@ -3,10 +3,10 @@ package com.ubicua.smartstreet.Data;
 import java.sql.Timestamp;
 
 public class Sensor {
-    int codigoCiudadZonaCalle, idZonaCalle;
-    double valor;
-    String nombreCalle, tipo, unidadMedida;
-    Timestamp marcaTemporal;
+    private int codigoCiudadZonaCalle, idZonaCalle;
+    private double valor;
+    private String nombreCalle, tipo, unidadMedida;
+    private Timestamp marcaTemporal;
 
     public Sensor(int codigoCiudadZonaCalle, int idZonaCalle, double valor, String nombreCalle, String tipo, String unidadMedida) {
         this.codigoCiudadZonaCalle = codigoCiudadZonaCalle;

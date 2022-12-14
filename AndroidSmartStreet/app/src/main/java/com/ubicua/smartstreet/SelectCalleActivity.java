@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.ubicua.smartstreet.Data.Calle;
+import com.ubicua.smartstreet.Data.HoraPunta;
 import com.ubicua.smartstreet.Data.Zona;
 import com.ubicua.smartstreet.Data.Sensor;
 
@@ -43,6 +45,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SelectCalleActivity extends AppCompatActivity {
@@ -60,6 +64,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     private TextView temp;
     private TextView lluvi;
     private TextView humedo;
+    private TextView f0;
     private TextView f1;
     private TextView f2;
     private TextView f3;
@@ -83,10 +88,12 @@ public class SelectCalleActivity extends AppCompatActivity {
     private TextView f21;
     private TextView f22;
     private TextView f23;
+    private ImageView imagen;
 
     ArrayList<String> arrayCalle;
     ArrayList<String> arrayValores;
     private ArrayList<Calle> listCalle;
+    private ArrayList<HoraPunta> arrayHoras;
     ArrayList<String> arrayZona;
     private ArrayList<Zona> listZona;
     private final Context context;
@@ -145,6 +152,7 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.humedo=this.findViewById(R.id.textHumedo);
         humedo.setTextColor(Color.WHITE);
 
+        this.f0=this.findViewById(R.id.textFranja0);
         this.f1=this.findViewById(R.id.textFranja1);
         this.f2=this.findViewById(R.id.textFranja2);
         this.f3=this.findViewById(R.id.textFranja3);
@@ -169,6 +177,8 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.f22=this.findViewById(R.id.textFranja22);
         this.f23=this.findViewById(R.id.textFranja23);
 
+        this.imagen=this.findViewById(R.id.imageView);
+
 
         //init the arraylist to incorpore the information
         this.listCalle = new ArrayList<>();
@@ -176,6 +186,7 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.arrayCalle = new ArrayList<>();
         this.arrayZona = new ArrayList<>();
         this.arrayValores = new ArrayList<>();
+        this.arrayHoras = new ArrayList<>();
 
         loadZonas();
         if(arrayZona.size()>0) {
@@ -228,6 +239,31 @@ public class SelectCalleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(tag, "Boton presionado");
 
+                f0.setTextColor(Color.GRAY);
+                f1.setTextColor(Color.GRAY);
+                f2.setTextColor(Color.GRAY);
+                f3.setTextColor(Color.GRAY);
+                f4.setTextColor(Color.GRAY);
+                f5.setTextColor(Color.GRAY);
+                f6.setTextColor(Color.GRAY);
+                f7.setTextColor(Color.GRAY);
+                f8.setTextColor(Color.GRAY);
+                f9.setTextColor(Color.GRAY);
+                f10.setTextColor(Color.GRAY);
+                f11.setTextColor(Color.GRAY);
+                f12.setTextColor(Color.GRAY);
+                f13.setTextColor(Color.GRAY);
+                f14.setTextColor(Color.GRAY);
+                f15.setTextColor(Color.GRAY);
+                f16.setTextColor(Color.GRAY);
+                f17.setTextColor(Color.GRAY);
+                f18.setTextColor(Color.GRAY);
+                f19.setTextColor(Color.GRAY);
+                f20.setTextColor(Color.GRAY);
+                f21.setTextColor(Color.GRAY);
+                f22.setTextColor(Color.GRAY);
+                f23.setTextColor(Color.GRAY);
+
                 cambiar(idCalle);
 
                 client.setCallback(new MqttCallback() {
@@ -237,10 +273,11 @@ public class SelectCalleActivity extends AppCompatActivity {
                     public void messageArrived(String topic, MqttMessage message) throws Exception
                     {
                         String mqttText = new String(message.getPayload());
-                        Log.e(tag, "llega");
                         int tipo, dato;
-                        tipo=Integer.parseInt(mqttText.split("¡")[0]);
-                        dato=Integer.parseInt(mqttText.split("¡")[1]);
+                        tipo=Integer.parseInt(mqttText.split(";")[0]);
+                        Log.e(tag, Integer.toString(tipo));
+                        dato=Integer.parseInt(mqttText.split(";")[1]);
+                        Log.e(tag, Integer.toString(dato));
                         switch (tipo){
                             case 0:
                                 //Temperatura
@@ -255,12 +292,18 @@ public class SelectCalleActivity extends AppCompatActivity {
                             case 4:
                                 //lluvia
                                 if(dato==0){
-                                    lluvi.setText("Esta despejado");
+                                    lluvi.setText("No está lloviendo");
                                 }else{
                                     lluvi.setText("Esta lloviendo");
                                 }
                                 lluvi.setTextColor(Color.GRAY);
                                 break;
+                            case 2:
+                                if (dato==0){
+                                    imagen.setImageResource(R.drawable.noche);
+                                }else{
+                                    imagen.setImageResource(R.drawable.logo);
+                                }
                             default:
                                 break;
                         }
@@ -330,8 +373,13 @@ public class SelectCalleActivity extends AppCompatActivity {
         }
     }
 
-    public void cargarValores(JSONArray jsonValores){
+    public void cargarValores(JSONArray jsonValores,String nombreCalle){
         Log.e(tag,"Cargando los valores " + jsonValores);
+        String url = "http://192.168.151.14:8080/smartstreet/GetHorasPuntaCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle="+nombreCalle;
+        ServerConnectionThread thread = new ServerConnectionThread(this, url);
+        try {
+            thread.join();
+        }catch (InterruptedException e){}
         ArrayList<Sensor> array =new ArrayList<>();
         double valor;
         String tipo;
@@ -361,6 +409,12 @@ public class SelectCalleActivity extends AppCompatActivity {
                         }
                     }else if (tipo.equals("horarioConflictivo")){
 
+                    }else if(tipo.equals("luz")){
+                        if (valor==0){
+                            imagen.setImageResource(R.drawable.noche);
+                        }else{
+                            imagen.setImageResource(R.drawable.logo);
+                        }
                     }
                 }
             }
@@ -371,6 +425,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     public void cambiar(int idCalle){
         String url = "http://192.168.151.14:8080/smartstreet/GetSensoresCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle=calle"+idCalle;
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
+
         try {
             thread.join();
         }catch (InterruptedException e){}
@@ -378,7 +433,7 @@ public class SelectCalleActivity extends AppCompatActivity {
         lluvi.setText("No hay datos");
         humedo.setText("No hay datos");
 
-        cargarValores(jsonValores);
+        cargarValores(jsonValores,nameCalle);
         temp.setTextColor(Color.GRAY);
         lluvi.setTextColor(Color.GRAY);
         humedo.setTextColor(Color.GRAY);
@@ -428,6 +483,110 @@ public class SelectCalleActivity extends AppCompatActivity {
         //Show the notification
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
         notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    public void setHoras(JSONArray jsonHoras){
+        Log.e(tag,"Modificando horas punta");
+        arrayHoras=new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonHoras.length(); i++) {
+                JSONObject jsonobject = jsonHoras.getJSONObject(i);
+                arrayHoras.add(new HoraPunta(jsonobject.getInt("_idZonaCalle"),
+                        jsonobject.getInt("_codigoCiudadCalle"),
+                        jsonobject.getString("_nombreCalle"),
+                        jsonobject.getString("_horaInicio"),
+                        jsonobject.getString("_horaInicio"),
+                        jsonobject.getBoolean("_fijo")));
+            }
+        }catch (Exception e){
+            Log.e(tag,"Error: " + e);
+        }
+        for (HoraPunta hora : arrayHoras){
+            Log.e(tag,hora.getHoraInicio());
+            int horaInicio=Integer.parseInt(hora.getHoraInicio().split(":")[0]);
+            Log.e(tag, String.valueOf(horaInicio));
+            int horaFin=Integer.parseInt(hora.getHoraFin().split(":")[0]);
+            Log.e(tag, String.valueOf(horaInicio));
+            for (int i=horaInicio;i<horaFin+1;i++){
+                Log.e(tag, String.valueOf(i));
+                switch (i){
+                    case 0:
+                        f0.setTextColor(Color.RED);
+                        break;
+                    case 1:
+                        f1.setTextColor(Color.RED);
+                        break;
+                    case 2:
+                        f2.setTextColor(Color.RED);
+                        break;
+                    case 3:
+                        f3.setTextColor(Color.RED);
+                        break;
+                    case 4:
+                        f4.setTextColor(Color.RED);
+                        break;
+                    case 5:
+                        f5.setTextColor(Color.RED);
+                        break;
+                    case 6:
+                        f6.setTextColor(Color.RED);
+                        break;
+                    case 7:
+                        f7.setTextColor(Color.RED);
+                        break;
+                    case 8:
+                        f8.setTextColor(Color.RED);
+                        break;
+                    case 9:
+                        f9.setTextColor(Color.RED);
+                        break;
+                    case 10:
+                        f10.setTextColor(Color.RED);
+                        break;
+                    case 11:
+                        f11.setTextColor(Color.RED);
+                        break;
+                    case 12:
+                        f12.setTextColor(Color.RED);
+                        break;
+                    case 13:
+                        f13.setTextColor(Color.RED);
+                        break;
+                    case 14:
+                        f14.setTextColor(Color.RED);
+                        break;
+                    case 15:
+                        f15.setTextColor(Color.RED);
+                        break;
+                    case 16:
+                        f16.setTextColor(Color.RED);
+                        break;
+                    case 17:
+                        f17.setTextColor(Color.RED);
+                        break;
+                    case 18:
+                        f18.setTextColor(Color.RED);
+                        break;
+                    case 19:
+                        f19.setTextColor(Color.RED);
+                        break;
+                    case 20:
+                        f20.setTextColor(Color.RED);
+                        break;
+                    case 21:
+                        f21.setTextColor(Color.RED);
+                        break;
+                    case 22:
+                        f22.setTextColor(Color.RED);
+                        break;
+                    case 23:
+                        f23.setTextColor(Color.RED);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
 }

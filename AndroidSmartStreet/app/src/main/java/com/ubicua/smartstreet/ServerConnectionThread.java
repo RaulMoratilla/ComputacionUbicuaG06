@@ -49,6 +49,9 @@ class ServerConnectionThread extends Thread{
             else if(urlStr.contains("GetSensoresCalle")){
                     activity.setJsonValores(jsonarray);
             }
+            else if(urlStr.contains("GetHorasPuntaCalle")){
+                activity.setHoras(jsonarray);
+            }
         }
         catch (IOException | JSONException e) {
             e.printStackTrace();

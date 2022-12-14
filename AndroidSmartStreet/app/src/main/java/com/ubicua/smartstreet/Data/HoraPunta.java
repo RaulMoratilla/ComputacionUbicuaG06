@@ -3,11 +3,12 @@ package com.ubicua.smartstreet.Data;
 import java.sql.Time;
 
 public class HoraPunta {
-    int idZonaCalle, codigoCiudadZonaCalle;
-    String nombreCalle;
-    Time horaInicio, horaFin;
+    private int idZonaCalle, codigoCiudadZonaCalle;
+    private String nombreCalle;
+    private String horaInicio, horaFin;
+    private boolean fijo;
 
-    public HoraPunta(int idZonaCalle, int codigoCiudadZonaCalle, String nombreCalle, Time horaInicio, Time horaFin) {
+    public HoraPunta(int idZonaCalle, int codigoCiudadZonaCalle, String nombreCalle, String horaInicio, String horaFin, boolean fijo) {
         this.idZonaCalle = idZonaCalle;
         this.codigoCiudadZonaCalle = codigoCiudadZonaCalle;
         this.nombreCalle = nombreCalle;
@@ -39,19 +40,19 @@ public class HoraPunta {
         this.nombreCalle = nombreCalle;
     }
 
-    public Time getHoraInicio() {
+    public String getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(Time horaInicio) {
+    public void setHoraInicio(String horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public Time getHoraFin() {
+    public String getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(Time horaFin) {
+    public void setHoraFin(String horaFin) {
         this.horaFin = horaFin;
     }
 }
