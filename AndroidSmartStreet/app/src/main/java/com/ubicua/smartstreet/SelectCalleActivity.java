@@ -63,6 +63,27 @@ public class SelectCalleActivity extends AppCompatActivity {
     private TextView f1;
     private TextView f2;
     private TextView f3;
+    private TextView f4;
+    private TextView f5;
+    private TextView f6;
+    private TextView f7;
+    private TextView f8;
+    private TextView f9;
+    private TextView f10;
+    private TextView f11;
+    private TextView f12;
+    private TextView f13;
+    private TextView f14;
+    private TextView f15;
+    private TextView f16;
+    private TextView f17;
+    private TextView f18;
+    private TextView f19;
+    private TextView f20;
+    private TextView f21;
+    private TextView f22;
+    private TextView f23;
+
     ArrayList<String> arrayCalle;
     ArrayList<String> arrayValores;
     private ArrayList<Calle> listCalle;
@@ -88,7 +109,26 @@ public class SelectCalleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://172.20.10.10:1883", clientId);
+        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.151.14:1883", clientId);
+
+        try {
+            IMqttToken token = client.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    //If the connection is ok
+                    Log.i(tag, "MQTT connected");
+                    //Suscribe the topics
+                    suscripcionTopics(idCiudad,idZona,idCalle);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.i(tag, "Error connecting MQTT");
+                }
+            });
+        } catch (MqttException e) {e.printStackTrace();}
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_calle);
@@ -97,15 +137,38 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.spinnerCalle = this.findViewById(R.id.spinnerCalle);
         this.spinnerZona = this.findViewById(R.id.spinnerZona);
         this.buttonCalle = this.findViewById(R.id.buttonCalle);
+
         this.temp=this.findViewById(R.id.textTemperatura);
         temp.setTextColor(Color.WHITE);
         this.lluvi=this.findViewById(R.id.textLloviendo);
         lluvi.setTextColor(Color.WHITE);
         this.humedo=this.findViewById(R.id.textHumedo);
         humedo.setTextColor(Color.WHITE);
+
         this.f1=this.findViewById(R.id.textFranja1);
         this.f2=this.findViewById(R.id.textFranja2);
         this.f3=this.findViewById(R.id.textFranja3);
+        this.f4=this.findViewById(R.id.textFranja4);
+        this.f5=this.findViewById(R.id.textFranja5);
+        this.f6=this.findViewById(R.id.textFranja6);
+        this.f7=this.findViewById(R.id.textFranja7);
+        this.f8=this.findViewById(R.id.textFranja8);
+        this.f9=this.findViewById(R.id.textFranja9);
+        this.f10=this.findViewById(R.id.textFranja10);
+        this.f11=this.findViewById(R.id.textFranja11);
+        this.f12=this.findViewById(R.id.textFranja12);
+        this.f13=this.findViewById(R.id.textFranja13);
+        this.f14=this.findViewById(R.id.textFranja14);
+        this.f15=this.findViewById(R.id.textFranja15);
+        this.f16=this.findViewById(R.id.textFranja16);
+        this.f17=this.findViewById(R.id.textFranja17);
+        this.f18=this.findViewById(R.id.textFranja18);
+        this.f19=this.findViewById(R.id.textFranja19);
+        this.f20=this.findViewById(R.id.textFranja20);
+        this.f21=this.findViewById(R.id.textFranja21);
+        this.f22=this.findViewById(R.id.textFranja22);
+        this.f23=this.findViewById(R.id.textFranja23);
+
 
         //init the arraylist to incorpore the information
         this.listCalle = new ArrayList<>();
@@ -114,16 +177,11 @@ public class SelectCalleActivity extends AppCompatActivity {
         this.arrayZona = new ArrayList<>();
         this.arrayValores = new ArrayList<>();
 
-        //TODO
-        //arrayZona.add("zona1");
-        //arrayCalle.add("calle1");
-
-        //Initial load of cities and stations
-        //TODO
         loadZonas();
         if(arrayZona.size()>0) {
            spinnerZona.setSelection(0);
         }
+
         //Add action when the spinner of the cities changes
 
         spinnerZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -169,24 +227,8 @@ public class SelectCalleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(tag, "Boton presionado");
-                try {
-                    IMqttToken token = client.connect();
-                    token.setActionCallback(new IMqttActionListener() {
-                        @Override
-                        public void onSuccess(IMqttToken asyncActionToken) {
-                            //If the connection is ok
-                            Log.i(tag, "MQTT connected");
-                            //Suscribe the topics
-                            suscripcionTopics(idCiudad,idZona,idCalle);
-                        }
 
-                        @Override
-                        public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                            // Something went wrong e.g. connection timeout or firewall problems
-                            Log.i(tag, "Error connecting MQTT");
-                        }
-                    });
-                } catch (MqttException e) {e.printStackTrace();}
+                cambiar(idCalle);
 
                 client.setCallback(new MqttCallback() {
                     @Override
@@ -195,19 +237,20 @@ public class SelectCalleActivity extends AppCompatActivity {
                     public void messageArrived(String topic, MqttMessage message) throws Exception
                     {
                         String mqttText = new String(message.getPayload());
+                        Log.e(tag, "llega");
                         int tipo, dato;
-                        tipo=Integer.parseInt(mqttText.split("|")[0]);
-                        dato=Integer.parseInt(mqttText.split("|")[1]);
+                        tipo=Integer.parseInt(mqttText.split("¡")[0]);
+                        dato=Integer.parseInt(mqttText.split("¡")[1]);
                         switch (tipo){
                             case 0:
                                 //Temperatura
                                 temp.setText(dato+"ºC");
-                                temp.setTextColor(Color.BLACK);
+                                temp.setTextColor(Color.GRAY);
                                 break;
                             case 1:
                                 //Humedad
                                 humedo.setText(dato+"%");
-                                humedo.setTextColor(Color.BLACK);
+                                humedo.setTextColor(Color.GRAY);
                                 break;
                             case 4:
                                 //lluvia
@@ -216,18 +259,16 @@ public class SelectCalleActivity extends AppCompatActivity {
                                 }else{
                                     lluvi.setText("Esta lloviendo");
                                 }
-                                lluvi.setTextColor(Color.BLACK);
+                                lluvi.setTextColor(Color.GRAY);
                                 break;
-                            case 6:
-                                //Horario Conflictivo
-                                //TODO hacer lo del horario conflictivo bien
+                            default:
                                 break;
                         }
                     }
                     @Override
                     public void deliveryComplete(IMqttDeliveryToken token) {}
                 });
-                cambiar(idCalle);
+
             }
         });
     }
@@ -236,7 +277,7 @@ public class SelectCalleActivity extends AppCompatActivity {
 
     //Search the cities and fill the spinner with the information
     private void loadZonas(){
-        String url = "http://192.168.210.14:8080/smartstreet/GetZonasCiudad?codigoCiudad=1";
+        String url = "http://192.168.151.14:8080/smartstreet/GetZonasCiudad?codigoCiudad=1";
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
         try {
             thread.join();
@@ -246,7 +287,7 @@ public class SelectCalleActivity extends AppCompatActivity {
     //Search the stations of the selected city and fill the spinner with the information
     private void loadCalles(final int calleId){
 
-        String url = "http://192.168.210.14:8080/smartstreet/GetCallesZona?codigoCiudad=1&idZona="+calleId;
+        String url = "http://192.168.151.14:8080/smartstreet/GetCallesZona?codigoCiudad=1&idZona="+calleId;
         this.listCalle = new ArrayList<>();
         this.arrayCalle = new ArrayList<>();
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
@@ -318,6 +359,8 @@ public class SelectCalleActivity extends AppCompatActivity {
                         }else{
                             lluvi.setText("Está lloviendo");
                         }
+                    }else if (tipo.equals("horarioConflictivo")){
+
                     }
                 }
             }
@@ -326,21 +369,19 @@ public class SelectCalleActivity extends AppCompatActivity {
         }
     }
     public void cambiar(int idCalle){
-        String url = "http://192.168.210.14:8080/smartstreet/GetSensoresCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle=calle"+idCalle;
+        String url = "http://192.168.151.14:8080/smartstreet/GetSensoresCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle=calle"+idCalle;
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
         try {
             thread.join();
         }catch (InterruptedException e){}
+        temp.setText("No hay datos");
+        lluvi.setText("No hay datos");
+        humedo.setText("No hay datos");
+
         cargarValores(jsonValores);
         temp.setTextColor(Color.GRAY);
         lluvi.setTextColor(Color.GRAY);
         humedo.setTextColor(Color.GRAY);
-        f1.setText("7:30-8:30");
-        f1.setTextColor(Color.RED);
-        f2.setText("14:00-15:00");
-        f2.setTextColor(Color.RED);
-        f3.setText("19:00-20:00");
-        f3.setTextColor(Color.GREEN);
     }
 
     public void setJsonValores(JSONArray jsonValores) {
@@ -354,8 +395,8 @@ public class SelectCalleActivity extends AppCompatActivity {
             Log.i(tag, "zona = " + zona);
             Log.i(tag, "calle = " + calle);
 
-            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/datos/+",0);
-            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/calles/calle"+calle+"/horarioConflictivo",0);
+            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/datos/+",2);
+            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/calles/calle"+calle+"/horarioConflictivo",2);
 
         }catch (MqttException e){
             e.printStackTrace();

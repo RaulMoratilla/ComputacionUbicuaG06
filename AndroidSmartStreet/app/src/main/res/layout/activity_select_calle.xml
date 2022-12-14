@@ -219,19 +219,6 @@ tools:context=".MainActivity">
         app:layout_constraintTop_toBottomOf="@+id/textFranja0" />
 
     <TextView
-        android:id="@+id/textFranja12"
-        android:layout_width="57dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
-        android:ellipsize="middle"
-        android:focusable="auto"
-        android:gravity="center|center_vertical"
-        android:text="12:00"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textFranja6" />
-
-    <TextView
         android:id="@+id/textFranja7"
         android:layout_width="57dp"
         android:layout_height="25dp"
@@ -295,6 +282,20 @@ tools:context=".MainActivity">
         android:text="11:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFranja5" />
+
+    <TextView
+        android:id="@+id/textFranja12"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="12:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja6" />
+
     <TextView
         android:id="@+id/textFranja13"
         android:layout_width="57dp"
@@ -319,6 +320,118 @@ tools:context=".MainActivity">
         android:text="14:00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textFranja8" />
+
+    <TextView
+        android:id="@+id/textFranja15"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="15:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja9" />
+    <TextView
+        android:id="@+id/textFranja16"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="16:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja10" />
+    <TextView
+        android:id="@+id/textFranja17"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="17:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja11" />
+
+    <TextView
+        android:id="@+id/textFranja18"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="18:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja12" />
+
+    <TextView
+        android:id="@+id/textFranja19"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="19:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja13" />
+    <TextView
+        android:id="@+id/textFranja20"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="20:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja14" />
+
+    <TextView
+        android:id="@+id/textFranja21"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="21:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja15" />
+    <TextView
+        android:id="@+id/textFranja22"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="22:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja16" />
+    <TextView
+        android:id="@+id/textFranja23"
+        android:layout_width="57dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="24dp"
+        android:ellipsize="middle"
+        android:focusable="auto"
+        android:gravity="center|center_vertical"
+        android:text="23:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textFranja17" />
 
     <TextView
         android:id="@+id/textTemperatura"

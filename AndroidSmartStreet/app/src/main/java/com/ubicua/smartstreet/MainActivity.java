@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
                 //setContentView(R.layout.activity_select_calle);
                 Intent i = new Intent(MainActivity.this, SelectCalleActivity.class);
                 startActivity(i);
-
+                finish();
             }
         }, TIME_OUT);
 
