@@ -39,18 +39,25 @@ class ServerConnectionThread extends Thread{
             //Read Responses and fill the spinner
 
             System.out.println("Corriendo2");
-            if(urlStr.contains("GetZonasCiudad")){
+            if(urlStr.contains("GetZonasCiudad"))
+            {
                 activity.setListZonas(jsonarray);
             }
             else if(urlStr.contains("GetCallesZona"))
             {
-                    activity.setListCalles(jsonarray);
+                activity.setListCalles(jsonarray);
             }
-            else if(urlStr.contains("GetSensoresCalle")){
-                    activity.setJsonValores(jsonarray);
+            else if(urlStr.contains("GetSensoresCalle"))
+            {
+                activity.setJsonValores(jsonarray);
             }
-            else if(urlStr.contains("GetHorasPuntaCalle")){
+            else if(urlStr.contains("GetHorasPuntaCalle"))
+            {
                 activity.setHoras(jsonarray);
+            }else if(urlStr.contains("GetCiudades"))
+            {
+                Log.e(tag,"HEllo there");
+                activity.setCiudades(jsonarray);
             }
         }
         catch (IOException | JSONException e) {

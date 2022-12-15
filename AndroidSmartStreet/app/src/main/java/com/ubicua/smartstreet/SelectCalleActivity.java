@@ -1,5 +1,7 @@
 package com.ubicua.smartstreet;
 
+import static java.lang.Thread.sleep;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -21,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.ubicua.smartstreet.Data.Calle;
+import com.ubicua.smartstreet.Data.Ciudad;
 import com.ubicua.smartstreet.Data.HoraPunta;
 import com.ubicua.smartstreet.Data.Zona;
 import com.ubicua.smartstreet.Data.Sensor;
@@ -53,10 +56,11 @@ public class SelectCalleActivity extends AppCompatActivity {
 
     private String tag = "SelectCalle";
 
-    private int idCiudad =1;
+    private int idCiudad;
     private int idZona;
     private int idCalle;
 
+    private Spinner spinnerCiudad;
     private Spinner spinnerCalle;
     private Spinner spinnerZona;
     private Button buttonCalle;
@@ -90,11 +94,13 @@ public class SelectCalleActivity extends AppCompatActivity {
     private TextView f23;
     private ImageView imagen;
 
-    ArrayList<String> arrayCalle;
-    ArrayList<String> arrayValores;
+    private ArrayList<String> arrayCalle;
+    private ArrayList<String> arrayValores;
     private ArrayList<Calle> listCalle;
+    private ArrayList<Ciudad> listCiudad;
     private ArrayList<HoraPunta> arrayHoras;
-    ArrayList<String> arrayZona;
+    private ArrayList<String> arrayCiudad;
+    private ArrayList<String> arrayZona;
     private ArrayList<Zona> listZona;
     private final Context context;
     private String nameCalle = "";
@@ -115,32 +121,11 @@ public class SelectCalleActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.151.14:1883", clientId);
-
-        try {
-            IMqttToken token = client.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    //If the connection is ok
-                    Log.i(tag, "MQTT connected");
-                    //Suscribe the topics
-                    suscripcionTopics(idCiudad,idZona,idCalle);
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Log.i(tag, "Error connecting MQTT");
-                }
-            });
-        } catch (MqttException e) {e.printStackTrace();}
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_calle);
 
         //Init the spinners and the buttons and textViews
+        this.spinnerCiudad = this.findViewById(R.id.spinnerCiudad);
         this.spinnerCalle = this.findViewById(R.id.spinnerCalle);
         this.spinnerZona = this.findViewById(R.id.spinnerZona);
         this.buttonCalle = this.findViewById(R.id.buttonCalle);
@@ -182,18 +167,44 @@ public class SelectCalleActivity extends AppCompatActivity {
 
         //init the arraylist to incorpore the information
         this.listCalle = new ArrayList<>();
+        this.listCiudad = new ArrayList<>();
         this.listZona = new ArrayList<>();
         this.arrayCalle = new ArrayList<>();
+        this.arrayCiudad = new ArrayList<>();
         this.arrayZona = new ArrayList<>();
         this.arrayValores = new ArrayList<>();
         this.arrayHoras = new ArrayList<>();
 
-        loadZonas();
-        if(arrayZona.size()>0) {
+        loadCiudades();
+        if(arrayCiudad.size()>0) {
+            spinnerCiudad.setSelection(0);
+        }
+        /*if(arrayZona.size()>0) {
            spinnerZona.setSelection(0);
         }
 
+         */
+
         //Add action when the spinner of the cities changes
+
+        spinnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                idCiudad = listCiudad.get(i).getCodigo();//Get the id of the selected position
+                Log.i(tag, "Ciudad seleccionada:" + listCiudad.get(i).getNombre());
+
+                //Get the list of stations of the selected city and set them into the spinner
+                loadZonas(idCiudad);
+                spinnerZona.setAdapter(new ArrayAdapter<String>
+                        (context, android.R.layout.simple_spinner_item, arrayZona));
+                if(arrayZona.size()>0) {
+                    spinnerZona.setSelection(0);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         spinnerZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -278,6 +289,7 @@ public class SelectCalleActivity extends AppCompatActivity {
                         Log.e(tag, Integer.toString(tipo));
                         dato=Integer.parseInt(mqttText.split(";")[1]);
                         Log.e(tag, Integer.toString(dato));
+                        Log.e(tag,"Recibe");
                         switch (tipo){
                             case 0:
                                 //Temperatura
@@ -314,23 +326,57 @@ public class SelectCalleActivity extends AppCompatActivity {
 
             }
         });
+        try {
+            sleep(5000);
+        }catch (Exception e){
+
+        }
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.167.14:1883", clientId);
+
+        try {
+            IMqttToken token = client.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    //If the connection is ok
+                    Log.i(tag, "MQTT connected");
+                    //Suscribe the topics
+                    suscripcionTopics(idCiudad,idZona,nameCalle);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.i(tag, "Error connecting MQTT");
+                }
+            });
+        } catch (MqttException e) {e.printStackTrace();}
     }
 
-
-
-    //Search the cities and fill the spinner with the information
-    private void loadZonas(){
-        String url = "http://192.168.151.14:8080/smartstreet/GetZonasCiudad?codigoCiudad=1";
+    private void loadCiudades(){
+        String url = "http://192.168.167.14:8080/smartstreet/GetCiudades";
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
         try {
             thread.join();
         }catch (InterruptedException e){}
     }
 
+    //Search the cities and fill the spinner with the information
+    private void loadZonas(int idCiudad){
+        String url = "http://192.168.167.14:8080/smartstreet/GetZonasCiudad?codigoCiudad="+idCiudad;
+        ServerConnectionThread thread = new ServerConnectionThread(this, url);
+        try {
+            thread.join();
+        }catch (InterruptedException e){}
+        spinnerZona.setAdapter(new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_item, arrayZona));
+    }
+
     //Search the stations of the selected city and fill the spinner with the information
     private void loadCalles(final int calleId){
 
-        String url = "http://192.168.151.14:8080/smartstreet/GetCallesZona?codigoCiudad=1&idZona="+calleId;
+        String url = "http://192.168.167.14:8080/smartstreet/GetCallesZona?codigoCiudad="+idCiudad+"&idZona="+calleId;
         this.listCalle = new ArrayList<>();
         this.arrayCalle = new ArrayList<>();
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
@@ -349,8 +395,7 @@ public class SelectCalleActivity extends AppCompatActivity {
                         jsonobject.getString("_nombre")));
                 arrayZona.add(jsonobject.getString("_nombre"));
             }
-            spinnerZona.setAdapter(new ArrayAdapter<String>(context,
-                    android.R.layout.simple_spinner_item, arrayZona));
+
         }catch (Exception e){
             Log.e(tag,"Error: " + e);
         }
@@ -373,9 +418,24 @@ public class SelectCalleActivity extends AppCompatActivity {
         }
     }
 
+    public void setCiudades(JSONArray jsonZonas){
+        try {
+            for (int i = 0; i < jsonZonas.length(); i++) {
+                JSONObject jsonobject = jsonZonas.getJSONObject(i);
+                listCiudad.add(new Ciudad(jsonobject.getInt("_codigo"),
+                        jsonobject.getString("_nombre"),
+                        jsonobject.getString("_pais")));
+                arrayCiudad.add(jsonobject.getString("_nombre"));
+            }
+            spinnerCiudad.setAdapter(new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, arrayCiudad));
+        }catch (Exception e){
+            Log.e(tag,"Error: " + e);
+        }
+    }
     public void cargarValores(JSONArray jsonValores,String nombreCalle){
         Log.e(tag,"Cargando los valores " + jsonValores);
-        String url = "http://192.168.151.14:8080/smartstreet/GetHorasPuntaCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle="+nombreCalle;
+        String url = "http://192.168.167.14:8080/smartstreet/GetHorasPuntaCalle?codigoCiudad="+idCiudad+"&idZona="+idZona+"&nombreCalle="+nombreCalle;
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
         try {
             thread.join();
@@ -423,7 +483,7 @@ public class SelectCalleActivity extends AppCompatActivity {
         }
     }
     public void cambiar(int idCalle){
-        String url = "http://192.168.151.14:8080/smartstreet/GetSensoresCalle?codigoCiudad=1&idZona="+idZona+"&nombreCalle=calle"+idCalle;
+        String url = "http://192.168.167.14:8080/smartstreet/GetSensoresCalle?codigoCiudad="+idCiudad+"&idZona="+idZona+"&nombreCalle=calle"+idCalle;
         ServerConnectionThread thread = new ServerConnectionThread(this, url);
 
         try {
@@ -444,14 +504,14 @@ public class SelectCalleActivity extends AppCompatActivity {
     }
 
     //MQTT topics to suscribe the application
-    private void suscripcionTopics(int ciudad,int zona, int calle){
+    private void suscripcionTopics(int ciudad,int zona, String calle){
         try{
             Log.i(tag, "ciudad = " + ciudad);
             Log.i(tag, "zona = " + zona);
-            Log.i(tag, "calle = " + calle);
+            Log.i(tag, calle);
 
-            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/datos/+",2);
-            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/calles/calle"+calle+"/horarioConflictivo",2);
+            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/datos/+",1);
+            client.subscribe("ciudad" + ciudad + "/zona" +zona+ "/calles/"+calle+"/horarioConflictivo",1);
 
         }catch (MqttException e){
             e.printStackTrace();
@@ -503,11 +563,29 @@ public class SelectCalleActivity extends AppCompatActivity {
         }
         for (HoraPunta hora : arrayHoras){
             Log.e(tag,hora.getHoraInicio());
+            int sumai=0;
+            int sumaf=0;
+
             int horaInicio=Integer.parseInt(hora.getHoraInicio().split(":")[0]);
             Log.e(tag, String.valueOf(horaInicio));
             int horaFin=Integer.parseInt(hora.getHoraFin().split(":")[0]);
-            Log.e(tag, String.valueOf(horaInicio));
-            for (int i=horaInicio;i<horaFin+1;i++){
+            Log.e(tag, String.valueOf(horaFin));
+            if(hora.getHoraInicio().contains("PM")){
+                sumai=12;
+            }else if(hora.getHoraInicio().contains("AM")&&horaInicio==12){
+                sumai=-12;
+            }
+            if(hora.getHoraFin().contains("PM")&&horaFin!=12){
+                sumaf=12;
+            }else if(hora.getHoraInicio().contains("AM")&&horaInicio==12){
+                sumaf=-12;
+            }
+
+
+            for (int i=sumai+horaInicio;i<sumaf+horaFin+1;i++){
+                if(i==24){
+                    i=0;
+                }
                 Log.e(tag, String.valueOf(i));
                 switch (i){
                     case 0:

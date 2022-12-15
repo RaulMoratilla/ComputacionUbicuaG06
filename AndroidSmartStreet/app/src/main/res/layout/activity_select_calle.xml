@@ -18,50 +18,72 @@ tools:context=".MainActivity">
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
+
     <TextView
         android:id="@+id/textViewCalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="260dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="264dp"
+        android:layout_marginTop="8dp"
         android:text="Selecciona la calle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerZona" />
 
     <Spinner
+        android:id="@+id/spinnerCiudad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCiudad" />
+
+    <Spinner
+        android:id="@+id/spinnerZona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewZona" />
+
+    <Spinner
         android:id="@+id/spinnerCalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="332dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCalle" />
+
+    <TextView
+        android:id="@+id/textViewCiudad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="16dp"
+        android:text="Selecciona la ciudad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewZona"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="264dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:text="Selecciona la zona"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCiudad" />
 
-    <Spinner
-        android:id="@+id/spinnerZona"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="328dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewZona" />
+
 
     <Button
         android:id="@+id/buttonCalle"
         android:layout_width="149dp"
         android:layout_height="45dp"
-        android:layout_marginStart="228dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="232dp"
+        android:layout_marginTop="16dp"
         android:text="Ver calle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCalle" />
@@ -70,8 +92,8 @@ tools:context=".MainActivity">
         android:id="@+id/textViewClima"
         android:layout_width="377dp"
         android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
         android:ellipsize="middle"
         android:focusable="auto"
         android:gravity="center|center_vertical"
@@ -112,7 +134,7 @@ tools:context=".MainActivity">
         android:layout_height="wrap_content"
         android:layout_marginStart="136dp"
         android:layout_marginTop="24dp"
-        android:text="Clima:"
+        android:text="Lluvia:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTemp" />
 
