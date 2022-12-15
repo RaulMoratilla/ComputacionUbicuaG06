@@ -56,9 +56,9 @@ public class SelectCalleActivity extends AppCompatActivity {
 
     private String tag = "SelectCalle";
 
-    private int idCiudad;
-    private int idZona;
-    private int idCalle;
+    private int idCiudad=1;
+    private int idZona=1;
+    private int idCalle=1;
 
     private Spinner spinnerCiudad;
     private Spinner spinnerCalle;
@@ -342,6 +342,9 @@ public class SelectCalleActivity extends AppCompatActivity {
                     //If the connection is ok
                     Log.i(tag, "MQTT connected");
                     //Suscribe the topics
+                    Log.i(tag,Integer.toString(idCiudad));
+                    Log.i(tag,Integer.toString(idZona));
+                    Log.i(tag,nameCalle);
                     suscripcionTopics(idCiudad,idZona,nameCalle);
                 }
 
@@ -395,7 +398,8 @@ public class SelectCalleActivity extends AppCompatActivity {
                         jsonobject.getString("_nombre")));
                 arrayZona.add(jsonobject.getString("_nombre"));
             }
-
+            spinnerZona.setAdapter(new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, arrayZona));
         }catch (Exception e){
             Log.e(tag,"Error: " + e);
         }
@@ -413,6 +417,8 @@ public class SelectCalleActivity extends AppCompatActivity {
                 arrayCalle.add(jsonobject.getString("_nombre"));
                 Log.e(tag,"Calle " + jsonobject.getString("_nombre"));
             }
+            spinnerZona.setAdapter(new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_item, arrayZona));
         }catch (Exception e){
             Log.e(tag,"Error: " + e);
         }
