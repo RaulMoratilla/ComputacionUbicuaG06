@@ -69,6 +69,7 @@ void ConnectMqtt() {
  * Se revisa si hay mensajes MQTT
 */
 void HandleMqtt() {
+  HandleWiFi(); // Para que no se desconecte el WiFi
   if (!mqttClient.connected()) {
     Serial.println("Fallo en la conexión MQTT. Reconectando...");
     ConnectMqtt();

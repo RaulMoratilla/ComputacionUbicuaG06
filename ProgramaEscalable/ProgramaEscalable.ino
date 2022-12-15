@@ -2,7 +2,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <DHT.h>
-#include <Time.h>
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -79,11 +78,19 @@ void loop() {
   // Cada vez que se envía información se vigila si ha llegado algo
   HandleMqtt();
 
-  // Al sensor de temperatura y humedad solo permite accesos cada 2 segundos
-  if (millis() > tiempoUltAccesoTH + 2000) {
-    if (ultimo)
-       controlarTemperatura(senTH, dht);
-    else controlarHumedad(senTH, dht);
+  // Las mediciones de Luz Temperatura y lluvia las realizaremos 1 vez cada 2 minutos
+  // Las mediciones de Temperatura y Luz se deben realizar con un margen de 2 segundos por ello
+  // el uso de la variable ultimo. Cada minuto se medira una distinta
+  if (millis() > tiempoUltAccesoTH + 60000) {
+    if (ultimo) {
+      controlarTemperatura(senTH, dht);
+      HandleMqtt();
+      controlarLluvia(senLluvia);
+    }
+    else {
+      controlarHumedad(senTH, dht);
+    }
+
     ultimo = !ultimo;
     tiempoUltAccesoTH = millis();    
     HandleMqtt();
@@ -95,12 +102,8 @@ void loop() {
   HandleMqtt();
   controlarMovimiento(senMovCalle2);
   HandleMqtt();
-  controlarLluvia(senLluvia);
-  HandleMqtt();
   controlarPasoCebra(senUS);
   HandleMqtt();
-
-  HandleWiFi(); // Para que no se desconecte el WiFi
 
   // Se realizan mediciones cada medio segundo
   delay(500);

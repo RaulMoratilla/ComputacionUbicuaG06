@@ -15,6 +15,6 @@ const char* hostname = "ESP32_1";
 
 // Declaración de constantes MQTT
 
-const char* MQTT_BROKER_ADRESS = "192.168.151.14";//"192.168.210.14";
+const char* MQTT_BROKER_ADRESS = "192.168.167.14";//"192.168.210.14";
 const uint16_t MQTT_PORT = 1883;
 const char* MQTT_CLIENT_NAME = "ESP32Client_1";
