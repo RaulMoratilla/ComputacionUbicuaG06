@@ -182,7 +182,6 @@ public class SelectCalleActivity extends AppCompatActivity {
         /*if(arrayZona.size()>0) {
            spinnerZona.setSelection(0);
         }
-
          */
 
         //Add action when the spinner of the cities changes
